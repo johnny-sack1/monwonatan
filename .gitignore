@@ -1,6 +1,8 @@
 # Compiled class file
 *.class
 
+queststore/.idea
+
 # Log file
 *.log
 
