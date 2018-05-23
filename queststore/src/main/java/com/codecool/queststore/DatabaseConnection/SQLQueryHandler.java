@@ -1,4 +1,4 @@
-package com.codecool.queststore.databaseConnection;
+package com.codecool.queststore.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class SQLQueryHandler {
 
     private static SQLQueryHandler ourInstance;
-    private PostgreSQLJDBC connectionEstablisher;
+    private com.codecool.queststore.DatabaseConnection.PostgreSQLJDBC connectionEstablisher;
     private Connection connection;
 
     public static SQLQueryHandler getInstance() {
@@ -19,7 +19,7 @@ public class SQLQueryHandler {
     }
 
     private SQLQueryHandler() {
-        this.connectionEstablisher = new PostgreSQLJDBC();
+        this.connectionEstablisher = new com.codecool.queststore.DatabaseConnection.PostgreSQLJDBC();
         this.connection = connectionEstablisher.getConnection();
     }
 

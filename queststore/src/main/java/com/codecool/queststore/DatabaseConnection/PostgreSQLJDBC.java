@@ -1,4 +1,4 @@
-package com.codecool.queststore.databaseConnection;
+package com.codecool.queststore.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
