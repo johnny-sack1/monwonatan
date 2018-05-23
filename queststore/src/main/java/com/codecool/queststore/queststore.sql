@@ -33,7 +33,7 @@ CREATE TABLE Artifact (
     PRIMARY KEY (artifact_id)
 );
 
-CREATE TABLE Wallet (
+CREATE TABLE Backpack (
     student_login VARCHAR(20) NOT NULL REFERENCES User_type(login),
     artifact_id INT NOT NULL REFERENCES Artifact(artifact_id),
     status VARCHAR(20) NOT NULL CHECK (status IN ('unused', 'pending', 'done'))
@@ -54,8 +54,7 @@ CREATE TABLE Experience_Level (
 );
 
 CREATE TABLE Classroom (
-    classroom_id VARCHAR(20) NOT NULL,
+    classroom_id SERIAL PRIMARY KEY,
     name VARCHAR(100),
-    description TEXT NOT NULL,
-    PRIMARY KEY (classroom_id)
+    description TEXT NOT NULL
 );
