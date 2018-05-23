@@ -25,12 +25,11 @@ CREATE TABLE Admin_type (
 );
 
 CREATE TABLE Artifact (
-    artifact_id INT NOT NULL,
+    artifact_id SERIAL PRIMARY KEY,
     available_for_groups BIT NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    price INT NOT NULL,
-    PRIMARY KEY (artifact_id)
+    price INT NOT NULL
 );
 
 CREATE TABLE Backpack (
@@ -40,12 +39,11 @@ CREATE TABLE Backpack (
 );
 
 CREATE TABLE Quest (
-    quest_id INT NOT NULL,
-    available_for_groups BIT NOT NULL,
+    quest_id SERIAL PRIMARY KEY,
+    available_for_groups BIT DEFAULT '0',
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
-    value INT NOT NULL,
-    PRIMARY KEY (quest_id)
+    value INT NOT NULL
 );
 
 CREATE TABLE Experience_Level (
