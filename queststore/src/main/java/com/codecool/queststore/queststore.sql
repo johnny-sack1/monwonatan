@@ -15,8 +15,8 @@ CREATE TABLE Student_type (
 
 CREATE TABLE Mentor_type (
     login VARCHAR(20) NOT NULL REFERENCES User_type(login),
-    address VARCHAR(200) NOT NULL,
-    email VARCHAR(200) NOT NULL
+    email VARCHAR(200) NOT NULL,
+    address VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE Admin_type (
@@ -26,7 +26,7 @@ CREATE TABLE Admin_type (
 
 CREATE TABLE Artifact (
     artifact_id SERIAL PRIMARY KEY,
-    available_for_groups BIT NOT NULL,
+    available_for_groups BIT DEFAULT '0',
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     price INT NOT NULL
