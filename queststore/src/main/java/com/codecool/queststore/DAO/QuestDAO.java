@@ -47,8 +47,14 @@ public class QuestDAO implements IStoreDAO {
         SQLQueryHandler.getInstance().executeQuery(statement.toString());
     }
 
-//    @Override
-//    public void updateEntity(String name, List<String> newData) throws SQLException {
-//
-//    }
+    public void updateEntity(String name, List<String> newData) throws SQLException {
+        String query = "UPDATE quest SET description = ?, value = ? " +
+                "WHERE name = ?";
+        PreparedStatement statement = c.prepareStatement(query);
+
+        statement.setString(1, newData.get(0));
+        statement.setInt(2, Integer.valueOf(newData.get(1)));
+        statement.setString(3, name);
+        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+    }
 }
