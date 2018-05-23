@@ -25,7 +25,7 @@ public class ArtifactDAO implements IStoreDAO {
 
     @Override
     public void createEntity(String name, String description, int price) throws SQLException {
-        String query = "INSERT INTO quest (name, description, price) " +
+        String query = "INSERT INTO artifact (name, description, price) " +
                 "VALUES (?, ?, ?);";
         PreparedStatement statement = c.prepareStatement(query);
 
