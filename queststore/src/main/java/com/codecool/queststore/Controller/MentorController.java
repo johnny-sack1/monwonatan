@@ -6,9 +6,9 @@ import java.util.List;
 
 public class MentorController {
 
-    private Mentor currentUser;
-    public MentorDAO mentorDAO;
-    public StudentDAO studentDAO;
+//    private Mentor currentUser;
+//    public MentorDAO mentorDAO;
+//    public StudentDAO studentDAO;
 
     public void createStudent(List<String> studentData) throws SQLException {
 

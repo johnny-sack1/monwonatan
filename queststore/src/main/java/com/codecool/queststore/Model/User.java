@@ -7,7 +7,7 @@ public abstract class User {
     private String login;
     private String password;
     private int classRoomID;
-    private UserType userType;
+    private String userType;
 
     public String getFirstName() {
         return this.firstName;

@@ -2,7 +2,7 @@ package com.codecool.queststore.Controller;
 
 public class UserController {
 
-    public LoginDAO loginDAO;
+//    public LoginDAO loginDAO;
 
     public void loginProcess(String login, String password) {
 

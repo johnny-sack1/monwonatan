@@ -2,8 +2,8 @@ package com.codecool.queststore.Controller;
 
 public class StudentController {
 
-    private Student currentUser;
-    public StudentDAO studentDAO;
+//    private Student currentUser;
+//    public StudentDAO studentDAO;
 
     public void seeWallet() {
 

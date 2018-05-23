@@ -1,5 +1,7 @@
 package com.codecool.queststore.Controller;
 
+import com.codecool.queststore.Model.Admin;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -7,8 +9,8 @@ import java.util.List;
 public class AdminController {
 
     private Admin currentUser;
-    public AdminDAO adminDAODAO;
-    public StudentDAO studentDAO;
+//    public AdminDAO adminDAODAO;
+//    public StudentDAO studentDAO;
 
     public void createMentor(List<String> mentorData) throws SQLException {
 
