@@ -48,8 +48,15 @@ public class ArtifactDAO implements IStoreDAO {
         SQLQueryHandler.getInstance().executeQuery(statement.toString());
     }
 
-//    @Override
-//    public void updateEntity(String name, List<String> newData) throws SQLException {
-//
-//    }
+    public void updateEntity(String name, List<String> newData) throws SQLException {
+        
+        String query = "UPDATE artifact SET description = ?, price = ? " +
+                "WHERE name = ?";
+        PreparedStatement statement = c.prepareStatement(query);
+
+        statement.setString(1, newData.get(0));
+        statement.setString(2, newData.get(1));
+        statement.setString(3, name);
+        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+    }
 }
