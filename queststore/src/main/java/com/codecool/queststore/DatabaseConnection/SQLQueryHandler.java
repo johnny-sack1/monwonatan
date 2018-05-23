@@ -31,4 +31,8 @@ public class SQLQueryHandler {
             return null;
         }
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
 }
