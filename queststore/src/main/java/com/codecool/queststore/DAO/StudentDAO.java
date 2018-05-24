@@ -36,7 +36,6 @@ public class StudentDAO extends UserDAO {
         String login = student.getLogin();
         String password = student.getPassword();
         int classId = student.getClassRoomID();
-        String email = student.getEmail();
         int currentCoins = student.getCoolcoins();
         int totalCoins = student.getTotalCoins();
         updateUser(firstName, lastName, login, password, classId, currentCoins, totalCoins);
