@@ -10,8 +10,6 @@ import java.util.List;
 
 public class QuestDAO implements IStoreDAO {
 
-    private Connection c = SQLQueryHandler.getInstance().getConnection();
-
 //    @Override
 //    public ResultSet loadEntity(int id) throws SQLException {
 //        return null;
@@ -24,6 +22,7 @@ public class QuestDAO implements IStoreDAO {
 
     @Override
     public void createEntity(String name, String description, int value) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
         String query = "INSERT INTO quest (name, description, value) " +
                        "VALUES (?, ?, ?);";
         PreparedStatement statement = c.prepareStatement(query);
@@ -36,6 +35,7 @@ public class QuestDAO implements IStoreDAO {
     }
 
     public void updateEntity (int id, List<String> newData) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
         String query = "UPDATE quest SET name = ?, description = ?, value = ? " +
                 "WHERE id = ?";
         PreparedStatement statement = c.prepareStatement(query);
@@ -48,6 +48,7 @@ public class QuestDAO implements IStoreDAO {
     }
 
     public void updateEntity(String name, List<String> newData) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
         String query = "UPDATE quest SET description = ?, value = ? " +
                 "WHERE name = ?";
         PreparedStatement statement = c.prepareStatement(query);
@@ -56,5 +57,17 @@ public class QuestDAO implements IStoreDAO {
         statement.setInt(2, Integer.valueOf(newData.get(1)));
         statement.setString(3, name);
         SQLQueryHandler.getInstance().executeQuery(statement.toString());
+    }
+
+    public int getRewardByID(int id) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+        String questQuery = "SELECT value FROM quest " +
+                "WHERE quest_id = ?;";
+
+        PreparedStatement questStatement = c.prepareStatement(questQuery);
+        questStatement.setInt(1, id);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(questStatement.toString());
+        resultSet.next();
+        return resultSet.getInt("value");
     }
 }

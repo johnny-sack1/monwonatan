@@ -9,8 +9,8 @@ import java.sql.SQLException;
 public abstract class UserDAO {
 
     public abstract ResultSet loadUser(String login) throws SQLException;
-    ResultSet executeQuery(String query) {
-        return SQLQueryHandler.getInstance().executeQuery(query);
+    void executeQuery(String query) {
+        SQLQueryHandler.getInstance().executeQuery(query);
     }
     public abstract void updateUser(User user) throws SQLException;
 }
