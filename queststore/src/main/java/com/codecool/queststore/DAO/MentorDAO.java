@@ -124,4 +124,21 @@ public class MentorDAO {
             return null;
         }
     }
+
+    public List<Mentor> loadAllMentors() {
+
+        List<Mentor> allMentors = new ArrayList<>();
+        String query = "SELECT login FROM mentor_type;";
+        ResultSet logins = SQLQueryHandler.getInstance().executeQuery(query);
+
+        try {
+            while (logins.next()) {
+                allMentors.add(loadMentor(logins.getString("login")));
+            }
+            return allMentors;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
