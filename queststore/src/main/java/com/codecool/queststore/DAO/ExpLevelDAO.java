@@ -47,4 +47,21 @@ public class ExpLevelDAO {
             return false;
         }
     }
+
+    public boolean deleteExpLevel(int expLevelID) {
+
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "DELETE FROM Experience_Level WHERE experience_level_id = ?;";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setInt(1, expLevelID);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+    }
 }
