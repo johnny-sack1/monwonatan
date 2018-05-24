@@ -1,6 +1,8 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
+import com.codecool.queststore.Model.Student;
+import com.codecool.queststore.Model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +28,48 @@ public class StudentDAO extends UserDAO {
         return SQLQueryHandler.getInstance().executeQuery(query);
     }
 
+    @Override
+    public void updateUser(User user) throws SQLException {
+        Student student = (Student) user;
+        String firstName = student.getFirstName();
+        String lastName = student.getLastName();
+        String login = student.getLogin();
+        String password = student.getPassword();
+        int classId = student.getClassRoomID();
+        String email = student.getEmail();
+        int currentCoins = student.getCoolcoins();
+        int totalCoins = student.getTotalCoins();
+        updateUser(firstName, lastName, login, password, classId, currentCoins, totalCoins);
+    }
+
+
+    public void updateUser(String firstName, String lastName, String login, String password,
+                           int classId, int currentCoins, int totalCoins) throws SQLException {
+
+        String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
+                "classroom_id = ?, type = ?) WHERE login = ?";
+        String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?";
+
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        PreparedStatement userStatement = c.prepareStatement(userTableQuery);
+        userStatement.setString(1, firstName);
+        userStatement.setString(2, lastName);
+        userStatement.setString(3, password);
+        userStatement.setInt(4, classId);
+        userStatement.setString(5, TYPE);
+        userStatement.setString(6, login);
+
+        PreparedStatement studentStatement = c.prepareStatement(studentTableQuery);
+        studentStatement.setInt(1, currentCoins);
+        studentStatement.setInt(2, totalCoins);
+        userStatement.setString(3, login);
+
+        String query = userStatement.toString() + "; " + studentStatement.toString();
+
+        SQLQueryHandler.getInstance().executeQuery(query);
+    }
+
     public void createUser(String firstName, String lastName, String login, String password,
                            int classId) throws SQLException {
 
@@ -44,10 +88,10 @@ public class StudentDAO extends UserDAO {
         userStatement.setInt(5, classId);
         userStatement.setString(6, TYPE);
 
-        PreparedStatement mentorStatement = c.prepareStatement(studentTableQuery);
-        mentorStatement.setString(1, login);
+        PreparedStatement studentStatement = c.prepareStatement(studentTableQuery);
+        studentStatement.setString(1, login);
 
-        String query = userStatement.toString() + "; " + mentorStatement.toString();
+        String query = userStatement.toString() + "; " + studentStatement.toString();
 
         SQLQueryHandler.getInstance().executeQuery(query);
     }
