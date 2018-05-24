@@ -8,13 +8,10 @@ import java.util.List;
 
 public class App {
     public static void main( String args[] ) {
-        ClassroomDAO classroomDAO = new ClassroomDAO();
+        StudentDAO studentDAO = new StudentDAO();
+
         try {
-            classroomDAO.createClassroom("a", "desc");
-            List<String> newData = new ArrayList<>();
-            newData.add("b");
-            newData.add("desc2");
-            classroomDAO.updateClassroom(1, newData);
+            studentDAO.createStudent("John", "Doe", "john", "abc", 2);
         }
         catch (SQLException e) {
             e.printStackTrace();

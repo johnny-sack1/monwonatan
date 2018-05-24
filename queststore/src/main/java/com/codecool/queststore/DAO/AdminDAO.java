@@ -9,11 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdminDAO extends UserDAO {
+public class AdminDAO {
 
     private final String TYPE = "admin";
 
-    @Override
     public ResultSet loadUser(String login) throws SQLException{
         String query = "SELECT * FROM user_type LEFT JOIN admin_type ON (user_type.login = admin_type.login) " +
                 "WHERE admin_type.login = ?;";
@@ -26,7 +25,6 @@ public class AdminDAO extends UserDAO {
         return SQLQueryHandler.getInstance().executeQuery(query);
     }
 
-    @Override
     public void updateUser(User user) throws SQLException {
         Admin admin = (Admin) user;
         String firstName = admin.getFirstName();

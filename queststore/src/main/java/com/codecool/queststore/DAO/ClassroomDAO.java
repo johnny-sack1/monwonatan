@@ -8,26 +8,60 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ClassroomDAO {
-    public void createClassroom(String name, String description) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
-        String query = "INSERT INTO classroom (name, description) " +
-                       "VALUES (?, ?);";
-        PreparedStatement statement = c.prepareStatement(query);
-        statement.setString(1, name);
-        statement.setString(2, description);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+    public boolean createClassroom(String name, String description) {
+
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "INSERT INTO classroom (name, description) " +
+                    "VALUES (?, ?);";
+            PreparedStatement statement = c.prepareStatement(query);
+            statement.setString(1, name);
+            statement.setString(2, description);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
     }
 
-    public void updateClassroom(int id, List<String> newData) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
-        String query = "UPDATE classroom " +
-                       "SET name = ?, description = ? " +
-                       "WHERE classroom_id = ?;";
-        PreparedStatement statement = c.prepareStatement(query);
+    public boolean updateClassroom(int id, List<String> newData) {
 
-        statement.setString(1, newData.get(0));
-        statement.setString(2, newData.get(1));
-        statement.setInt(3, id);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "UPDATE classroom " +
+                    "SET name = ?, description = ? " +
+                    "WHERE classroom_id = ?;";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setString(1, newData.get(0));
+            statement.setString(2, newData.get(1));
+            statement.setInt(3, id);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean deleteClassroom(int id) {
+
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "DELETE FROM classroom WHERE classroom_id = ?;";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setInt(1, id);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
     }
 }

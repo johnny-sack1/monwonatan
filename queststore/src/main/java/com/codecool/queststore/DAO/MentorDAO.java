@@ -9,11 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MentorDAO extends UserDAO {
+public class MentorDAO {
 
     private final String TYPE = "mentor";
 
-    @Override
     public ResultSet loadUser(String login) throws SQLException {
         String query = "SELECT * FROM mentor_type WHERE login ILIKE ?";
         Connection c = SQLQueryHandler.getInstance().getConnection();
@@ -53,7 +52,6 @@ public class MentorDAO extends UserDAO {
         SQLQueryHandler.getInstance().executeQuery(query);
     }
 
-    @Override
     public void updateUser(User user) throws SQLException {
 
         Mentor menotr = (Mentor) user;
