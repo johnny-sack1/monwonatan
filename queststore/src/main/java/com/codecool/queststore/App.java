@@ -1,18 +1,18 @@
 package com.codecool.queststore;
 
-import com.codecool.queststore.DAO.ArtifactDAO;
-import com.codecool.queststore.DAO.IStoreDAO;
-import com.codecool.queststore.DAO.QuestDAO;
+import com.codecool.queststore.DAO.*;
 
 import java.sql.SQLException;
 
 public class App {
     public static void main( String args[] ) {
         IStoreDAO questDAO = new QuestDAO();
-        IStoreDAO artifactDAO = new ArtifactDAO();
+        UserDAO studentDAO = new StudentDAO();
         try {
-            questDAO.createEntity("quest", "new quest", 20);
-            artifactDAO.createEntity("artifact", "new artifact", 19);
+            ((StudentDAO) studentDAO).createUser("John", "Doe", "john", "john", 1);
+            questDAO.createEntity("quest1", "new quest", 20);
+            questDAO.createEntity("quest2", "new quest", 45);
+            ((StudentDAO) studentDAO).updateStudentCoins("john", 2);
         }
         catch (SQLException e) {
             e.printStackTrace();
