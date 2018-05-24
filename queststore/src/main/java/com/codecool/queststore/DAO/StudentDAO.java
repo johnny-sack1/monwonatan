@@ -27,9 +27,8 @@ public class StudentDAO {
         String lastName = userResultSet.getString("last_name");
         String password = userResultSet.getString("password");
         int classroomID = userResultSet.getInt("classroom_id");
-        String userType = userResultSet.getString("user_type");
 
-        String studentQuery = "SELECT (coins_current, coins_total) FROM student_type " +
+        String studentQuery = "SELECT coins_current, coins_total FROM student_type " +
                               "WHERE login = ?";
         PreparedStatement studentStatement = c.prepareStatement(studentQuery);
         studentStatement.setString(1, login);
@@ -38,7 +37,7 @@ public class StudentDAO {
         int coins_current = studentResultSet.getInt("coins_current");
         int coins_total = studentResultSet.getInt("coins_total");
 
-        return new Student(firstName, lastName, login, password, classroomID, userType, coins_current, coins_total);
+        return new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
     }
 
     public void updateStudent(User user) throws SQLException {
@@ -102,7 +101,6 @@ public class StudentDAO {
         studentStatement.setString(1, login);
 
         String query = userStatement.toString() + "; " + studentStatement.toString();
-        System.out.println(query);
 
         SQLQueryHandler.getInstance().executeQuery(query);
     }
