@@ -1,5 +1,7 @@
 package com.codecool.queststore.Controller;
 
+import com.codecool.queststore.DAO.AdminDAO;
+import com.codecool.queststore.DAO.MentorDAO;
 import com.codecool.queststore.Model.Admin;
 import com.codecool.queststore.Model.Mentor;
 
@@ -31,7 +33,7 @@ public class AdminController {
 
     public void createMentor(String firstName, String lastName, String login, String password,
                             int classId, String userType, String email, String address) throws SQLException {
-        mentorDAO.createUser(firstName, lastName, login, password, classId, userType, email, address);
+        mentorDAO.createUser(firstName, lastName, login, password, classId, email, address);
     }
 
     public void createClass(List<String> classData) {
@@ -44,22 +46,23 @@ public class AdminController {
 
     public Mentor getMentorSummary(String mentorLogin) {
 
-        ResultSet resultSet = mentorDAO.loadUser(mentorLogin);
-        Mentor currentMentor;
-
         try {
+
+            ResultSet resultSet = mentorDAO.loadUser(mentorLogin);
+            Mentor currentMentor;
 
             while (resultSet.next()) {
 
                 String login =  resultSet.getString(EColumnNumber.LOGIN.indexForDatabase()).toLowerCase();
                 String first_name = resultSet.getString(EColumnNumber.FIRST_NAME.indexForDatabase()).toLowerCase();
                 String last_name = resultSet.getString(EColumnNumber.LAST_NAME.indexForDatabase()).toLowerCase();
+                String password = resultSet.getString(EColumnNumber.PASSWORD.indexForDatabase()).toLowerCase();
                 int classroom_id = resultSet.getInt(EColumnNumber.CLASSROOM.indexForDatabase());
                 String type = resultSet.getString(EColumnNumber.TYPE.indexForDatabase()).toLowerCase();
                 String email = resultSet.getString(EColumnNumber.EMAIL.indexForDatabase()).toLowerCase();
                 String address = resultSet.getString(EColumnNumber.ADDRESS.indexForDatabase()).toLowerCase();
 
-                currentMentor = new Mentor(login, first_name, last_name, classroom_id, type, email, address);
+                currentMentor = new Mentor(first_name, last_name, login, password, classroom_id, type, email, address);
                 return currentMentor;
             }
         }

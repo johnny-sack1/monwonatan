@@ -1,5 +1,7 @@
 package com.codecool.queststore.Controller;
 
+import com.codecool.queststore.DAO.MentorDAO;
+import com.codecool.queststore.DAO.StudentDAO;
 import com.codecool.queststore.Model.Mentor;
 import com.codecool.queststore.Model.Student;
 
@@ -39,21 +41,21 @@ public class MentorController {
 
     public Student getStudentSummary(String studentLogin) {
 
-        ResultSet resultSet = studentDAO.loadUser(studentLogin);
-        Student currentStudent;
-
         try {
+            ResultSet resultSet = studentDAO.loadUser(studentLogin);
+            Student currentStudent;
 
             while (resultSet.next()) {
 
                 String login =  resultSet.getString(EColumnNumber.LOGIN.indexForDatabase()).toLowerCase();
                 String first_name = resultSet.getString(EColumnNumber.FIRST_NAME.indexForDatabase()).toLowerCase();
                 String last_name = resultSet.getString(EColumnNumber.LAST_NAME.indexForDatabase()).toLowerCase();
+                String password = resultSet.getString(EColumnNumber.PASSWORD.indexForDatabase()).toLowerCase();
                 int classroom_id = resultSet.getInt(EColumnNumber.CLASSROOM.indexForDatabase());
                 String type = resultSet.getString(EColumnNumber.TYPE.indexForDatabase()).toLowerCase();
                 int coins = resultSet.getInt(EColumnNumber.COINS.indexForDatabase());
 
-                currentStudent = new Student(login, first_name, last_name, classroom_id, type, coins);
+                currentStudent = new Student(first_name, last_name, login, password, classroom_id, type, coins);
                 return currentStudent;
             }
         }
