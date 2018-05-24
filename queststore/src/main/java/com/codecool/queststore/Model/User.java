@@ -9,6 +9,15 @@ public abstract class User {
     private int classRoomID;
     private String userType;
 
+    public User(String firstName, String lastName, String login, String password, int classRoomID, String userType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.login = login;
+        this.password = password;
+        this.classRoomID = classRoomID;
+        this.userType = userType;
+    }
+
     public String getFirstName() {
         return this.firstName;
     }
