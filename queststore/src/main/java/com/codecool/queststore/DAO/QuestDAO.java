@@ -41,30 +41,28 @@ public class QuestDAO {
         resultSet.next();
         String description = resultSet.getString("description");
         int value = resultSet.getInt("value");
-        boolean isAvailableForGroups = resultSet.getBoolean("available_for_groups");
 
-        return new Quest(name, description, value, isAvailableForGroups);
+        return new Quest(name, description, value);
     }
 
     public boolean updateQuest(Quest quest) {
         String name = quest.getName();
         String description = quest.getDescription();
         int value = quest.getValue();
-        boolean isAvailableForGroups = quest.isAvailableForGroups();
 
-        return updateQuest(name, description, value, isAvailableForGroups);
+        return updateQuest(name, description, value);
     }
 
-    public boolean updateQuest(String name, String description, int value, boolean isAvailableForGroups) {
+    public boolean updateQuest(String name, String description, int value) {
         try {
             Connection c = SQLQueryHandler.getInstance().getConnection();
-            String query = "UPDATE quest SET description = ?, value = ?, available_for_groups = ? " +
+            String query = "UPDATE quest SET description = ?, value = ? " +
                     "WHERE name = ?";
             PreparedStatement statement = c.prepareStatement(query);
 
             statement.setString(1,description);
             statement.setInt(2, value);
-            statement.setBoolean(3, isAvailableForGroups);
+            statement.setString(3, name);
             SQLQueryHandler.getInstance().executeQuery(statement.toString());
 
             return true;

@@ -4,13 +4,11 @@ public class Quest {
     private String name;
     private String description;
     private int value;
-    private boolean isAvailableForGroups;
 
-    public Quest(String name, String description, int value, boolean isAvailableForGroups) {
+    public Quest(String name, String description, int value) {
         this.name = name;
         this.description = description;
         this.value = value;
-        this.isAvailableForGroups = isAvailableForGroups;
     }
 
     public String getName() {
@@ -35,13 +33,5 @@ public class Quest {
 
     public void setValue(int value) {
         this.value = value;
-    }
-
-    public boolean isAvailableForGroups() {
-        return isAvailableForGroups;
-    }
-
-    public void setAvailableForGroups(boolean availableForGroups) {
-        isAvailableForGroups = availableForGroups;
     }
 }
