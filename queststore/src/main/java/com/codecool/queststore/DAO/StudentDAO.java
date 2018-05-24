@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentDAO extends UserDAO {
 
@@ -48,5 +50,29 @@ public class StudentDAO extends UserDAO {
         String query = userStatement.toString() + "; " + mentorStatement.toString();
 
         SQLQueryHandler.getInstance().executeQuery(query);
+    }
+
+    public List<ResultSet> getStudentData(String login) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+        String studentAndUserQuery = "SELECT * " +
+                       "FROM user_type, student_type " +
+                       "WHERE login = ?";
+        PreparedStatement studentAndUserStatement = c.prepareStatement(studentAndUserQuery);
+        studentAndUserStatement.setString(1, login);
+
+        String backpackQuery = "SELECT artifact.name, artifact.description, backpack.status " +
+                               "FROM backpack " +
+                               "LEFT JOIN artifact ON backpack.artifact_id = artifact.artifact_id " +
+                               "WHERE backpack.student_login = ?;";
+        PreparedStatement backpackStatement = c.prepareStatement(backpackQuery);
+        backpackStatement.setString(1, login);
+
+        List<ResultSet> results = new ArrayList<>();
+        ResultSet studentPersonalData = SQLQueryHandler.getInstance().executeQuery(studentAndUserStatement.toString());
+        ResultSet artifactsData = SQLQueryHandler.getInstance().executeQuery(backpackStatement.toString());
+        results.add(studentPersonalData);
+        results.add(artifactsData);
+
+        return results;
     }
 }
