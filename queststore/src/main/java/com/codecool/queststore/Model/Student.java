@@ -16,7 +16,7 @@ public class Student extends User {
     }
 
     public void addCoins(int coinsQuantity) {
-
+        this.coolcoins += coinsQuantity;
     }
 
     public void substractCoins(int coinsQuantity) {
