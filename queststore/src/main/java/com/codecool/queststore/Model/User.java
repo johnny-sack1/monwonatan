@@ -49,4 +49,8 @@ public abstract class User {
     public void setClassRoomID(int classRoomID) {
         this.classRoomID = classRoomID;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }
