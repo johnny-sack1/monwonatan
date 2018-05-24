@@ -3,14 +3,18 @@ package com.codecool.queststore;
 import com.codecool.queststore.DAO.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     public static void main( String args[] ) {
-        IStoreDAO questDAO = new QuestDAO();
-        UserDAO studentDAO = new StudentDAO();
+        ClassroomDAO classroomDAO = new ClassroomDAO();
         try {
-            questDAO.createEntity("quest1", "desc", 10);
-            System.out.println(((QuestDAO) questDAO).getRewardByID(1));
+            classroomDAO.createClassroom("a", "desc");
+            List<String> newData = new ArrayList<>();
+            newData.add("b");
+            newData.add("desc2");
+            classroomDAO.updateClassroom(1, newData);
         }
         catch (SQLException e) {
             e.printStackTrace();
