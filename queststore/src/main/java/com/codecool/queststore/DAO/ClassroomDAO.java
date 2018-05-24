@@ -47,4 +47,21 @@ public class ClassroomDAO {
             return false;
         }
     }
+
+    public boolean deleteClassroom(int id) {
+
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "DELETE FROM classroom WHERE classroom_id = ?;";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setInt(1, id);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+    }
 }
