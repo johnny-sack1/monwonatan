@@ -49,26 +49,4 @@ public class StudentDAO extends UserDAO {
 
         SQLQueryHandler.getInstance().executeQuery(query);
     }
-
-    public void updateStudentCoins(String login, int questID) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
-        String questQuery = "SELECT value FROM quest " +
-                            "WHERE quest_id = ?;";
-
-        PreparedStatement questStatement = c.prepareStatement(questQuery);
-        questStatement.setInt(1, questID);
-        ResultSet resultSet = executeQuery(questStatement.toString());
-        resultSet.next();
-        int gainedCoins = resultSet.getInt("value");
-
-        String studentQuery = "UPDATE student_type " +
-                       "SET coins_current = coins_current + ?, coins_total = coins_total + ? " +
-                       "WHERE login = ?;";
-
-        PreparedStatement studentStatement = c.prepareStatement(studentQuery);
-        studentStatement.setInt(1, gainedCoins);
-        studentStatement.setInt(2, gainedCoins);
-        studentStatement.setString(3, login);
-        executeQuery(studentStatement.toString());
-    }
 }
