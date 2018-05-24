@@ -1,6 +1,8 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
+import com.codecool.queststore.Model.Mentor;
+import com.codecool.queststore.Model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +47,46 @@ public class MentorDAO extends UserDAO {
         mentorStatement.setString(1, login);
         mentorStatement.setString(2, email);
         mentorStatement.setString(3, address);
+
+        String query = userStatement.toString() + "; " + mentorStatement.toString();
+
+        SQLQueryHandler.getInstance().executeQuery(query);
+    }
+
+    public void updateMentor(User user) throws SQLException {
+
+        Mentor menotr = (Mentor) user;
+        String login = menotr.getLogin();
+        String first_name = menotr.getFirstName();
+        String last_name = menotr.getLastName();
+        int classroom_id = menotr.getClassRoomID();
+        String password = menotr.getPassword();
+        String address = menotr.getAddress();
+        String email = menotr.getEmail();
+        updateUser(first_name, last_name, login, password, classroom_id, email, address);
+    }
+
+    public void updateUser(String firstName, String lastName, String login, String password,
+                           int classId, String email, String address) throws SQLException {
+
+        String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
+                "classroom_id = ?, type = ?) WHERE login = ?";
+        String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?";
+
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        PreparedStatement userStatement = c.prepareStatement(userTableQuery);
+        userStatement.setString(1, firstName);
+        userStatement.setString(2, lastName);
+        userStatement.setString(3, password);
+        userStatement.setInt(4, classId);
+        userStatement.setString(5, TYPE);
+        userStatement.setString(6, login);
+
+        PreparedStatement mentorStatement = c.prepareStatement(mentorTableQuery);
+        mentorStatement.setString(1, email);
+        mentorStatement.setString(2, address);
+        mentorStatement.setString(3, login);
 
         String query = userStatement.toString() + "; " + mentorStatement.toString();
 
