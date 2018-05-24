@@ -11,7 +11,7 @@ CREATE TABLE User_type (
 );
 
 CREATE TABLE Student_type (
-    login VARCHAR(20) NOT NULL REFERENCES User_type(login),
+    login VARCHAR(20) NOT NULL REFERENCES User_type(login) PRIMARY KEY,
     coins_current INT DEFAULT 0 NOT NULL,
     coins_total INT DEFAULT 0 NOT NULL
 );
