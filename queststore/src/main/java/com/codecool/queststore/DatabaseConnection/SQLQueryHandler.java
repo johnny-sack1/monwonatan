@@ -25,8 +25,11 @@ public class SQLQueryHandler {
 
     public ResultSet executeQuery(String query) {
         try {
+            connection.setAutoCommit(false);
             Statement statement = connection.createStatement();
-            return statement.executeQuery(query.trim());
+            ResultSet result = statement.executeQuery(query);
+            connection.commit();
+            return result;
         } catch (SQLException e) {
             return null;
         }
