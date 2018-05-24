@@ -9,10 +9,8 @@ public class App {
         IStoreDAO questDAO = new QuestDAO();
         UserDAO studentDAO = new StudentDAO();
         try {
-            ((StudentDAO) studentDAO).createUser("John", "Doe", "john", "john", 1);
-            questDAO.createEntity("quest1", "new quest", 20);
-            questDAO.createEntity("quest2", "new quest", 45);
-            ((StudentDAO) studentDAO).updateStudentCoins("john", 2);
+            questDAO.createEntity("quest1", "desc", 10);
+            System.out.println(((QuestDAO) questDAO).getRewardByID(1));
         }
         catch (SQLException e) {
             e.printStackTrace();
