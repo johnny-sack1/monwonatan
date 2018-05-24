@@ -107,4 +107,21 @@ public class MentorDAO {
         ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(query);
         return extractAndCreate(resultSet);
     }
+
+    public Mentor extractAndCreate(ResultSet resultSet) {
+
+        try {
+            String firstName = resultSet.getString(EColumnNumber.FIRST_NAME.index()).toLowerCase();
+            String lastName = resultSet.getString(EColumnNumber.LAST_NAME.index()).toLowerCase();
+            String login = resultSet.getString(EColumnNumber.LOGIN.index()).toLowerCase();
+            String password = resultSet.getString(EColumnNumber.PASSWORD.index()).toLowerCase();
+            int classId = Integer.parseInt(resultSet.getString(EColumnNumber.CLASSROOM.index()));
+            String userType = resultSet.getString(EColumnNumber.TYPE.index()).toLowerCase();
+            String email = resultSet.getString(EColumnNumber.EMAIL.index()).toLowerCase();
+            String address = resultSet.getString(EColumnNumber.ADDRESS.index()).toLowerCase();
+            return new Mentor(firstName, lastName, login, password, classId, userType, email, address);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }
