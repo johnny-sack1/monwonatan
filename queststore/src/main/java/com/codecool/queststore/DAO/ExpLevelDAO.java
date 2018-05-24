@@ -4,6 +4,7 @@ import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -62,6 +63,30 @@ public class ExpLevelDAO {
         }
         catch (SQLException e) {
             return false;
+        }
+    }
+
+    public String loadExpLevel(int expLevelID) {
+
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "SELECT (description || ' ' || required_coins)" +
+                    "AS all_column FROM Experience_Level WHERE experience_level_id = ?;";
+
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setInt(1, expLevelID);
+            ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            String expLevelDescription = null;
+
+            while (resultSet.next()) {
+                expLevelDescription = resultSet.getString("all_column");
+            }
+            return expLevelDescription;
+        }
+        catch (SQLException e) {
+            return null;
         }
     }
 }
