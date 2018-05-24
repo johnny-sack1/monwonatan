@@ -8,22 +8,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginDAO {
-    public ResultSet getPasswordBy(String login) throws SQLException {
+    public String getPasswordBy(String login) throws SQLException {
         Connection c = SQLQueryHandler.getInstance().getConnection();
         String query = "SELECT password FROM user_type " +
                        "WHERE login = ?;";
         PreparedStatement statement = c.prepareStatement(query);
         statement.setString(1, login);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        resultSet.next();
 
-        return SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        return resultSet.getString(1);
     }
-    public ResultSet getTypeBy(String login) throws SQLException {
+    public String getTypeBy(String login) throws SQLException {
         Connection c = SQLQueryHandler.getInstance().getConnection();
         String query = "SELECT type FROM user_type " +
                        "WHERE login = ?;";
         PreparedStatement statement = c.prepareStatement(query);
         statement.setString(1, login);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        resultSet.next();
 
-        return SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        return resultSet.getString(1);
     }
 }
