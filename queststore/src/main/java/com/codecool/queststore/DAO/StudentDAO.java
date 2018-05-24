@@ -42,7 +42,6 @@ public class StudentDAO extends UserDAO {
         updateUser(firstName, lastName, login, password, classId, currentCoins, totalCoins);
     }
 
-
     public void updateUser(String firstName, String lastName, String login, String password,
                            int classId, int currentCoins, int totalCoins) throws SQLException {
 

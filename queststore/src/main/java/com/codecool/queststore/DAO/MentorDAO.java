@@ -53,7 +53,8 @@ public class MentorDAO extends UserDAO {
         SQLQueryHandler.getInstance().executeQuery(query);
     }
 
-    public void updateMentor(User user) throws SQLException {
+    @Override
+    public void updateUser(User user) throws SQLException {
 
         Mentor menotr = (Mentor) user;
         String login = menotr.getLogin();
