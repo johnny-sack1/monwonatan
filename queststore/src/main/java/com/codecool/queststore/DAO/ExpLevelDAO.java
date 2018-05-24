@@ -13,11 +13,32 @@ public class ExpLevelDAO {
 
         try {
             Connection c = SQLQueryHandler.getInstance().getConnection();
-            String query = "INSERT INTO Experience_Level (description, requiredCoins) " +
+            String query = "INSERT INTO Experience_Level (description, required_coins) " +
                     "VALUES (?, ?);";
             PreparedStatement statement = c.prepareStatement(query);
             statement.setString(1, description);
             statement.setInt(2, requiredCoins);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean updateExpLevel(int expLevelID, String description, int requiredCoins) {
+
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "UPDATE Experience_Level " +
+                    "SET description =?, required_coins = ? " +
+                    "WHERE experience_level_id = ?;";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setString(1, description);
+            statement.setInt(2, requiredCoins);
+            statement.setInt(3, expLevelID);
             SQLQueryHandler.getInstance().executeQuery(statement.toString());
 
             return true;
