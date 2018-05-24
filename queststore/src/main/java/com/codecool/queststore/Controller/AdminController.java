@@ -1,6 +1,7 @@
 package com.codecool.queststore.Controller;
 
 import com.codecool.queststore.Model.Admin;
+import com.codecool.queststore.Model.Mentor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,11 +10,28 @@ import java.util.List;
 public class AdminController {
 
     private Admin currentUser;
-//    public AdminDAO adminDAODAO;
-//    public StudentDAO studentDAO;
+    public AdminDAO adminDAO;
+    public MentorDAO mentorDAO;
 
     public void createMentor(List<String> mentorData) throws SQLException {
+        try {
+            String firstName = mentorData.get(EColumnNumber.FIRST_NAME.index()).toLowerCase();
+            String lastName = mentorData.get(EColumnNumber.LAST_NAME.index()).toLowerCase();
+            String login = mentorData.get(EColumnNumber.LOGIN.index()).toLowerCase();
+            String password = mentorData.get(EColumnNumber.PASSWORD.index()).toLowerCase();
+            int classId = Integer.parseInt(mentorData.get(EColumnNumber.CLASSROOM.index()));
+            String userType = mentorData.get(EColumnNumber.TYPE.index()).toLowerCase();
+            String email = mentorData.get(EColumnNumber.EMAIL.index()).toLowerCase();
+            String address = mentorData.get(EColumnNumber.ADDRESS.index()).toLowerCase();
+            createMentor(firstName, lastName, login, password, classId, userType, email, address);
+        } catch (Exception e) {
+            // -> View - Show errors
+        }
+    }
 
+    public void createMentor(String firstName, String lastName, String login, String password,
+                            int classId, String userType, String email, String address) throws SQLException {
+        mentorDAO.createUser(firstName, lastName, login, password, classId, userType, email, address);
     }
 
     public void createClass(List<String> classData) {
@@ -24,7 +42,31 @@ public class AdminController {
 
     }
 
-    public ResultSet getMentorSummary(String mentorLogin) {
+    public Mentor getMentorSummary(String mentorLogin) {
+
+        ResultSet resultSet = mentorDAO.loadUser(mentorLogin);
+        Mentor currentMentor;
+
+        try {
+
+            while (resultSet.next()) {
+
+                String login =  resultSet.getString(EColumnNumber.LOGIN.indexForDatabase()).toLowerCase();
+                String first_name = resultSet.getString(EColumnNumber.FIRST_NAME.indexForDatabase()).toLowerCase();
+                String last_name = resultSet.getString(EColumnNumber.LAST_NAME.indexForDatabase()).toLowerCase();
+                int classroom_id = resultSet.getInt(EColumnNumber.CLASSROOM.indexForDatabase());
+                String type = resultSet.getString(EColumnNumber.TYPE.indexForDatabase()).toLowerCase();
+                String email = resultSet.getString(EColumnNumber.EMAIL.indexForDatabase()).toLowerCase();
+                String address = resultSet.getString(EColumnNumber.ADDRESS.indexForDatabase()).toLowerCase();
+
+                currentMentor = new Mentor(login, first_name, last_name, classroom_id, type, email, address);
+                return currentMentor;
+            }
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
         return null;
     }
 
