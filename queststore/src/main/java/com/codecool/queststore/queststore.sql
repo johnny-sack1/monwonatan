@@ -1,3 +1,5 @@
+DROP TABLE User_type, Student_type, Mentor_type, Admin_type, Artifact, Backpack, Quest, Experience_Level, Classroom;
+
 CREATE TABLE User_type (
     login VARCHAR(20) NOT NULL,
     password VARCHAR(200) NOT NULL,
@@ -9,8 +11,9 @@ CREATE TABLE User_type (
 );
 
 CREATE TABLE Student_type (
-    login VARCHAR(20) NOT NULL REFERENCES User_type(login),
-    coins INT NOT NULL
+    login VARCHAR(20) NOT NULL REFERENCES User_type(login) PRIMARY KEY,
+    coins_current INT DEFAULT 0 NOT NULL,
+    coins_total INT DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE Mentor_type (
