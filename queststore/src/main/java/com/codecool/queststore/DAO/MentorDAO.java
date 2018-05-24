@@ -94,6 +94,17 @@ public class MentorDAO {
         catch (SQLException e) {
             return false;
         }
+    }
 
+    public Mentor loadMentor(String login) throws SQLException {
+        String query = "SELECT * FROM mentor_type WHERE login ILIKE ?";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        PreparedStatement statement = c.prepareStatement(query);
+        statement.setString(1, login);
+        query = statement.toString();
+
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(query);
+        return extractAndCreate(resultSet);
     }
 }
