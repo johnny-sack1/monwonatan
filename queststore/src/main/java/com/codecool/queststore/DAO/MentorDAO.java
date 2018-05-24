@@ -50,4 +50,50 @@ public class MentorDAO {
         }
     }
 
+    public boolean updateMentor(Mentor mentor) {
+
+        String login = mentor.getLogin();
+        String first_name = mentor.getFirstName();
+        String last_name = mentor.getLastName();
+        int classroom_id = mentor.getClassRoomID();
+        String password = mentor.getPassword();
+        String address = mentor.getAddress();
+        String email = mentor.getEmail();
+        return updateMentor(first_name, last_name, login, password, classroom_id, email, address);
+
+    }
+
+    public boolean updateMentor(String firstName, String lastName, String login, String password,
+                                int classId, String email, String address) {
+
+        try {
+            String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
+                    "classroom_id = ?, type = ?) WHERE login = ?";
+            String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?";
+
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+
+            PreparedStatement userStatement = c.prepareStatement(userTableQuery);
+            userStatement.setString(1, firstName);
+            userStatement.setString(2, lastName);
+            userStatement.setString(3, password);
+            userStatement.setInt(4, classId);
+            userStatement.setString(5, TYPE);
+            userStatement.setString(6, login);
+
+            PreparedStatement mentorStatement = c.prepareStatement(mentorTableQuery);
+            mentorStatement.setString(1, email);
+            mentorStatement.setString(2, address);
+            mentorStatement.setString(3, login);
+
+            String query = userStatement.toString() + "; " + mentorStatement.toString();
+
+            SQLQueryHandler.getInstance().executeQuery(query);
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+
+    }
 }
