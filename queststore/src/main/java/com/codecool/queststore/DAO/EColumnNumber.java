@@ -1,4 +1,4 @@
-package com.codecool.queststore.Controller;
+package com.codecool.queststore.DAO;
 
 public enum EColumnNumber {
 
