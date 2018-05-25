@@ -4,12 +4,30 @@ public class Student extends User {
 
     private int coolcoins;
     private int totalCoins;
+    private String expLvl;
+    private Backpack backpack;
     public Student(String firstName, String lastName, String login, String password,
                    int classRoomID, String userType, int coolcoins, int totalCoins) {
 
         super(firstName, lastName, login, password, classRoomID, userType);
         this.coolcoins = coolcoins;
         this.totalCoins = totalCoins;
+    }
+
+    public String getExpLvl() {
+        return expLvl;
+    }
+
+    public void setExpLvl(String expLvl) {
+        this.expLvl = expLvl;
+    }
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public void setBackpack(Backpack backpack) {
+        this.backpack = backpack;
     }
 
     public int getTotalCoins() {
