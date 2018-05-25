@@ -1,6 +1,7 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
+import com.codecool.queststore.Model.Artifact;
 import com.codecool.queststore.Model.Backpack;
 
 import java.sql.Connection;
@@ -18,12 +19,13 @@ public class BackpackDAO {
         ResultSet artifacts = getArtifactsOfStudent(studentLogin);
         try {
             while (artifacts.next()) {
+                int artifactId = artifacts.getInt("artifact_id");
                 String status = artifacts.getString("status");
                 boolean availableForGroups = artifacts.getBoolean("available_for_groups");
                 String name = artifacts.getString("name");
                 String description = artifacts.getString("description");
                 int price = artifacts.getInt("price");
-                backpack.addToBackpack(new Artifact(availableForGroups, name, description, price), status);
+                backpack.addToBackpack(new Artifact(artifactId, availableForGroups, name, description, price), status);
             }
         } catch (SQLException e) {
             return null;
@@ -49,6 +51,7 @@ public class BackpackDAO {
     public boolean updateBackpack(Backpack backpack) {
         if (removeBackpack(backpack))
         return addBackpack(backpack);
+        return false;
     }
 
     private boolean removeBackpack(Backpack backpack) {
@@ -77,7 +80,7 @@ public class BackpackDAO {
             try {
                 PreparedStatement backpackStatement = c.prepareStatement(addBackpackQuery);
                 backpackStatement.setString(1, backpack.getStudentLogin());
-                backpackStatement.setString(2, pair.getKey().getId());
+                backpackStatement.setInt(2, ((Artifact) pair.getKey()).getArtifactId());
                 backpackStatement.setString(3, (String) pair.getValue());
                 addBackpackQuery = backpackStatement.toString();
                 SQLQueryHandler.getInstance().executeQuery(addBackpackQuery);
