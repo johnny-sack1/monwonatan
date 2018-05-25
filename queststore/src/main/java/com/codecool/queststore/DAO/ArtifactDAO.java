@@ -1,62 +1,95 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
+import com.codecool.queststore.Model.Quest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ArtifactDAO implements IStoreDAO {
+public class ArtifactDAO {
 
-    private Connection c = SQLQueryHandler.getInstance().getConnection();
+    public boolean createArtifact(boolean availableForGroups, String name, String description, int price) {
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "INSERT INTO artifact (available_for_groups, name, description, price) " +
+                    "VALUES (?, ?, ?, ?);";
+            PreparedStatement statement = c.prepareStatement(query);
 
-
-//    @Override
-//    public ResultSet loadEntity(int id) throws SQLException {
-//        return null;
-//    }
-
-//    @Override
-//    public ResultSet loadEntity(String name) throws SQLException {
-//        return null;
-//    }
-
-    @Override
-    public void createEntity(String name, String description, int price) throws SQLException {
-        String query = "INSERT INTO artifact (name, description, price) " +
-                "VALUES (?, ?, ?);";
-        PreparedStatement statement = c.prepareStatement(query);
-
-        statement.setString(1, name);
-        statement.setString(2, description);
-        statement.setInt(3, price);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+            statement.setBoolean(1, availableForGroups);
+            statement.setString(2, name);
+            statement.setString(3, description);
+            statement.setInt(4, price);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
     }
 
-    public void updateEntity(int id, List<String> newData) throws SQLException {
+    public Artifact loadArtifact(int id) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
 
-        String query = "UPDATE artifact SET name = ?, description = ?, price = ? " +
-                "WHERE id = ?";
+        String query = "SELECT * FROM artifact WHERE artifact_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
+        statement.setString(1, id);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        resultSet.next();
+        boolean availableForGroups = resultSet.getBoolean("available_for_groups");
+        String name = resultSet.getString("name");
+        String description = resultSet.getString("description");
+        int value = resultSet.getInt("price");
 
-        statement.setString(1, newData.get(0));
-        statement.setString(2, newData.get(1));
-        statement.setString(3, newData.get(2));
-        statement.setInt(4, id);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        return new Artifact(id, availableForGroups, name, description, value);
     }
 
-    public void updateEntity(String name, List<String> newData) throws SQLException {
-        
-        String query = "UPDATE artifact SET description = ?, price = ? " +
-                "WHERE name = ?";
-        PreparedStatement statement = c.prepareStatement(query);
+    public boolean updateArtifact(Artifact artifact) {
+        boolean availableForGroups = artifact.isAvailableForGroups();
+        String name = artifact.getName();
+        String description = artifact.getDescription();
+        int price = artifact.getPrice();
 
-        statement.setString(1, newData.get(0));
-        statement.setString(2, newData.get(1));
-        statement.setString(3, name);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        return updateArtifact(availableForGroups, name, description, price);
+    }
+
+    public boolean updateArtifact(int id, boolean availableForGroups, String name, String description, int value) {
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "UPDATE artifact SET available_for_groups = ?, name = ?, description = ?, value = ? " +
+                    "WHERE artifact_id = ?";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setBoolean(1, availableForGroups);
+            statement.setString(2, name);
+            statement.setString(3,description);
+            statement.setInt(4, value);
+            statement.setInt(5, id);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public List<Artifact> loadAllArtifacts() {
+        List<Artifact> allArtifacts = new ArrayList<>();
+
+        String query = "SELECT artifact_id FROM artifact;";
+        ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
+        try {
+            while (ids.next()) {
+                allArtifacts.add(loadArtifact(ids.getInt("artifact_id")));
+            }
+            return allArtifacts;
+        }
+        catch (SQLException e) {
+            return null;
+        }
     }
 }
