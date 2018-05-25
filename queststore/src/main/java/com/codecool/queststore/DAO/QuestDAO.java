@@ -31,38 +31,41 @@ public class QuestDAO {
         }
     }
 
-    public Quest loadQuest(String name) throws SQLException {
+    public Quest loadQuest(int id) throws SQLException {
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
-        String query = "SELECT * FROM quest WHERE name = ?";
+        String query = "SELECT * FROM quest WHERE quest_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
-        statement.setString(1, name);
+        statement.setInt(1, id);
         ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
         resultSet.next();
+        String name = resultSet.getString("name");
         String description = resultSet.getString("description");
         int value = resultSet.getInt("value");
 
-        return new Quest(name, description, value);
+        return new Quest(id, name, description, value);
     }
 
     public boolean updateQuest(Quest quest) {
+        int id = quest.getId();
         String name = quest.getName();
         String description = quest.getDescription();
         int value = quest.getValue();
 
-        return updateQuest(name, description, value);
+        return updateQuest(id, name, description, value);
     }
 
-    public boolean updateQuest(String name, String description, int value) {
+    public boolean updateQuest(int id, String name, String description, int value) {
         try {
             Connection c = SQLQueryHandler.getInstance().getConnection();
-            String query = "UPDATE quest SET description = ?, value = ? " +
-                    "WHERE name = ?";
+            String query = "UPDATE quest SET name = ?, description = ?, value = ? " +
+                    "WHERE quest_id = ?";
             PreparedStatement statement = c.prepareStatement(query);
 
-            statement.setString(1,description);
-            statement.setInt(2, value);
-            statement.setString(3, name);
+            statement.setString(1, name);
+            statement.setString(2,description);
+            statement.setInt(3, value);
+            statement.setInt(4, id);
             SQLQueryHandler.getInstance().executeQuery(statement.toString());
 
             return true;
@@ -75,11 +78,11 @@ public class QuestDAO {
     public List<Quest> loadAllQuests() {
         List<Quest> allQuests = new ArrayList<>();
 
-        String query = "SELECT name FROM quest;";
-        ResultSet names = SQLQueryHandler.getInstance().executeQuery(query);
+        String query = "SELECT quest_id FROM quest;";
+        ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
         try {
-            while (names.next()) {
-                allQuests.add(loadQuest(names.getString("name")));
+            while (ids.next()) {
+                allQuests.add(loadQuest(ids.getInt("quest_id")));
             }
             return allQuests;
         }

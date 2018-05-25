@@ -50,6 +50,7 @@ CREATE TABLE Quest (
 );
 
 CREATE TABLE Experience_Level (
+    experience_level_id SERIAL PRIMARY KEY,
     description VARCHAR(200) NOT NULL,
     required_coins INT NOT NULL
 );
