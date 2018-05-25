@@ -4,7 +4,7 @@ public class Student extends User {
 
     private int coolcoins;
     private int totalCoins;
-    private String expLvl;
+    private ExpLvl expLvl;
     private Backpack backpack;
     public Student(String firstName, String lastName, String login, String password,
                    int classRoomID, String userType, int coolcoins, int totalCoins) {
@@ -14,11 +14,11 @@ public class Student extends User {
         this.totalCoins = totalCoins;
     }
 
-    public String getExpLvl() {
+    public ExpLvl getExpLvl() {
         return expLvl;
     }
 
-    public void setExpLvl(String expLvl) {
+    public void setExpLvl(ExpLvl expLvl) {
         this.expLvl = expLvl;
     }
 
