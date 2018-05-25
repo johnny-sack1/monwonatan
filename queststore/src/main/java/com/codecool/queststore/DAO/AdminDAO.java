@@ -1,6 +1,5 @@
 package com.codecool.queststore.DAO;
 
-import com.codecool.queststore.Controller.EColumnNumber;
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
 import com.codecool.queststore.Model.Admin;
 

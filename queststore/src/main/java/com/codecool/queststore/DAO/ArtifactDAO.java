@@ -1,6 +1,7 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
+import com.codecool.queststore.Model.Artifact;
 import com.codecool.queststore.Model.Quest;
 
 import java.sql.Connection;
@@ -36,7 +37,7 @@ public class ArtifactDAO {
 
         String query = "SELECT * FROM artifact WHERE artifact_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
-        statement.setString(1, id);
+        statement.setInt(1, id);
         ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
         resultSet.next();
         boolean availableForGroups = resultSet.getBoolean("available_for_groups");
@@ -48,7 +49,7 @@ public class ArtifactDAO {
     }
 
     public boolean updateArtifact(Artifact artifact) {
-        int id = artifact.getId();
+        int id = artifact.getArtifactId();
         boolean availableForGroups = artifact.isAvailableForGroups();
         String name = artifact.getName();
         String description = artifact.getDescription();
