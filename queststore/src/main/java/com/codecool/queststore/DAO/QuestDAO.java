@@ -81,7 +81,7 @@ public class QuestDAO {
         String query = "SELECT quest_id FROM quest;";
         ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
         try {
-            while (names.next()) {
+            while (ids.next()) {
                 allQuests.add(loadQuest(ids.getInt("quest_id")));
             }
             return allQuests;
