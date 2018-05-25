@@ -48,12 +48,13 @@ public class ArtifactDAO {
     }
 
     public boolean updateArtifact(Artifact artifact) {
+        int id = artifact.getId();
         boolean availableForGroups = artifact.isAvailableForGroups();
         String name = artifact.getName();
         String description = artifact.getDescription();
         int price = artifact.getPrice();
 
-        return updateArtifact(availableForGroups, name, description, price);
+        return updateArtifact(id, availableForGroups, name, description, price);
     }
 
     public boolean updateArtifact(int id, boolean availableForGroups, String name, String description, int value) {
