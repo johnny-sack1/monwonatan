@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpLevelDAO {
 
@@ -84,6 +86,26 @@ public class ExpLevelDAO {
                 expLevelDescription = resultSet.getString("all_column");
             }
             return expLevelDescription;
+        }
+        catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Map<String,Integer> loadAllExpLevel(int expLevelID) {
+
+        Map<String,Integer> expLevels = new HashMap<>();
+
+        try {
+            String query = "SELECT * FROM Experience_Level;";
+            ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(query);
+
+            while (resultSet.next()) {
+                String expLevelDescription = resultSet.getString("description");
+                Integer requiredCoins = resultSet.getInt("required_coins");
+                expLevels.put(expLevelDescription, requiredCoins);
+            }
+            return expLevels;
         }
         catch (SQLException e) {
             return null;
