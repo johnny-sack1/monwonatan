@@ -1,73 +1,93 @@
 package com.codecool.queststore.DAO;
 
 import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
+import com.codecool.queststore.Model.Quest;
+import com.codecool.queststore.Model.Student;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class QuestDAO implements IStoreDAO {
+public class QuestDAO {
 
-//    @Override
-//    public ResultSet loadEntity(int id) throws SQLException {
-//        return null;
-//    }
+    public boolean createQuest(String name, String description, int value) {
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "INSERT INTO quest (name, description, value) " +
+                    "VALUES (?, ?, ?);";
+            PreparedStatement statement = c.prepareStatement(query);
 
-//    @Override
-//    public ResultSet loadEntity(String name) throws SQLException {
-//        return null;
-//    }
-
-    @Override
-    public void createEntity(String name, String description, int value) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
-        String query = "INSERT INTO quest (name, description, value) " +
-                       "VALUES (?, ?, ?);";
-        PreparedStatement statement = c.prepareStatement(query);
-
-        statement.setString(1, name);
-        statement.setString(2, description);
-        statement.setInt(3, value);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
-
+            statement.setString(1, name);
+            statement.setString(2, description);
+            statement.setInt(3, value);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
     }
 
-    public void updateEntity (int id, List<String> newData) throws SQLException {
+    public Quest loadQuest(int id) throws SQLException {
         Connection c = SQLQueryHandler.getInstance().getConnection();
-        String query = "UPDATE quest SET name = ?, description = ?, value = ? " +
-                "WHERE id = ?";
+
+        String query = "SELECT * FROM quest WHERE quest_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
-
-        statement.setString(1, newData.get(0));
-        statement.setString(2, newData.get(1));
-        statement.setInt(3, Integer.valueOf(newData.get(2)));
-        statement.setInt(4, id);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
-    }
-
-    public void updateEntity(String name, List<String> newData) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
-        String query = "UPDATE quest SET description = ?, value = ? " +
-                "WHERE name = ?";
-        PreparedStatement statement = c.prepareStatement(query);
-
-        statement.setString(1, newData.get(0));
-        statement.setInt(2, Integer.valueOf(newData.get(1)));
-        statement.setString(3, name);
-        SQLQueryHandler.getInstance().executeQuery(statement.toString());
-    }
-
-    public int getRewardByID(int id) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
-        String questQuery = "SELECT value FROM quest " +
-                "WHERE quest_id = ?;";
-
-        PreparedStatement questStatement = c.prepareStatement(questQuery);
-        questStatement.setInt(1, id);
-        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(questStatement.toString());
+        statement.setInt(1, id);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
         resultSet.next();
-        return resultSet.getInt("value");
+        String name = resultSet.getString("name");
+        String description = resultSet.getString("description");
+        int value = resultSet.getInt("value");
+
+        return new Quest(id, name, description, value);
+    }
+
+    public boolean updateQuest(Quest quest) {
+        int id = quest.getId();
+        String name = quest.getName();
+        String description = quest.getDescription();
+        int value = quest.getValue();
+
+        return updateQuest(id, name, description, value);
+    }
+
+    public boolean updateQuest(int id, String name, String description, int value) {
+        try {
+            Connection c = SQLQueryHandler.getInstance().getConnection();
+            String query = "UPDATE quest SET name = ?, description = ?, value = ? " +
+                    "WHERE quest_id = ?";
+            PreparedStatement statement = c.prepareStatement(query);
+
+            statement.setString(1, name);
+            statement.setString(2,description);
+            statement.setInt(3, value);
+            statement.setInt(4, id);
+            SQLQueryHandler.getInstance().executeQuery(statement.toString());
+
+            return true;
+        }
+        catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public List<Quest> loadAllQuests() {
+        List<Quest> allQuests = new ArrayList<>();
+
+        String query = "SELECT quest_id FROM quest;";
+        ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
+        try {
+            while (ids.next()) {
+                allQuests.add(loadQuest(ids.getInt("quest_id")));
+            }
+            return allQuests;
+        }
+        catch (SQLException e) {
+            return null;
+        }
     }
 }
