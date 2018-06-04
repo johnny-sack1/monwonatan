@@ -1,7 +1,7 @@
-package com.codecool.queststore.Controller;
+package com.codecool.queststore.backend.loginManager;
 
-import com.codecool.queststore.DAO.LoginDAO;
-import com.codecool.queststore.PasswordManager;
+import com.codecool.queststore.backend.dao.LoginDAO;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;

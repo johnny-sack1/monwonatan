@@ -1,6 +1,6 @@
 package com.codecool.queststore;
 
-import com.codecool.queststore.DAO.*;
+import com.codecool.queststore.backend.dao.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

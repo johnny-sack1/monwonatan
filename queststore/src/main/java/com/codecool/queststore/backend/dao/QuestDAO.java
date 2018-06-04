@@ -1,8 +1,7 @@
-package com.codecool.queststore.DAO;
+package com.codecool.queststore.backend.dao;
 
-import com.codecool.queststore.DatabaseConnection.SQLQueryHandler;
-import com.codecool.queststore.Model.Quest;
-import com.codecool.queststore.Model.Student;
+import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.model.Quest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

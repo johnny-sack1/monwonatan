@@ -1,4 +1,4 @@
-package com.codecool.queststore;
+package com.codecool.queststore.backend.loginManager;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
