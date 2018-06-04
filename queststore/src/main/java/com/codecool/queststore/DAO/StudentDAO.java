@@ -15,7 +15,7 @@ public class StudentDAO {
 
     private final String TYPE = "student";
 
-    public ResultSet loadUser(String login) throws SQLException {
+    public ResultSet loadStudent(String login) throws SQLException {
         String query = "SELECT * FROM student_type WHERE login ILIKE ?";
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -27,7 +27,7 @@ public class StudentDAO {
         return SQLQueryHandler.getInstance().executeQuery(query);
     }
 
-    public void updateUser(User user) throws SQLException {
+    public void updateStudent(User user) throws SQLException {
         Student student = (Student) user;
         String firstName = student.getFirstName();
         String lastName = student.getLastName();
@@ -36,10 +36,10 @@ public class StudentDAO {
         int classId = student.getClassRoomID();
         int currentCoins = student.getCoolcoins();
         int totalCoins = student.getTotalCoins();
-        updateUser(firstName, lastName, login, password, classId, currentCoins, totalCoins);
+        updateStudent(firstName, lastName, login, password, classId, currentCoins, totalCoins);
     }
 
-    public void updateUser(String firstName, String lastName, String login, String password,
+    public void updateStudent(String firstName, String lastName, String login, String password,
                            int classId, int currentCoins, int totalCoins) throws SQLException {
 
         String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
@@ -66,7 +66,7 @@ public class StudentDAO {
         SQLQueryHandler.getInstance().executeQuery(query);
     }
 
-    public void createUser(String firstName, String lastName, String login, String password,
+    public void createStudent(String firstName, String lastName, String login, String password,
                            int classId) throws SQLException {
 
         String userTableQuery = "INSERT INTO user_type (first_name, last_name, login, password, classroom_id, type) " +
