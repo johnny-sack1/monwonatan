@@ -1,8 +1,6 @@
-package com.codecool.queststore.DAO;
+package com.codecool.queststore.backend.dao;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public interface IStoreDAO {
 //    ResultSet loadEntity(int id) throws SQLException;

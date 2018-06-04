@@ -1,4 +1,4 @@
-package com.codecool.queststore.Model;
+package com.codecool.queststore.backend.model;
 
 public class Artifact {
 
