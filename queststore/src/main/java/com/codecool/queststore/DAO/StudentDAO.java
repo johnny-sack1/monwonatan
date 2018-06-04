@@ -11,11 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDAO extends UserDAO {
+public class StudentDAO {
 
     private final String TYPE = "student";
 
-    @Override
     public ResultSet loadUser(String login) throws SQLException {
         String query = "SELECT * FROM student_type WHERE login ILIKE ?";
         Connection c = SQLQueryHandler.getInstance().getConnection();
@@ -28,7 +27,6 @@ public class StudentDAO extends UserDAO {
         return SQLQueryHandler.getInstance().executeQuery(query);
     }
 
-    @Override
     public void updateUser(User user) throws SQLException {
         Student student = (Student) user;
         String firstName = student.getFirstName();
