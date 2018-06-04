@@ -1,5 +1,11 @@
 DROP TABLE User_type, Student_type, Mentor_type, Admin_type, Artifact, Backpack, Quest, Experience_Level, Classroom;
 
+CREATE TABLE Experience_Level(
+    experience_level_id SERIAL PRIMARY KEY,
+    description VARCHAR(200) NOT NULL,
+    required_coins INT NOT NULL
+);
+
 CREATE TABLE User_type (
     login VARCHAR(20) NOT NULL,
     password VARCHAR(200) NOT NULL,
@@ -13,7 +19,8 @@ CREATE TABLE User_type (
 CREATE TABLE Student_type (
     login VARCHAR(20) NOT NULL REFERENCES User_type(login) PRIMARY KEY,
     coins_current INT DEFAULT 0 NOT NULL,
-    coins_total INT DEFAULT 0 NOT NULL
+    coins_total INT DEFAULT 0 NOT NULL,
+    exp_lvl int REFERENCES Experience_Level(experience_level_id)
 );
 
 CREATE TABLE Mentor_type (
@@ -47,12 +54,6 @@ CREATE TABLE Quest (
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     value INT NOT NULL
-);
-
-CREATE TABLE Experience_Level (
-    experience_level_id SERIAL PRIMARY KEY,
-    description VARCHAR(200) NOT NULL,
-    required_coins INT NOT NULL
 );
 
 CREATE TABLE Classroom (
