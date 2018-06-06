@@ -2,9 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Monwonatan">
     <title>Profile</title>
+    <link rel="stylesheet" href="#">
 </head>
 <body>
+<header>
+    <img id="logo" src="../images/codecool.png" alt="Codecool logo" height="100" width="100">
+    <h1>
+        Profile
+    </h1>
+    <div id="clock">
 
+    </div>
+</header>
+<main>
+    <nav>
+        <a href="index.html">Main page</a>
+        <a href="profile.html">Profile</a>
+        <a href="backpack.html">Backpack</a>
+        <a href="../store/student_store.html">Store</a>
+    </nav>
+    <form>
+        <label>
+            Change first name:
+            <input type="text" name="firstname" value="firstName">
+        </label>
+        <label>
+            Change last name:
+            <input type="text" name="lastname" value="lastName">
+        </label>
+        <label>
+            Change password:
+            <input type="password" name="password" placeholder="Enter new password">
+        </label>
+        <label>
+            Change email:
+            <input type="email" name="email" value="email">
+        </label>
+        <input type="submit" name="submit" value="Change" disabled="disabled">
+    </form>
+</main>
+<footer>
+
+</footer>
 </body>
 </html>
