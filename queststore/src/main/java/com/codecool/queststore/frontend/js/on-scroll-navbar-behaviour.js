@@ -1,11 +1,10 @@
-var opacityRatio = 0.8;
-var opacityRadius = 0.75;
+var opacityRatio = 0.9;
+var opacityRadius = 1.5;
 
 function dynamicOpacity() {
   var header = document.getElementsByClassName("header-background")[0];
   var offset = header.getBoundingClientRect().bottom * -1; // invert offset
   var percent = offset / (header.getBoundingClientRect().height * opacityRatio) + opacityRadius;
-  document.getElementById("test-text").innerHTML = offset;
   document.body.style.setProperty('--nav-bg-opacity', percent);
 }
 
