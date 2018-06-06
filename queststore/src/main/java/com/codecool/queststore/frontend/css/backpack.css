@@ -5,7 +5,9 @@ h2 {
     display: block;
     margin: auto;
     width: 50%;
+    text-align: center;
 }
+
 nav {
   display: flex;
   flex-flow: row;
@@ -20,7 +22,7 @@ nav {
  #backpack {
     display: flex;
     flex-flow: column;
-    justify-content: center;
+    align-items: center;
 }
 .logo img {
   width: 115px;
