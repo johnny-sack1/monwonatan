@@ -1,3 +1,6 @@
+:root {
+        --nav-bg-opacity: 1;
+}
 body {
   font-family: 'Lato', sans-serif;
 }
@@ -7,17 +10,18 @@ h2 {
     width: 50%;
     text-align: center;
 }
-
 nav {
   display: flex;
   flex-flow: row;
   justify-content: space-between;
+  color: red;
   position: sticky;
   top: 0;
   background-color: #333333;
   margin-left: 10px;
   margin-right: 10px;
-  background-color: transparent;
+  background-color: rgba(100, 100, 100, var(--nav-bg-opacity));
+  transition: top 0.4s;
 }
  #backpack {
     display: flex;
