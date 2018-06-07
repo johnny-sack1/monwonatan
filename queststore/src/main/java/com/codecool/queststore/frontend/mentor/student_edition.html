@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
-<body>
+<body onload="allFeaturesMenu();">
     <nav>
         <div class="logo">
             <img src="../images/l1.png" alt="">
@@ -63,7 +63,7 @@
                 <option value="questTwo">Quest Two</option>
             </select>
         </div>
-        <button class="btn buy" id="quest_submit" type="button" onclick="#" disabled="disabled">Buy</button>
+        <button class="btn" id="quest_submit" type="button" onclick="#" disabled="disabled">Complete Quest</button>
     </main>
     <footer>
         <div class="copyright">
@@ -104,4 +104,6 @@
         </div>
     </footer>
 </body>
+<script src="../js/quest-assign-handler.js"></script>
+<script src="../js/on-scroll-navbar-behaviour.js"></script>
 </html>

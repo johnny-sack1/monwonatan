@@ -36,6 +36,5 @@ function allFeatures() {
 }
 
 function allFeaturesMenu() {
-    console.log("loaded menu");
     document.getElementsByTagName("body")[0].onscroll = function() {allFeatures()};
 }
