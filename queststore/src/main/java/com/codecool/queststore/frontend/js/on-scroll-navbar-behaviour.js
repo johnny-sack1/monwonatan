@@ -14,9 +14,9 @@ var prevScrollpos = window.pageYOffset;
 function dynamicMenuHiding() {
     var currentScrollPos = window.pageYOffset;
     if (prevScrollpos > currentScrollPos) {
-    document.getElementById("navbar").style.top = "0";
+    document.getElementsByTagName("nav")[0].style.top = "0";
     } else {
-    document.getElementById("navbar").style.top = "-100px";
+    document.getElementsByTagName("nav")[0].style.top = "-100px";
     }
     prevScrollpos = currentScrollPos;
 }
@@ -36,5 +36,6 @@ function allFeatures() {
 }
 
 function allFeaturesMenu() {
+    console.log("loaded menu");
     document.getElementsByTagName("body")[0].onscroll = function() {allFeatures()};
 }
