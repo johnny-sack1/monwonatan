@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
-<body onload="clock();">
+<body onload="clock(); allFeaturesMenu();">
 <nav>
     <div class="logo">
         <img src="../images/l1.png" alt="">
@@ -47,9 +47,16 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input type="text" name="name" value="Quest"></td>
-                    <td><input type="text" name="desc" value="Description"></td>
-                    <td><input type="number" name="value" value="Value"></td>
+                    <td><input type="text" name="name" value="Quest1"></td>
+                    <td><input type="text" name="desc" value="Description1"></td>
+                    <td><input type="number" name="value" value="20"></td>
+                    <td><input type="text" name="group" value="yes"></td>
+                    <td><input type="submit" name="submit" value="Update" disabled="disabled"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="name" value="Quest2"></td>
+                    <td><input type="text" name="desc" value="Description2"></td>
+                    <td><input type="number" name="value" value="30"></td>
                     <td><input type="text" name="group" value="yes"></td>
                     <td><input type="submit" name="submit" value="Update" disabled="disabled"></td>
                 </tr>
@@ -95,5 +102,7 @@
         </script>
     </div>
 </footer>
+<script src="../js/quest-modification-handler.js"></script>
+<script src="../js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
