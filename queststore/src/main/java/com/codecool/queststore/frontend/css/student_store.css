@@ -70,54 +70,9 @@ nav {
   font-size: 20px;
 }
 main {
-  margin-top: 350px;
+  margin-top: 400px;
   margin-left: 10px;
   margin-right: 10px;
-}
-.yt {
-  margin-right: 20px;
-}
-.vids-h4 {
-  text-align: center;
-}
-img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-#section-a {
-  padding: 2em 1em 1em;
-  margin-top: 100px;
-  background-color: #333;
-  text-align: center;
-}
-
-#section-a ul {
-  display: flex;
-  justify-content: space-around;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-#section-a li {
-  display: block;
-  margin-bottom: 1em;
-  background: #fff;
-  color: #333;
-  width: 30%;
-  height: 500px;
-}
-#section-a li a {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
-    font-weight: bolder;
-}
-.card-content {
-  padding: 1.5em;
 }
 footer {
   display: flex;
