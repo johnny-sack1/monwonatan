@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Monwonatan">
-    <title>Mentor</title>
+    <title>Quest manager</title>
     <link rel="stylesheet" href="#">
 </head>
 <body>
 <header>
     <img id="logo" src="../images/codecool.png" alt="Codecool logo" height="100" width="100">
     <h1>
-        Mentor's page
+        Quest Manager
     </h1>
     <div id="clock">
 
@@ -25,12 +25,20 @@
         <a href="student_edition.html">Student Edition</a>
         <a href="../store/mentor_store.html">Store</a>
     </nav>
-    <div class="vids">
-
-    </div>
-    <div class="arts">
-
-    </div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Value</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td><input type="text" name="name" value="Quest"></td>
+            <td><input type="text" name="desc" value="Description"></td>
+            <td><input type="number" name="value" value="Value"></td>
+            <td><input type="submit" name="submit" value="Update" disabled="disabled"></td>
+        </tr>
+    </table>
 </main>
 <footer>
 
