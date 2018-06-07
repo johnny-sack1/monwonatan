@@ -5,26 +5,25 @@ body {
     background-size: cover;
     background-position: center;
     font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .login-box {
-    width: 320px;
-    height: 400px;
+    width: 300px;
+    height: 450px;
     background: rgba(0, 0, 0, 0.5);
     color: #fff;
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%,-50%);
-    box-sizing: border-box;
-    padding: 70px 30px;
+    padding: 5% 5%;
+    display: flex;
+    flex-flow: column;
 }
 .avatar {
     width: 200px;
     height: 100px;
     border-radius: 5%;
-    position: absolute;
-    top: -30px;
-    left: calc(50% - 100px);
+    align-self: center;
+    padding-bottom: 10%;
 }
 .login-box p {
     margin: 0;
@@ -53,74 +52,6 @@ body {
     color: #fff;
     font-size: 16px;
 }
-/* .login-box select {
-  display: block;
-  margin: 0 auto;
-  border: none;
-  border-bottom: 1px solid #fff;
-  background: transparent;
-  outline: none;
-  height: 40px;
-  width: 260px;
-  text-align-last:center;
-  color: #fff;
-  font-size: 16px;
-} */
-/* .custom-select {
-  position: relative;
-  font-family: Arial;
-  text-align-last:center;
-  margin-left: 30px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-.custom-select select {
-  display: none;
-}
-.select-selected {
-  background-color: DodgerBlue;
-}
-.select-selected:after {
-  position: absolute;
-  content: "";
-  top: 14px;
-  right: 10px;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
-  border-color: #fff transparent transparent transparent;
-}
-.select-selected.select-arrow-active:after {
-  border-color: transparent transparent #fff transparent;
-  top: 7px;
-}
-.select-items div,.select-selected {
-  color: #ffffff;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
-  cursor: pointer;
-  user-select: none;
-  border-radius: 20px;
-}
-.select-items {
-  position: absolute;
-  background-color: DodgerBlue;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 99;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-}
-.select-hide {
-  display: none;
-}
-.select-items div:hover, .same-as-selected {
-  background-color: rgba(0, 0, 0, 0.1);
-} */
 .login-box input[type="submit"] {
   margin-top: 20px;
   border: none;
