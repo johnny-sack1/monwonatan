@@ -105,3 +105,17 @@ footer {
   background: #125688;
   color: white;
 }
+
+.shop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+coins {
+    color: red;
+}
+
+.shop h1 {
+    margin: auto;
+}
