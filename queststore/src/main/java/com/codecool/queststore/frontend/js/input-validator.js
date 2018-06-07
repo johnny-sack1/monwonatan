@@ -26,7 +26,6 @@ function buttonClickOnEnter() {
 
 function passwordsMustBeEqual() {
     var passwords = document.getElementsByClassName("password");
-    console.log(passwords[0].value + " : " + passwords[1].value)
     if (passwords[0].value !== passwords[1].value) {
         document.getElementById("submit-btn").disabled = true;
     }
