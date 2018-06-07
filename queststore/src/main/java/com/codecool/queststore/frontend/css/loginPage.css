@@ -66,7 +66,7 @@ body {
   color: #fff;
   font-size: 16px;
 } */
-.custom-select {
+/* .custom-select {
   position: relative;
   font-family: Arial;
   text-align-last:center;
@@ -120,7 +120,7 @@ body {
 }
 .select-items div:hover, .same-as-selected {
   background-color: rgba(0, 0, 0, 0.1);
-}
+} */
 .login-box input[type="submit"] {
   margin-top: 20px;
   border: none;
