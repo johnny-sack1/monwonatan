@@ -9,7 +9,7 @@ for (i = 0; i < input.length; i++) {
 
 function disableButtonOnEmpty() {
 
-    var BUTTON_INDEX = 5;
+    var BUTTON_INDEX = 6;
     var table = document.getElementsByTagName("table")[0];
 
     for (var i = 1; i < table.rows.length; i++) {
@@ -24,7 +24,7 @@ function disableButtonOnEmpty() {
 
 function noEmptyFields(cells_) {
     var FIELDS_TO_SKIP = 1;
-    var REQUIRED_FIELDS = 4;
+    var REQUIRED_FIELDS = 5;
     var input;
     for (i = FIELDS_TO_SKIP; i < REQUIRED_FIELDS + FIELDS_TO_SKIP; i++) {
         input = cells_.item(i).getElementsByTagName("input")[0];
