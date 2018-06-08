@@ -21,6 +21,7 @@ nav {
   width: 115px;
   height: 50px;
   margin-left: 20px;
+  padding: 5px;
 }
 .nav-menu ul {
     list-style-type: none;
