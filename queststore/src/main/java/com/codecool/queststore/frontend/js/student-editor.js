@@ -45,8 +45,6 @@ function areValidPasswords(cells_) {
     var pass1 = cells_.item(PASS_INDEX).getElementsByTagName("input")[0].value;
     var pass2 = cells_.item(PASS_2_INDEX).getElementsByTagName("input")[0].value;
 
-    console.log(pass1 + " " + pass2);
-
     if (/^$/.test(pass1) && /^$/.test(pass2)){
         return true;
     }
@@ -60,7 +58,6 @@ function areValidPasswords(cells_) {
 
 function validateCells(cells_) {
     if (noEmptyFields(cells_)) {
-        console.log("no empty");
         return areValidPasswords(cells_);
     }
     return false;
