@@ -1,4 +1,4 @@
-var input = document.getElementsByTagName("input");
+var input = document.getElementsByTagName("form")[0].getElementsByTagName("input");
 var events = ["keydown", "keyup", "keypressed"];
 for (i = 0; i < input.length; i++) {
     for (j = 0; j < events.length; j++) {
@@ -8,26 +8,26 @@ for (i = 0; i < input.length; i++) {
 }
 
 function disableButtonOnEmpty() {
-
-    var BUTTON_INDEX = 6;
-    var table = document.getElementsByTagName("table")[0];
-
-    for (var i = 1; i < table.rows.length; i++) {
-        var cells_ = table.rows.item(i).cells;
-        if (validateCells(cells_)) {
-            cells_.item(BUTTON_INDEX).getElementsByTagName("button")[0].disabled = false;
-        } else {
-            cells_.item(BUTTON_INDEX).getElementsByTagName("button")[0].disabled = true;
-        }
+    if (validateCells()) {
+        document.getElementById("submit-btn").disabled = false;
+    } else {
+        document.getElementById("submit-btn").disabled = true;
     }
+
 }
 
-function noEmptyFields(cells_) {
-    var FIELDS_TO_SKIP = 1;
-    var REQUIRED_FIELDS = 5;
+function validateCells() {
+    var inputs = document.getElementsByTagName("form")[0].getElementsByTagName("input");
+    if (noEmptyFields(inputs)) {
+        return areValidPasswords(inputs);
+    }
+    return false;
+}
+
+function noEmptyFields(inputs) {
     var input;
-    for (i = FIELDS_TO_SKIP; i < REQUIRED_FIELDS + FIELDS_TO_SKIP; i++) {
-        input = cells_.item(i).getElementsByTagName("input")[0];
+    for (i = 0; i < inputs.length; i++) {
+        input = inputs[i];
         if (input.type == "password") {
             continue;
         }
@@ -38,13 +38,19 @@ function noEmptyFields(cells_) {
     return true;
 }
 
-function areValidPasswords(cells_) {
-    var PASS_INDEX = 3;
-    var PASS_2_INDEX = 4;
+function areValidPasswords(inputs) {
+    var PASS_INDEX = 2;
+    var PASS_2_INDEX = 3;
 
-    var pass1 = cells_.item(PASS_INDEX).getElementsByTagName("input")[0].value;
-    var pass2 = cells_.item(PASS_2_INDEX).getElementsByTagName("input")[0].value;
+    /*
+        Password when changed must be repeated;
+        pass1 is 'password' elemnet
+        pass2 is 'repeat password' element
+    */
+    var pass1 = inputs[PASS_INDEX].value;
+    var pass2 = inputs[PASS_2_INDEX].value;
 
+    // Password is not changed when 'pass' fields are empty
     if (/^$/.test(pass1) && /^$/.test(pass2)){
         return true;
     }
@@ -56,9 +62,17 @@ function areValidPasswords(cells_) {
     return false;
 }
 
-function validateCells(cells_) {
-    if (noEmptyFields(cells_)) {
-        return areValidPasswords(cells_);
+
+function editStudent(buttonClicked) {
+    var BUTTON_INDEX = 4;
+    var LOGIN_INDEX = 5;
+
+    var table = document.getElementsByTagName("table")[0];
+
+    for (var i = 1; i < table.rows.length; i++) {
+        var cells = table.rows.item(i).cells;
+        if(cells.item(BUTTON_INDEX).getElementsByTagName("button")[0] == buttonClicked){
+            document.getElementById('id01').style.display='block';
+        }
     }
-    return false;
 }
