@@ -52,18 +52,18 @@ public abstract class AbstractHandler {
         String response = template.render(model);
         sendResponse(exchange, response);
     }
-    
+
     public Map<String, String> readFormData(HttpExchange exchange) {
-        String loginData = "";
+        String formData = "";
 
         try {
             InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
             BufferedReader br = new BufferedReader(isr);
-            loginData = br.readLine();
+            formData = br.readLine();
         } catch (IOException e){
             e.printStackTrace();
         }
-        return parseFormData(loginData);
+        return parseFormData(formData);
     }
 
     public Map<String, String> parseFormData(String formData) {
