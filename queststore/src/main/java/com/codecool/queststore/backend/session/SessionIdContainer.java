@@ -23,7 +23,7 @@ public class SessionIdContainer {
         return container;
     }
 
-    public String getUserId(String sessionId) {
+    public String getUserLogin(String sessionId) {
         return container.get(sessionId);
     }
 
