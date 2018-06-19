@@ -49,7 +49,7 @@ public abstract class AbstractHandler {
     }
 
     public void sendTemplateResponse(HttpExchange exchange, String templateName) {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();
         String response = template.render(model);
         sendResponse(exchange, response);
@@ -99,7 +99,7 @@ public abstract class AbstractHandler {
     }
 
     public String getPermissions(String sessionID) {
-        String login = sessionIdContainer.getUserId(sessionID);
+        String login = sessionIdContainer.getUserLogin(sessionID);
         try {
             return new LoginDAO().getTypeBy(login);
         } catch (SQLException e) {
