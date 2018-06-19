@@ -99,7 +99,7 @@ public abstract class AbstractHandler {
     }
 
     public String getPermissions(String sessionID) {
-        String login = sessionIdContainer.getUserId(sessionID);
+        String login = sessionIdContainer.getUserLogin(sessionID);
         try {
             return new LoginDAO().getTypeBy(login);
         } catch (SQLException e) {
