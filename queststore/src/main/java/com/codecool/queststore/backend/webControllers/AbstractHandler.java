@@ -6,8 +6,11 @@ import com.sun.net.httpserver.HttpExchange;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.net.HttpCookie;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractHandler {
     private SessionIdContainer sessionIdContainer;
@@ -48,5 +51,48 @@ public abstract class AbstractHandler {
         JtwigModel model = JtwigModel.newModel();
         String response = template.render(model);
         sendResponse(exchange, response);
+    }
+    
+    public Map<String, String> readFormData(HttpExchange exchange) {
+        String loginData = "";
+
+        try {
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            loginData = br.readLine();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return parseFormData(loginData);
+    }
+
+    public Map<String, String> parseFormData(String formData) {
+        Map<String, String> inputs = new HashMap<>();
+        String key;
+        String value;
+        String[] pairs = formData.split("&");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            key = keyValue[0];
+
+            try {
+                value = new URLDecoder().decode(keyValue[1], "UTF-8");
+                inputs.put(key, value);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return inputs;
+    }
+
+
+    public boolean isLoggedIn(String sid) {
+        return getSessionIdContainer().contains(sid);
+    }
+
+    public String getSidFromCookieStr(String cookieStr) {
+        HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
+        return cookie.toString().split("=")[1];
     }
 }
