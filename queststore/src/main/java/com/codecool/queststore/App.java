@@ -1,22 +1,26 @@
 package com.codecool.queststore;
 
-import com.codecool.queststore.backend.dao.*;
+import com.codecool.queststore.backend.webControllers.Static;
+import com.codecool.queststore.backend.webControllers.loginController.LoginController;
+import com.sun.net.httpserver.HttpServer;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.InetSocketAddress;
 
 public class App {
     public static void main( String args[] ) {
-        ClassroomDAO classroomDAO = new ClassroomDAO();
         try {
-            classroomDAO.createClassroom("a", "desc");
-            List<String> newData = new ArrayList<>();
-            newData.add("b");
-            newData.add("desc2");
-            classroomDAO.updateClassroom(1, newData);
-        }
-        catch (SQLException e) {
+            // create a server on port 8001
+            HttpServer server = HttpServer.create(new InetSocketAddress(8001), 0);
+
+            // set routes
+            server.createContext("/login", new LoginController());
+            server.createContext("/static", new Static());
+
+            server.setExecutor(null); // creates a default executor
+
+            // start listening
+            server.start();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

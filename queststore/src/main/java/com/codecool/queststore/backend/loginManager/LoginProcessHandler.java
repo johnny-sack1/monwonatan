@@ -14,14 +14,14 @@ public class LoginProcessHandler {
         this.loginDAO = new LoginDAO();
     }
 
-    public String loginProcess(String login, String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public String loginProcess(String login, String password) {
         PasswordManager passwordManager = new PasswordManager();
         try {
             String hashedPassword = loginDAO.getPasswordBy(login);
             if (passwordManager.validatePassword(password, hashedPassword)) {
                 return loginDAO.getTypeBy(login);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             return "invalid password";
         }
         return null;

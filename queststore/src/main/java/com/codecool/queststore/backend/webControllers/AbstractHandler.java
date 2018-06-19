@@ -1,5 +1,6 @@
 package com.codecool.queststore.backend.webControllers;
 
+import com.codecool.queststore.backend.dao.LoginDAO;
 import com.codecool.queststore.backend.session.SessionIdContainer;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -9,6 +10,7 @@ import org.jtwig.JtwigTemplate;
 import java.io.*;
 import java.net.HttpCookie;
 import java.net.URLDecoder;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,5 +96,14 @@ public abstract class AbstractHandler {
     public String getSidFromCookieStr(String cookieStr) {
         HttpCookie cookie = HttpCookie.parse(cookieStr).get(0);
         return cookie.toString().split("=")[1];
+    }
+
+    public String getPermissions(String sessionID) {
+        String login = sessionIdContainer.getUserId(sessionID);
+        try {
+            return new LoginDAO().getTypeBy(login);
+        } catch (SQLException e) {
+            return "undefined";
+        }
     }
 }
