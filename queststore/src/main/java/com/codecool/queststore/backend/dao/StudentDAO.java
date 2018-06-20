@@ -140,4 +140,22 @@ public class StudentDAO {
             return null;
         }
     }
+
+    public Student createAllStudentData(Student student, String login) {
+        BackpackDAO backpackDAO = new BackpackDAO();
+        ExpLevelDAO expLevelDAO = new ExpLevelDAO();
+        student.setBackpack(backpackDAO.loadBackpack(login));
+        Map<String, Integer> expLevels = expLevelDAO.loadAllExpLevel();
+        StudentDAO.ValueComparator comparator = new StudentDAO.ValueComparator(expLevels);
+        Map<String, Integer> sortedExpLevels = new TreeMap<>(comparator);
+        sortedExpLevels.putAll(expLevels);
+
+        for (Map.Entry<String, Integer> entry : sortedExpLevels.entrySet()) {
+            if (student.getCoolcoins() >= entry.getValue()) {
+                ExpLvl expLvl = new ExpLvl(entry.getValue(), entry.getKey());
+                student.setExpLvl(expLvl);
+            }
+        }
+        return student;
+    }
 }
