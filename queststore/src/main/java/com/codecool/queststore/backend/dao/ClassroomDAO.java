@@ -91,4 +91,21 @@ public class ClassroomDAO {
             return null;
         }
     }
+
+    public void deleteClassroom(Classroom classroom) {
+        int id = classroom.getID();
+        deleteClassroom(id);
+    }
+
+    public void deleteClassroom(int id) {
+        String query = "DELETE FROM classroom WHERE classroom_id = ?;";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        try {
+            PreparedStatement removeClassroom = c.prepareStatement(query);
+            removeClassroom.setInt(1, id);
+            query = removeClassroom.toString();
+            SQLQueryHandler.getInstance().executeQuery(query);
+        } catch (SQLException e) {}
+    }
 }
