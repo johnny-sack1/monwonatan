@@ -111,5 +111,7 @@
         </script>
     </div>
 </footer>
+<script src="/static/js/student-editor.js"></script>
+<script src="/static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
