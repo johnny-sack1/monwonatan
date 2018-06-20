@@ -30,7 +30,7 @@
     <div class="header-background"></div>
     <div class="header-content">
         <h1>Welcome on Mentor's page</h1>
-        <h2>{{ name }}</h2>
+        <h2>{{firstname}} {{lastname}}</h2>
     </div>
 </header>
 <main>
