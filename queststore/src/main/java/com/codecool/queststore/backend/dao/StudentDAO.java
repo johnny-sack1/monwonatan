@@ -1,14 +1,14 @@
 package com.codecool.queststore.backend.dao;
 
 import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.model.ExpLvl;
 import com.codecool.queststore.backend.model.Student;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class StudentDAO {
 
@@ -157,5 +157,21 @@ public class StudentDAO {
             }
         }
         return student;
+    }
+
+    class ValueComparator implements Comparator<String> {
+        Map<String, Integer> base;
+
+        public ValueComparator(Map<String, Integer> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a) <= base.get(b)) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
     }
 }
