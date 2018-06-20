@@ -30,7 +30,7 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
             if (action.equals("edit")) {
                 editClassroom(exchange);
             } else if (action.equals("delete")) {
-                new AdminEditMentors().handle(exchange);
+                deleteClassroom(exchange);
             } else {
                 redirectToLocation(exchange, "/login");
             }
@@ -50,11 +50,43 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
 
     }
 
+    private void deleteClassroom(HttpExchange exchange) {
+        String method = exchange.getRequestMethod();
+
+        if(method.equalsIgnoreCase("GET")) {
+            sendClassroomDeletePage(exchange);
+        } else if (method.equalsIgnoreCase("POST")) {
+            submitClassroomDeletePage(exchange);
+        } else {
+            redirectToLocation(exchange, "/admin/index");
+        }
+
+    }
+
     private void sendClassroomEditPage(HttpExchange exchange) {
         int classroomId = getClassId(exchange);
         try {
             Classroom classroom = new ClassroomDAO().loadClassroom(classroomId);
-            sendTemplateResponseClassEdit(exchange, "adminclassedit", classroom);
+            sendTemplateResponseClass(exchange, "adminclassedit", classroom);
+        } catch (SQLException e) {
+            // Error occurred in database
+            redirectToLocation(exchange, "/admin");
+        } catch (NullPointerException e) {
+            // TODO
+            // Classroom not found
+            redirectToLocation(exchange, "/admin/classroom");
+        } catch (NumberFormatException | InputMismatchException e) {
+            // TODO
+            // Invalid input in browser (URI)
+            redirectToLocation(exchange, "/admin/classroom");
+        }
+    }
+
+    private void sendClassroomDeletePage(HttpExchange exchange) {
+        int classroomId = getClassId(exchange);
+        try {
+            Classroom classroom = new ClassroomDAO().loadClassroom(classroomId);
+            sendTemplateResponseClass(exchange, "adminclassdelete", classroom);
         } catch (SQLException e) {
             // Error occurred in database
             redirectToLocation(exchange, "/admin");
@@ -72,7 +104,7 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
     private void submitClassroomEditPage(HttpExchange exchange) {
         try {
             Map<String, String> inputs = readFormData(exchange);
-            int id = Integer.parseInt(exchange.getRequestURI().toString().split("/")[4]);
+            int id = getClassId(exchange);
             String name = inputs.get("name");
             String description = inputs.get("description");
             ClassroomDAO dao = new ClassroomDAO();
@@ -86,6 +118,13 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
         }
     }
 
+    private void submitClassroomDeletePage(HttpExchange exchange) {
+        int id = getClassId(exchange);
+        ClassroomDAO dao = new ClassroomDAO();
+        dao.deleteClassroom(id);
+        redirectToLocation(exchange, "/admin/classroom");
+    }
+
     private void sendTemplateResponseClassrooms(HttpExchange exchange, String templateName) {
         List<Classroom> classrooms = new ClassroomDAO().loadAllClassrooms();
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
@@ -95,7 +134,7 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
         sendResponse(exchange, response);
     }
 
-    private void sendTemplateResponseClassEdit(HttpExchange exchange, String templateName, Classroom classroom) {
+    private void sendTemplateResponseClass(HttpExchange exchange, String templateName, Classroom classroom) {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();
