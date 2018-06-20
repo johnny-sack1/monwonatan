@@ -73,7 +73,7 @@ public class BackpackDAO {
         String addBackpackQuery = "INSERT INTO backpack (student_id, artifact_id, status) VALUES (?, ?, ?);";
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
-        HashMap<Artifact, String> backpackContent = backpack.getBackpack();
+        HashMap<Artifact, String> backpackContent = backpack.getStudentBackpack();
         Iterator it = backpackContent.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();

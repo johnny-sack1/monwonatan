@@ -12,7 +12,7 @@ public class Backpack {
         this.studentBackpack = new HashMap<Artifact, String>();
     }
 
-    public HashMap<Artifact, String> getBackpack() {
+    public HashMap<Artifact, String> getStudentBackpack() {
         return studentBackpack;
     }
 
