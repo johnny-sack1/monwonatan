@@ -30,5 +30,24 @@ public class StudentProfile extends AbstractHandler implements HttpHandler {
 
     //TODO if user wants to change password
 
-    
+    public void sendTemplateResponseProfile(HttpExchange exchange, String templateName, String sessionId) {
+        try {
+            String login = getSessionIdContainer().getUserLogin(sessionId);
+            Student student = new StudentDAO().loadStudent(login);
+            JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Student profile");
+            model.with("coins", student.getCoolcoins());
+            model.with("expLevel", student.getExpLvl().getDescription());
+            model.with("firstName", student.getFirstName());
+            model.with("lastName", student.getLastName());
+            String response = template.render(model);
+            sendResponse(exchange, response);
+        }
+        catch (SQLException e) {
+            redirectToLocation(exchange, "login");
+        }
+    }
+
+
 }
