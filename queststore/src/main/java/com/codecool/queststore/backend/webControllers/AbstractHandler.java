@@ -55,6 +55,15 @@ public abstract class AbstractHandler {
         sendResponse(exchange, response);
     }
 
+    public void sendTemplateResponseIndex(HttpExchange exchange, String templateName, String firstName, String lastName) {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigModel model = JtwigModel.newModel();
+        model.with("firstname", firstName);
+        model.with("lastname", lastName);
+        String response = template.render(model);
+        sendResponse(exchange, response);
+    }
+
     public Map<String, String> readFormData(HttpExchange exchange) {
         String formData = "";
 
@@ -99,11 +108,17 @@ public abstract class AbstractHandler {
     }
 
     public String getPermissions(String sessionID) {
-        String login = sessionIdContainer.getUserId(sessionID);
+        String login = sessionIdContainer.getUserLogin(sessionID);
         try {
             return new LoginDAO().getTypeBy(login);
         } catch (SQLException e) {
             return "undefined";
         }
+    }
+
+    public String getLoginFromExchange(HttpExchange exchange) {
+        String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
+        String sessionId = getSidFromCookieStr(cookieStr);
+        return getSessionIdContainer().getUserLogin(sessionId);
     }
 }
