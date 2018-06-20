@@ -56,7 +56,7 @@ public abstract class AbstractHandler {
     }
 
     public void sendTemplateResponseIndex(HttpExchange exchange, String templateName, String firstName, String lastName) {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.twig", templateName));
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();
         model.with("firstname", firstName);
         model.with("lastname", lastName);
