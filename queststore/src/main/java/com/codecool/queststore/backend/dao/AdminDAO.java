@@ -100,13 +100,21 @@ public class AdminDAO {
     }
 
     private Admin extractAndCreate(ResultSet adminData) {
+        int LOGIN_I = 1;
+        int PASSWORD_I = 2;
+        int FIRST_NAME_I = 3;
+        int LAST_NAME_I = 4;
+        int CLASSROOM_I = 5;
+        int EMAIL_I = 8;
+
         try {
-            String login =  adminData.getString(EColumnNumber.LOGIN.indexForDatabase()).toLowerCase();
-            String first_name = adminData.getString(EColumnNumber.FIRST_NAME.indexForDatabase()).toLowerCase();
-            String last_name = adminData.getString(EColumnNumber.LAST_NAME.indexForDatabase()).toLowerCase();
-            String password = adminData.getString(EColumnNumber.PASSWORD.indexForDatabase()).toLowerCase();
-            int classroom_id = adminData.getInt(EColumnNumber.CLASSROOM.indexForDatabase());
-            String email = adminData.getString(EColumnNumber.EMAIL.indexForDatabase()).toLowerCase();
+            adminData.next();
+            String login =  adminData.getString(LOGIN_I).toLowerCase();
+            String first_name = adminData.getString(FIRST_NAME_I).toLowerCase();
+            String last_name = adminData.getString(LAST_NAME_I).toLowerCase();
+            String password = adminData.getString(PASSWORD_I).toLowerCase();
+            int classroom_id = adminData.getInt(CLASSROOM_I);
+            String email = adminData.getString(EMAIL_I).toLowerCase();
             return new Admin(first_name, last_name, login, password, classroom_id, TYPE, email);
         } catch (SQLException ex) {
             return null;

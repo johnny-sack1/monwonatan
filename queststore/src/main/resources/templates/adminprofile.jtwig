@@ -6,7 +6,7 @@
     <meta name="author" content="Monwonatan">
     <title>Profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/student_profile.css" />
+    <link rel="stylesheet" href="/static/css/student_profile.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
@@ -14,14 +14,14 @@
 <body onload="clock(); allFeaturesMenu();">
 <nav>
     <div class="logo">
-        <img src="../images/l1.png" alt="">
+        <img src="/static/images/l1.png" alt="">
     </div>
     <div class="nav-menu">
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="profile.html" class="active">Profile</a></li>
-          <li><a href="mentor_edition.html">Mentor edition</a></li>
-          <li><a href="classroom_manager.html">Classroom manager</a></li>
+            <li><a href="/admin/index">Home</a></li>
+            <li><a href="/admin/profile" class="active">Profile</a></li>
+            <li><a href="/admin/mentors">Mentor edition</a></li>
+            <li><a href="/admin/classroom">Classroom edition</a></li>
         </ul>
     </div>
 </nav>
@@ -36,13 +36,13 @@
         <div class="form-group row">
             <label for="inputFirstName" class="col-sm-2 col-form-label">First name:</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" id="inputFirstName" value="firstName">
+                <input class="form-control" type="text" id="inputFirstName" value="{{ firstname }}">
             </div>
         </div>
         <div class="form-group row">
             <label for="inputLastName" class="col-sm-2 col-form-label">Last name:</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" id="inputLastName" value="lastName">
+                <input class="form-control" type="text" id="inputLastName" value="{{ lastname }}">
             </div>
         </div>
         <div class="form-group row">
@@ -60,13 +60,7 @@
         <div class="form-group row">
             <label for="inputEmail" class="col-sm-2 col-form-label">Email:</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" id="inputEmail" value="email">
-            </div>
-        </div>
-        <div class="for-group row">
-            <label for="inputAddress" class="col-sm-2 col-form-label">Address:</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="text" id="inputAddress" value="address">
+                <input class="form-control" type="text" id="inputEmail" value="{{ email }}">
             </div>
         </div>
         <div class="for-group row">
@@ -76,6 +70,7 @@
         </div>
     </form>
 </main>
+
 <footer>
     <div class="copyright">
         <a href="https://www.facebook.com/CodecoolPoland/" class="fa fa-facebook"></a>
@@ -114,7 +109,7 @@
             </script>
     </div>
 </footer>
-<script src="../js/student-editor.js"></script>
-<script src="../js/on-scroll-navbar-behaviour.js"></script>
+<script src="/static/js/student-editor.js"></script>
+<script src="/static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
