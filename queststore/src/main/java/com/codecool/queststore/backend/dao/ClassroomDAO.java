@@ -67,10 +67,11 @@ public class ClassroomDAO {
 
         try {
             classroomData.next();
-            int id =  classroomData.getInt(ID_I);
+            int id = classroomData.getInt(ID_I);
             String name = classroomData.getString(NAME_I).toLowerCase();
             String description = classroomData.getString(DESCRIPTION_I).toLowerCase();
             return new Classroom(id, name, description);
+
         } catch (SQLException ex) {
             return null;
         }
@@ -79,7 +80,7 @@ public class ClassroomDAO {
     public List<Classroom> loadAllClassrooms() {
         List<Classroom> allClassrooms = new ArrayList<>();
 
-        String query = "SELECT classroom_id FROM classroom;";
+        String query = "SELECT classroom_id FROM classroom ORDER BY classroom_id ASC;";
         ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
         try {
             while (ids.next()) {
