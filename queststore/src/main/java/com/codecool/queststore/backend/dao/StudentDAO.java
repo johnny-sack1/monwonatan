@@ -44,43 +44,28 @@ public class StudentDAO {
         }
     }
 
-    public Student loadStudent(String login)  {
+    public Student loadStudent(String login) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
 
-        String firstName="";
-        String lastName="";
-        String password="";
-        int classroomID=0;
+        String userQuery = "SELECT * FROM user_type WHERE login = ?";
+        PreparedStatement userStatement = c.prepareStatement(userQuery);
+        userStatement.setString(1, login);
+        ResultSet userResultSet = SQLQueryHandler.getInstance().executeQuery(userStatement.toString());
+        userResultSet.next();
+        String firstName = userResultSet.getString("first_name");
+        String lastName = userResultSet.getString("last_name");
+        String password = userResultSet.getString("password");
+        int classroomID = userResultSet.getInt("classroom_id");
 
-        int coins_current=0;
-        int coins_total=0;
-        try {
-            Connection c = SQLQueryHandler.getInstance().getConnection();
+        String studentQuery = "SELECT coins_current, coins_total FROM student_type " +
+                "WHERE login = ?";
+        PreparedStatement studentStatement = c.prepareStatement(studentQuery);
+        studentStatement.setString(1, login);
+        ResultSet studentResultSet = SQLQueryHandler.getInstance().executeQuery(studentStatement.toString());
+        studentResultSet.next();
+        int coins_current = studentResultSet.getInt("coins_current");
+        int coins_total = studentResultSet.getInt("coins_total");
 
-            String userQuery = "SELECT * FROM user_type WHERE login = ?";
-            PreparedStatement userStatement = c.prepareStatement(userQuery);
-            userStatement.setString(1, login);
-            ResultSet userResultSet = SQLQueryHandler.getInstance().executeQuery(userStatement.toString());
-            userResultSet.next();
-             firstName = userResultSet.getString("first_name");
-             lastName = userResultSet.getString("last_name");
-             password = userResultSet.getString("password");
-             classroomID = userResultSet.getInt("classroom_id");
-
-            String studentQuery = "SELECT coins_current, coins_total FROM student_type " +
-                    "WHERE login = ?";
-            PreparedStatement studentStatement = c.prepareStatement(studentQuery);
-            studentStatement.setString(1, login);
-            ResultSet studentResultSet = SQLQueryHandler.getInstance().executeQuery(studentStatement.toString());
-            studentResultSet.next();
-             coins_current = studentResultSet.getInt("coins_current");
-             coins_total = studentResultSet.getInt("coins_total");
-
-
-        }
-
-        catch (SQLException e) {
-
-        }
         return new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
     }
 
@@ -100,8 +85,8 @@ public class StudentDAO {
                                  int classId, int currentCoins, int totalCoins) {
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ?) WHERE login = ?";
-            String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?";
+            String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -116,7 +101,7 @@ public class StudentDAO {
             PreparedStatement studentStatement = c.prepareStatement(studentTableQuery);
             studentStatement.setInt(1, currentCoins);
             studentStatement.setInt(2, totalCoins);
-            userStatement.setString(3, login);
+            studentStatement.setString(3, login);
 
             String query = userStatement.toString() + "; " + studentStatement.toString();
 
