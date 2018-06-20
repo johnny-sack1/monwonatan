@@ -28,5 +28,33 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         }
     }
 
+    public void sendTemplateResponseBackpack(HttpExchange exchange, String templateName, String sessionId) {
 
+        try {
+            String login = getSessionIdContainer().getUserLogin(sessionId);
+            Student student = new StudentDAO().loadStudent(login);
+
+            JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
+            JtwigModel model = JtwigModel.newModel();
+
+            HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
+            List<Artifact> items = new ArrayList<>();
+
+            for (Map.Entry<Artifact, String> entry : studentBackpack.entrySet())
+            {
+                Artifact artifact = entry.getKey();
+                artifact.setStatus(entry.getValue());
+                items.add(artifact);
+            }
+
+            model.with("title", "Student backpack");
+            model.with("items", items);
+            String response = template.render(model);
+            sendResponse(exchange, response);
+        }
+        catch (SQLException e) {
+            redirectToLocation(exchange, "login");
+        }
+
+    }
 }
