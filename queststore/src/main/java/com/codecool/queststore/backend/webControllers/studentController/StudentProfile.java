@@ -49,5 +49,26 @@ public class StudentProfile extends AbstractHandler implements HttpHandler {
         }
     }
 
-
+    public void sendTemplateResponseProfile(HttpExchange exchange, String templateName, String sessionId, String firstName, String lastName) {
+        try {
+            StudentDAO studentDAO = new StudentDAO();
+            String login = getSessionIdContainer().getUserLogin(sessionId);
+            Student student = studentDAO.loadStudent(login);
+            student.setFirstName(firstName);
+            student.setLastName(lastName);
+            studentDAO.updateStudent(student);
+            JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
+            JtwigModel model = JtwigModel.newModel();
+            model.with("title", "Student profile");
+            model.with("coins", student.getCoolcoins());
+            model.with("expLevel", student.getExpLvl().getDescription());
+            model.with("firstName", firstName);
+            model.with("lastName", lastName);
+            String response = template.render(model);
+            sendResponse(exchange, response);
+        }
+        catch (SQLException e) {
+            redirectToLocation(exchange, "login");
+        }
+    }
 }
