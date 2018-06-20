@@ -40,5 +40,27 @@ public class StudentController  extends AbstractHandler implements HttpHandler {
         }
     }
 
+    private void studentRedirect(HttpExchange exchange) {
+        System.out.println(exchange.getRequestURI().toString());
+        String[] uriParts = exchange.getRequestURI().toString().split("/");
 
+        if (uriParts.length <= 2) {
+            // "/student"
+            new StudentIndex().handle(exchange);
+        } else {
+            // "/student/(action)"
+            int ACTION_I = 2;
+            String action = uriParts[ACTION_I];
+
+            if (action.equals("profile")) {
+                new StudentProfile().handle(exchange);
+            } else if (action.equals("backpack")) {
+                new StudentBackpack().handle(exchange);
+            } else if (action.equals("store")) {
+                new StudentStore().handle(exchange);
+            } else {
+                redirectToLocation(exchange, "/login");
+            }
+        }
+    }
 }
