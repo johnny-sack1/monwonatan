@@ -1,6 +1,7 @@
 package com.codecool.queststore;
 
 import com.codecool.queststore.backend.webControllers.Static;
+import com.codecool.queststore.backend.webControllers.adminController.AdminController;
 import com.codecool.queststore.backend.webControllers.loginController.LoginController;
 import com.sun.net.httpserver.HttpServer;
 
@@ -15,6 +16,7 @@ public class App {
             // set routes
             server.createContext("/login", new LoginController());
             server.createContext("/static", new Static());
+            server.createContext("/admin", new AdminController());
 
             server.setExecutor(null); // creates a default executor
 
