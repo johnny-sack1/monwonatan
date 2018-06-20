@@ -45,28 +45,40 @@ public class StudentDAO {
     }
 
     public Student loadStudent(String login) throws SQLException {
+
+        String firstName="";
+        String lastName="";
+        String password="";
+        int classroomID=0;
+        int coins_current=0;
+        int coins_total=0;
+
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
         String userQuery = "SELECT * FROM user_type WHERE login = ?";
         PreparedStatement userStatement = c.prepareStatement(userQuery);
         userStatement.setString(1, login);
         ResultSet userResultSet = SQLQueryHandler.getInstance().executeQuery(userStatement.toString());
-        userResultSet.next();
-        String firstName = userResultSet.getString("first_name");
-        String lastName = userResultSet.getString("last_name");
-        String password = userResultSet.getString("password");
-        int classroomID = userResultSet.getInt("classroom_id");
+        while (userResultSet.next()) {
+            firstName = userResultSet.getString("first_name");
+            lastName = userResultSet.getString("last_name");
+            password = userResultSet.getString("password");
+            classroomID = userResultSet.getInt("classroom_id");
+        }
 
         String studentQuery = "SELECT coins_current, coins_total FROM student_type " +
                 "WHERE login = ?";
         PreparedStatement studentStatement = c.prepareStatement(studentQuery);
         studentStatement.setString(1, login);
         ResultSet studentResultSet = SQLQueryHandler.getInstance().executeQuery(studentStatement.toString());
-        studentResultSet.next();
-        int coins_current = studentResultSet.getInt("coins_current");
-        int coins_total = studentResultSet.getInt("coins_total");
+        while (studentResultSet.next()) {
+            coins_current = studentResultSet.getInt("coins_current");
+            coins_total = studentResultSet.getInt("coins_total");
+        }
 
-        return new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
+        Student student = new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
+
+        return createAllStudentData(student, login);
     }
 
     public boolean updateStudent(Student student) {
