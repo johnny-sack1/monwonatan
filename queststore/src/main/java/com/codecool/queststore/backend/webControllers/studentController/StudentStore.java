@@ -26,5 +26,26 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         }
     }
 
+    public void sendTemplateResponseStore(HttpExchange exchange, String templateName, String sessionId) {
 
+        try {
+            String login = getSessionIdContainer().getUserLogin(sessionId);
+            Student student = new StudentDAO().loadStudent(login);
+
+            JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
+            JtwigModel model = JtwigModel.newModel();
+
+            List<Artifact> artifactList = new ArtifactDAO().loadAllArtifacts();
+
+            model.with("title", "Student store");
+            model.with("items", artifactList);
+            model.with("coins", student.getCoolcoins());
+            String response = template.render(model);
+            sendResponse(exchange, response);
+        }
+        catch (SQLException e) {
+            redirectToLocation(exchange, "login");
+        }
+
+    }
 }
