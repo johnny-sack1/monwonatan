@@ -5,14 +5,13 @@ import com.codecool.queststore.backend.webControllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.UUID;
 
 public class LoginController extends AbstractHandler implements HttpHandler {
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange exchange) {
 
         String method = exchange.getRequestMethod();
         String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
