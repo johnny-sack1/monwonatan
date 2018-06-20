@@ -1,6 +1,7 @@
 package com.codecool.queststore.backend.dao;
 
 import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.model.ExpLvl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -67,33 +68,35 @@ public class ExpLevelDAO {
         }
     }
 
-    public String loadExpLevel(int expLevelID) {
+    public ExpLvl loadExpLevel(int expLevelID) {
 
         try {
             Connection c = SQLQueryHandler.getInstance().getConnection();
-            String query = "SELECT (description || ' ' || required_coins)" +
-                    "AS all_column FROM Experience_Level WHERE experience_level_id = ?;";
+            String query = "SELECT (description, required_coins)" +
+                    "FROM Experience_Level WHERE experience_level_id = ?;";
 
             PreparedStatement statement = c.prepareStatement(query);
 
             statement.setInt(1, expLevelID);
             ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
 
-            String expLevelDescription = null;
+            String expLevelDescription = "";
+            int expLevelRequiredCoins = 0;
 
             while (resultSet.next()) {
-                expLevelDescription = resultSet.getString("all_column");
+                expLevelDescription = resultSet.getString("description");
+                expLevelRequiredCoins = resultSet.getInt("required_coins");
             }
-            return expLevelDescription;
+            return new ExpLvl(expLevelRequiredCoins, expLevelDescription);
         }
         catch (SQLException e) {
             return null;
         }
     }
 
-    public Map<String,Integer> loadAllExpLevel(int expLevelID) {
+    public Map<String, Integer> loadAllExpLevel() {
 
-        Map<String,Integer> expLevels = new HashMap<>();
+        Map<String, Integer> expLevels = new HashMap<>();
 
         try {
             String query = "SELECT * FROM Experience_Level;";
