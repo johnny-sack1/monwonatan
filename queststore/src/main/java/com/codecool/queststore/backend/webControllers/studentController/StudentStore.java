@@ -28,7 +28,6 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         else if (exchange.getRequestMethod().equals("POST")) {
             Map inputs = readFormData(exchange);
             String artifactName = (String) inputs.get("name");
-            System.out.println(artifactName);
             sendTemplateResponseStore(exchange, "studentStore",
                     getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")), artifactName);
         }
@@ -72,9 +71,7 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
                 Backpack backpack = student.getBackpack();
 
                 backpack.addToBackpack(artifact, "unused");
-                System.out.println("aaaaa" + backpack.getStudentBackpack());
                 backpackDAO.updateBackpack(backpack);
-                System.out.println("rgggergerg" + backpack.getStudentBackpack());
             }
 
             studentDAO.updateStudent(student);
