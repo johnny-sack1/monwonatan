@@ -104,7 +104,7 @@
         </script>
     </div>
 </footer>
-<script src="../static/js/quest-modification-handler.js"></script>
-<script src="../static/js/on-scroll-navbar-behaviour.js"></script>
+<script src="/static/js/quest-modification-handler.js"></script>
+<script src="/static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
