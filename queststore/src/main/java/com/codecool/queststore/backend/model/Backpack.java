@@ -23,4 +23,8 @@ public class Backpack {
     public String getStudentLogin() {
         return studentLogin;
     }
+
+    public void setStudentBackpack(HashMap<Artifact, String> studentBackpack) {
+        this.studentBackpack = studentBackpack;
+    }
 }
