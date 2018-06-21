@@ -31,7 +31,7 @@ public class MentorController extends AbstractHandler implements HttpHandler {
                 mentorRedirect(exchange);
                 break;
             default:
-                redirectToLocation(exchange, "logout");
+                redirectToLocation(exchange, "/logout");
         }
     }
 
@@ -59,7 +59,7 @@ public class MentorController extends AbstractHandler implements HttpHandler {
                     new MentorStore().handle(exchange);
                     break;
                 default:
-                    redirectToLocation(exchange, "logout");
+                    redirectToLocation(exchange, "/mentor/index");
             }
         }
 
