@@ -19,7 +19,7 @@ public class AdminDAO {
 
         try {
             String userTableQuery = "INSERT INTO user_type (first_name, last_name, login, password, classroom_id, type) " +
-                    "VALUES (?, ?, ?, ?, ?, ?) ";
+                    "VALUES (?, ?, ?, ?, ?, ?);";
             String adminTableQuery = "INSERT INTO admin_type (login, email) VALUES (?, ?);";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
@@ -60,8 +60,8 @@ public class AdminDAO {
 
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ?) WHERE login = ?";
-            String adminTableQuery = "UPDATE admin_type SET email = ? WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?;";
+            String adminTableQuery = "UPDATE admin_type SET email = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
 
