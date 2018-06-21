@@ -85,9 +85,8 @@ public abstract class AbstractHandler {
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             key = keyValue[0];
-
             try {
-                value = new URLDecoder().decode(keyValue[1], "UTF-8");
+                value = URLDecoder.decode(keyValue[1], "UTF-8");
                 inputs.put(key, value);
 
             } catch (UnsupportedEncodingException e) {

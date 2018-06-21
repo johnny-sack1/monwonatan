@@ -19,48 +19,36 @@
     <div class="nav-menu">
         <ul>
             <li><a href="/admin/index">Home</a></li>
-            <li><a href="/admin/profile" class="active">Profile</a></li>
+            <li><a href="/admin/profile">Profile</a></li>
             <li><a href="/admin/mentors">Mentor edition</a></li>
-            <li><a href="/admin/classroom">Classroom edition</a></li>
+            <li><a href="/admin/classroom" class="active">Classroom edition</a></li>
         </ul>
     </div>
 </nav>
 <header id="header">
     <div class="header-background"></div>
     <div class="header-content">
-        <h1>Profile</h1>
+        <h1>Classroom edition!</h1>
     </div>
 </header>
 <main>
     <form method="post">
         <div class="form-group row">
-            <label for="inputFirstName" class="col-sm-2 col-form-label">First name:</label>
+            <label for="ClassroomId" class="col-sm-2 col-form-label">Classroom ID:</label>
             <div class="col-sm-10">
-                <input class="form-control" name="firstname" type="text" id="inputFirstName" value="{{ firstname }}">
+                <input class="form-control" name="id" type="text" id="ClassroomId" value="Classroom ID will be generated automatically" disabled>
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputLastName" class="col-sm-2 col-form-label">Last name:</label>
+            <label for="ClassroomName" class="col-sm-2 col-form-label">Classroom name:</label>
             <div class="col-sm-10">
-                <input class="form-control" name="lastname" type="text" id="inputLastName" value="{{ lastname }}">
+                <input class="form-control" name="name" type="text" id="ClassroomName" placeholder="Classroom Name">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Password:</label>
+            <label for="ClassroomDescription" class="col-sm-2 col-form-label">Classroom description:</label>
             <div class="col-sm-10">
-                <input class="form-control password" name="password" type="password" id="inputPassword" placeholder="Enter new password">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="inputRepeatPassword" class="col-sm-2 col-form-label">Repeat password:</label>
-            <div class="col-sm-10">
-                <input class="form-control password" name="password2" type="password" id="inputRepeatPassword" placeholder="Repeat password">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="inputEmail" class="col-sm-2 col-form-label">Email:</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="text" name="email" id="inputEmail" value="{{ email }}">
+                <input class="form-control" name="description" type="text" id="ClassroomDescription" placeholder="Classroom description">
             </div>
         </div>
         <div class="for-group row">
@@ -106,10 +94,10 @@
 
                 setTimeout('clock()', 1000);
               }
-            </script>
+        </script>
     </div>
 </footer>
-<script src="/static/js/student-editor.js"></script>
+<script src="/static/js/input-validator.js"></script>
 <script src="/static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
