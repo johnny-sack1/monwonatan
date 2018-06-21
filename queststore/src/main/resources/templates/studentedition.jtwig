@@ -46,42 +46,23 @@
         <tbody>
             {% for student in students %}
             <tr>
-                <td><input type="checkbox" class="student-selection"></td>
+                <form method="POST">
+                <td><input type="checkbox" class="student-selection" value="{{student.getLogin()}}"></td>
+                <td><input type="text" name="firstname" value="{{student.getFirstName()}}"></td>
+                <td><input type="text" name="lastname" value="{{student.getLastName()}}"></td>
                 <td>
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <personaldata class="firstName">{{student.getFirstName()}}</personaldata>
-                        </div>
-                    </div>
+                    <select class="form-control" name="classroom">
+                        {% for classroom in classrooms %}
+                        {% if (classroom.getID() == student.getClassRoomID()) %}
+                        <option value="{{classroom.getID()}}" selected>{{classroom.getName()}}</option>
+                        {% else %}
+                        <option value="{{classroom.getID()}}">{{classroom.getName()}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
                 </td>
-                <td>
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <personaldata class="lastName">{{student.getLastName()}}</personaldata>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group row">
-                        <div class="col-sm-10">
-                            <personaldata class="classroom">{{student.getClassRoomID()}}</personaldata>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="for-group row">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary" onclick="editStudent(this)">Change</button>
-                        </div>
-                    </div>
-                </td>
-                <td style="display:none;">
-                    <div class="for-group row">
-                        <div class="col-sm-10">
-                            <personaldata class="login">{{student.getLogin()}}</personaldata>
-                        </div>
-                    </div>
-                </td>
+                <td><button type="submit" name="submit" class="btn btn-primary" value="{{student.getLogin()}}">Change</button></td>
+                </form>
             </tr>
             {% endfor %}
         </tbody>
@@ -89,45 +70,14 @@
 
     <div class="form-group" style="width:200px;">
         <select class="form-control">
-            <option value="questOne">Quest One</option>
-            <option value="questTwo">Quest Two</option>
+            {% for quest in quests %}
+            <option name="quest" value="{{quest.getId()}}">{{quest.getName()}}</option>
+            {% endfor %}
         </select>
     </div>
 
     <button class="btn" id="quest_submit" type="button" onclick="#" disabled="disabled">Complete Quest</button>
 </main>
-
-<div id="id01" class="modal">
-
-    <form class="modal-content animate" action="/action_page.php">
-
-        <personaldata>First Name:
-            <input class="form-control" type="text" id="inputFirstName" value="firstName">
-        </personaldata>
-
-        <personaldata>Last Name:
-            <input class="form-control" type="text" id="inputLastName" value="lastName">
-        </personaldata>
-
-        <personaldata>Password (Optional):
-            <input class="form-control password" type="password" id="inputPassword" placeholder="Enter new password">
-        </personaldata>
-
-        <personaldata>Repeat Password (Optional):
-            <input class="form-control password" type="password" id="inputRepeatPassword" placeholder="Repeat password">
-        </personaldata>
-
-        <personaldata>Classroom:
-            <select class="form-control">
-                <option value="classroom" data-description="Class 1">1a</option>
-                <option value="classroom" data-description="Class 2">2b</option>
-            </select>
-        </personaldata>
-
-        <button id="submit-btn" type="submit" class="btn btn-primary" onclick="return true" disabled="disabled">Save</button>
-
-    </form>
-</div>
 
 <footer>
     <div class="copyright">
@@ -168,17 +118,6 @@
     </div>
 </footer>
 </body>
-<script>
-// Get the modal
-var modal = document.getElementById('id01');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
 <script src="../static/js/student-editor.js"></script>
 <script src="../static/js/quest-assign-handler.js"></script>
 <script src="../static/js/on-scroll-navbar-behaviour.js"></script>
