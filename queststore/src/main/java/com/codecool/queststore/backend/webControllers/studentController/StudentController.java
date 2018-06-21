@@ -18,12 +18,10 @@ public class StudentController  extends AbstractHandler implements HttpHandler {
         }
 
         String permissions = getPermissions(sessionId);
-        System.out.println("Permissions : " + permissions);
 
         switch (permissions) {
             case "undefined":
-                System.out.println("redir to login!");
-                redirectToLocation(exchange, "login");
+                redirectToLocation(exchange, "/login");
                 break;
             case "admin":
                 redirectToLocation(exchange, "admin");
@@ -41,7 +39,6 @@ public class StudentController  extends AbstractHandler implements HttpHandler {
     }
 
     private void studentRedirect(HttpExchange exchange) {
-        System.out.println(exchange.getRequestURI().toString());
         String[] uriParts = exchange.getRequestURI().toString().split("/");
 
         if (uriParts.length <= 2) {
