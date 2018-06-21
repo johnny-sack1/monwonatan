@@ -44,14 +44,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                <form method="post">
                     {% for item in items %}
                     <tr>
                          <td>{{ item.name }}</td>
                          <td>{{ item.description }}</td>
                          <td>{{ item.status }}</td>
-                         <td><button class="btn buy" type="button" onclick="#" disabled="disabled">Buy</button></td>
+                         <td><button class="btn buy" type="submit" onclick="#"  name="name" value="{{ loop.index0 }}">Use</button></td>
                     </tr>
                     {% endfor %}
+                </form>
                 </tbody>
             </table>
         </section>
@@ -94,7 +96,7 @@
             </script>
         </div>
     </footer>
-    <script src="../js/backpack-handler.js"></script>
-    <script src="../js/on-scroll-navbar-behaviour.js"></script>
+    <script src="/static/js/backpack-handler.js"></script>
+    <script src="/static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
