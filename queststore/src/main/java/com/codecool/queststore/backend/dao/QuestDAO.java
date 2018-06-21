@@ -45,6 +45,21 @@ public class QuestDAO {
         return new Quest(id, name, description, value);
     }
 
+    public Quest loadQuest(String name) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        String query = "SELECT * FROM quest WHERE name = ?";
+        PreparedStatement statement = c.prepareStatement(query);
+        statement.setString(1, name);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        resultSet.next();
+        int id = resultSet.getInt("quest_id");
+        String description = resultSet.getString("description");
+        int value = resultSet.getInt("value");
+
+        return new Quest(id, name, description, value);
+    }
+
     public boolean updateQuest(Quest quest) {
         int id = quest.getId();
         String name = quest.getName();
