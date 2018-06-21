@@ -8,7 +8,6 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class QuestManager extends AbstractHandler implements HttpHandler {
