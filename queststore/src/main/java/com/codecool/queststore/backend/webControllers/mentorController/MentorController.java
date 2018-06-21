@@ -13,41 +13,56 @@ public class MentorController extends AbstractHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
         String sid = getSidFromCookieStr(cookieStr);
-        String userLogin = getSessionIdContainer().getUserLogin(sid);
 
         if (!isLoggedIn(sid)) {
-            redirectToLocation(exchange, "login");
+            redirectToLocation(exchange, "/login");
         }
 
-        String permissions = getPermissions(userLogin);
+        String permissions = getPermissions(sid);
 
-        if (!permissions.equals("mentor")) {
-            switch (permissions) {
-                case "student":
-                    redirectToLocation(exchange, "student");
-                case "admin":
-                    redirectToLocation(exchange, "admin");
-            }
+        switch (permissions) {
+            case "student":
+                redirectToLocation(exchange, "student");
+                break;
+            case "admin":
+                redirectToLocation(exchange, "admin");
+                break;
+            case "mentor":
+                mentorRedirect(exchange);
+                break;
+            default:
+                redirectToLocation(exchange, "logout");
         }
+    }
 
+    private void mentorRedirect(HttpExchange exchange) {
         String[] uriElements = exchange.getRequestURI().toString().split("/");
 
         if (uriElements.length == 2) {
-            String name = "Jonatan Maczynski";
-            sendTemplateResponseWithName(exchange, "mentor_index", name);
+            new MentorIndex().handle(exchange);
         }
         else {
             switch (uriElements[2]) {
+                case "index":
+                    new MentorIndex().handle(exchange);
+                    break;
                 case "profile":
-                    sendTemplateResponse(exchange, "mentor_profile");
+                    new MentorProfile().handle(exchange);
+                    break;
                 case "quest_manager":
-                    sendTemplateResponse(exchange, "quest_manager");
+                    new QuestManager().handle(exchange);
+                    break;
                 case "student_edition":
-                    sendTemplateResponse(exchange, "student_edition");
+                    new StudentEdition().handle(exchange);
+                    break;
                 case "store":
-                    sendTemplateResponse(exchange, "mentor_store");
+                    new MentorStore().handle(exchange);
+                    break;
+                default:
+                    redirectToLocation(exchange, "logout");
             }
         }
+
     }
 
     private void sendTemplateResponseWithName(HttpExchange exchange, String templateName, String name) {
