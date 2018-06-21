@@ -35,91 +35,55 @@
 <main>
     <table class="table table-dark table-hover">
         <thead>
-        <tr>
-            <th>Select</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Classroom</th>
-            <th>Edit</th>
-        </tr>
+            <tr>
+                <th>Select</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Classroom</th>
+                <th>Edit</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <td><input type="checkbox" class="student-selection"></td>
-            <td>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="firstName">First Name1</personaldata>
+            {% for student in students %}
+            <tr>
+                <td><input type="checkbox" class="student-selection"></td>
+                <td>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <personaldata class="firstName">{{student.getFirstName()}}</personaldata>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="lastName">Last Name1</personaldata>
+                </td>
+                <td>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <personaldata class="lastName">{{student.getLastName()}}</personaldata>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="classroom">2b</personaldata>
+                </td>
+                <td>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <personaldata class="classroom">{{student.getClassRoomID()}}</personaldata>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td>
-                <div class="for-group row">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary" onclick="editStudent(this)">Change</button>
+                </td>
+                <td>
+                    <div class="for-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary" onclick="editStudent(this)">Change</button>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td style="display:none;">
-                <div class="for-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="login">Login1</personaldata>
+                </td>
+                <td style="display:none;">
+                    <div class="for-group row">
+                        <div class="col-sm-10">
+                            <personaldata class="login">{{student.getLogin()}}</personaldata>
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" class="student-selection"></td>
-            <td>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="firstName">First Name2</personaldata>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="lastName">Last Name2</personaldata>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="classroom">1a</personaldata>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="for-group row">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary" onclick="editStudent(this)">Change</button>
-                    </div>
-                </div>
-            </td>
-            <td style="display:none;">
-                <div class="for-group row">
-                    <div class="col-sm-10">
-                        <personaldata class="login">Login2</personaldata>
-                    </div>
-                </div>
-            </td>
-        </tr>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 
@@ -215,7 +179,7 @@ window.onclick = function(event) {
     }
 }
 </script>
-<script src="../js/student-editor.js"></script>
-<script src="../js/quest-assign-handler.js"></script>
-<script src="../js/on-scroll-navbar-behaviour.js"></script>
+<script src="../static/js/student-editor.js"></script>
+<script src="../static/js/quest-assign-handler.js"></script>
+<script src="../static/js/on-scroll-navbar-behaviour.js"></script>
 </html>
