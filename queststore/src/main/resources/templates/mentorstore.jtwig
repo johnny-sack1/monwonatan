@@ -46,10 +46,11 @@
             </tr>
             </thead>
             <tbody>
+            {% for artifact in artifacts %}
             <tr>
-                <td><input type="text" name="name" value="Quest"></td>
-                <td><input type="text" name="desc" value="Description"></td>
-                <td><input type="number" name="value" value="1"></td>
+                <td><input type="text" name="name" value="{{artifact.getName()}}"></td>
+                <td><input type="text" name="desc" value="{{artifact.getDescription()}}"></td>
+                <td><input type="number" name="value" value="{{artifact.getPrice()}}"></td>
                 <td>
                     <div class="form-group" style="width:200px;">
                         <select class="form-control">
@@ -60,6 +61,7 @@
                 </td>
                 <td><input type="submit" name="submit" value="Update" disabled="disabled"></td>
             </tr>
+            {% endfor %}
             </tbody>
         </table>
     </section>
@@ -102,7 +104,7 @@
         </script>
     </div>
 </footer>
-<script src="../js/quest-modification-handler.js"></script>
-<script src="../js/on-scroll-navbar-behaviour.js"></script>
+<script src="../static/js/quest-modification-handler.js"></script>
+<script src="../static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>
