@@ -149,4 +149,20 @@ public class MentorDAO {
             return null;
         }
     }
+
+    public void deleteMentor(Mentor mentor) {
+        deleteMentor(mentor.getLogin());
+    }
+
+    public void deleteMentor(String mentorLogin) {
+        String query = "DELETE FROM user_type WHERE login = ?;";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        try {
+            PreparedStatement removeMentor = c.prepareStatement(query);
+            removeMentor.setString(1, mentorLogin);
+            query = removeMentor.toString();
+            SQLQueryHandler.getInstance().executeQuery(query);
+        } catch (SQLException e) {}
+    }
 }
