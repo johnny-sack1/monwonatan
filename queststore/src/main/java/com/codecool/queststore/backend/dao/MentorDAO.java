@@ -67,7 +67,7 @@ public class MentorDAO {
 
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ?) WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?";
             String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
@@ -85,7 +85,9 @@ public class MentorDAO {
             mentorStatement.setString(2, address);
             mentorStatement.setString(3, login);
 
-            String query = userStatement.toString() + "; " + mentorStatement.toString();
+            System.out.println(userStatement.toString());
+
+            String query = userStatement.toString() + "; " + mentorStatement.toString() + ";";
 
             SQLQueryHandler.getInstance().executeQuery(query);
             return true;
