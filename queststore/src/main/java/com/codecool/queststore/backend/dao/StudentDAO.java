@@ -85,7 +85,7 @@ public class StudentDAO {
                                  int classId, int currentCoins, int totalCoins) {
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ?) WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?";
             String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
@@ -101,9 +101,10 @@ public class StudentDAO {
             PreparedStatement studentStatement = c.prepareStatement(studentTableQuery);
             studentStatement.setInt(1, currentCoins);
             studentStatement.setInt(2, totalCoins);
-            userStatement.setString(3, login);
+            studentStatement.setString(3, login);
 
-            String query = userStatement.toString() + "; " + studentStatement.toString();
+            String query = userStatement.toString() + "; " + studentStatement.toString() + ";";
+            System.out.println(query);
 
             SQLQueryHandler.getInstance().executeQuery(query);
             return true;
