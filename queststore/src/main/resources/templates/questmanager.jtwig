@@ -45,10 +45,12 @@
         <tbody>
         {% for quest in quests %}
             <tr>
+                <form method="POST">
                 <td><input type="text" name="name" value="{{quest.getName()}}"></td>
-                <td><input type="text" name="desc" value="{{quest.getDescription()}}"></td>
+                <td><input type="text" name="description" value="{{quest.getDescription()}}"></td>
                 <td><input type="number" name="value" value="{{quest.getValue()}}"></td>
-                <td><input type="submit" name="submit" value="Update" disabled="disabled"></td>
+                <td><button type="submit" name="submit" value="{{quest.getName()}}">Update</button></td>
+                </form>
             </tr>
         {% endfor %}
         </tbody>
