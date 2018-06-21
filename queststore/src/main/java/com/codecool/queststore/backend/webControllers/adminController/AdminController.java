@@ -45,20 +45,20 @@ public class AdminController extends AbstractHandler implements HttpHandler {
 
         if (uriParts.length <= 2) {
             // "/admin"
-            new AAdminIndex().handle(exchange);
+            new AdminIndex().handle(exchange);
         } else {
             // "/admin/(action)"
             int ACTION_I = 2;
             String action = uriParts[ACTION_I];
 
             if (action.equals("profile")) {
-                new AAdminProfile().handle(exchange);
+                new AdminProfile().handle(exchange);
             } else if (action.equals("mentors")) {
-                new AMentorsPage().handle(exchange);
+                new AdminEditMentors().handle(exchange);
             } else if (action.equals("classroom")) {
-                new AClassroomPage().handle(exchange);
+                new AdminEditClassrooms().handle(exchange);
             } else if (action.equals("index")) {
-                new AAdminIndex().handle(exchange);
+                new AdminIndex().handle(exchange);
             } else {
                 redirectToLocation(exchange, "/login");
             }

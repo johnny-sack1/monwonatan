@@ -11,7 +11,7 @@ import org.jtwig.JtwigTemplate;
 import java.sql.SQLException;
 
 
-public class AAdminProfile extends AbstractHandler implements HttpHandler {
+public class AdminProfile extends AbstractHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
         sendTemplateResponseProfile(exchange, "adminprofile",

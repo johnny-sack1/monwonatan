@@ -8,7 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.sql.SQLException;
 
-public class AAdminIndex extends AbstractHandler implements HttpHandler {
+public class AdminIndex extends AbstractHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
         try {
