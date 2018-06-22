@@ -55,7 +55,7 @@ public class AdminController extends AbstractHandler implements HttpHandler {
             } else if (action.equals("mentors")) {
                 new AdminEditMentors().handle(exchange);
             } else if (action.equals("classroom")) {
-                new AdminEditClassrooms().handle(exchange);
+                new AdminManageClassrooms().handle(exchange);
             } else if (action.equals("index")) {
                 new AdminIndex().handle(exchange);
             } else {

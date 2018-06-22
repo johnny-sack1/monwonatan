@@ -13,7 +13,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 
-public class AdminEditClassrooms extends AbstractHandler implements HttpHandler {
+public class AdminManageClassrooms extends AbstractHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
         String[] uriParts = exchange.getRequestURI().toString().split("/");
@@ -31,6 +31,8 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
                 editClassroom(exchange);
             } else if (action.equals("delete")) {
                 deleteClassroom(exchange);
+            } else if (action.equals("add")) {
+                createClassroom(exchange);
             } else {
                 redirectToLocation(exchange, "/login");
             }
@@ -61,6 +63,18 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
             redirectToLocation(exchange, "/admin/index");
         }
 
+    }
+
+    private void createClassroom(HttpExchange exchange) {
+        String method = exchange.getRequestMethod();
+
+        if(method.equalsIgnoreCase("GET")) {
+            sendClassroomCreationPage(exchange);
+        } else if (method.equalsIgnoreCase("POST")) {
+            submitClassroomCreationPage(exchange);
+        } else {
+            redirectToLocation(exchange, "/admin/index");
+        }
     }
 
     private void sendClassroomEditPage(HttpExchange exchange) {
@@ -101,6 +115,10 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
         }
     }
 
+    private void sendClassroomCreationPage(HttpExchange exchange) {
+        sendTemplateResponse(exchange, "admin-create-class");
+    }
+
     private void submitClassroomEditPage(HttpExchange exchange) {
         try {
             Map<String, String> inputs = readFormData(exchange);
@@ -123,6 +141,19 @@ public class AdminEditClassrooms extends AbstractHandler implements HttpHandler 
         ClassroomDAO dao = new ClassroomDAO();
         dao.deleteClassroom(id);
         redirectToLocation(exchange, "/admin/classroom");
+    }
+
+    private void submitClassroomCreationPage(HttpExchange exchange) {
+        try {
+            Map<String, String> inputs = readFormData(exchange);
+            String name = inputs.get("name");
+            String description = inputs.get("description");
+            ClassroomDAO dao = new ClassroomDAO();
+            dao.createClassroom(name, description);
+            redirectToLocation(exchange, "/admin/classroom");
+        } catch (SQLException e) {
+            redirectToLocation(exchange, "/admin/index");
+        }
     }
 
     private void sendTemplateResponseClassrooms(HttpExchange exchange, String templateName) {

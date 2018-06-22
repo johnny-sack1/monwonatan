@@ -67,8 +67,8 @@ public class MentorDAO {
 
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ? WHERE login = ?";
-            String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?;";
+            String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -85,9 +85,7 @@ public class MentorDAO {
             mentorStatement.setString(2, address);
             mentorStatement.setString(3, login);
 
-            System.out.println(userStatement.toString());
-
-            String query = userStatement.toString() + "; " + mentorStatement.toString() + ";";
+            String query = userStatement.toString() + "; " + mentorStatement.toString();
 
             SQLQueryHandler.getInstance().executeQuery(query);
             return true;
@@ -107,7 +105,6 @@ public class MentorDAO {
         query = statement.toString();
 
         ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(query);
-
         return extractAndCreate(resultSet);
     }
 
@@ -117,8 +114,8 @@ public class MentorDAO {
         int FIRST_NAME_I = 3;
         int LAST_NAME_I = 4;
         int CLASSROOM_ID_I = 5;
-        int EMAIL_I = 9;
-        int ADDRESS_I = 10;
+        int EMAIL_I = 8;
+        int ADDRESS_I = 9;
 
         try {
             resultSet.next();
@@ -151,5 +148,21 @@ public class MentorDAO {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public void deleteMentor(Mentor mentor) {
+        deleteMentor(mentor.getLogin());
+    }
+
+    public void deleteMentor(String mentorLogin) {
+        String query = "DELETE FROM user_type WHERE login = ?;";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        try {
+            PreparedStatement removeMentor = c.prepareStatement(query);
+            removeMentor.setString(1, mentorLogin);
+            query = removeMentor.toString();
+            SQLQueryHandler.getInstance().executeQuery(query);
+        } catch (SQLException e) {}
     }
 }

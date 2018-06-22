@@ -109,12 +109,12 @@ public class AdminDAO {
 
         try {
             adminData.next();
-            String login =  adminData.getString(LOGIN_I).toLowerCase();
-            String first_name = adminData.getString(FIRST_NAME_I).toLowerCase();
-            String last_name = adminData.getString(LAST_NAME_I).toLowerCase();
-            String password = adminData.getString(PASSWORD_I).toLowerCase();
+            String login =  adminData.getString(LOGIN_I);
+            String first_name = adminData.getString(FIRST_NAME_I);
+            String last_name = adminData.getString(LAST_NAME_I);
+            String password = adminData.getString(PASSWORD_I);
             int classroom_id = adminData.getInt(CLASSROOM_I);
-            String email = adminData.getString(EMAIL_I).toLowerCase();
+            String email = adminData.getString(EMAIL_I);
             return new Admin(first_name, last_name, login, password, classroom_id, TYPE, email);
         } catch (SQLException ex) {
             return null;

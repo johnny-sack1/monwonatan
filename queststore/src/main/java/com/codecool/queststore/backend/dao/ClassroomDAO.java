@@ -68,8 +68,8 @@ public class ClassroomDAO {
         try {
             classroomData.next();
             int id = classroomData.getInt(ID_I);
-            String name = classroomData.getString(NAME_I).toLowerCase();
-            String description = classroomData.getString(DESCRIPTION_I).toLowerCase();
+            String name = classroomData.getString(NAME_I);
+            String description = classroomData.getString(DESCRIPTION_I);
             return new Classroom(id, name, description);
 
         } catch (SQLException ex) {
