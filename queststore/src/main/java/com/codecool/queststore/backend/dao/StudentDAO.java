@@ -104,7 +104,6 @@ public class StudentDAO {
             studentStatement.setString(3, login);
 
             String query = userStatement.toString() + "; " + studentStatement.toString() + ";";
-            System.out.println(query);
 
             SQLQueryHandler.getInstance().executeQuery(query);
             return true;
