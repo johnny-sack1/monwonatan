@@ -36,7 +36,7 @@ CREATE TABLE Admin_type (
 
 CREATE TABLE Artifact (
     artifact_id SERIAL PRIMARY KEY,
-    available_for_groups BIT DEFAULT '0',
+    available_for_groups BOOLEAN DEFAULT FALSE,
     name VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     price INT NOT NULL
