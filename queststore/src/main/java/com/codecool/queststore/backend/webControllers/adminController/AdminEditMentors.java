@@ -168,8 +168,13 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         String password = inputs.get("password1");
         String repeatedPassword = inputs.get("password2");
 
-        if (password.equals(repeatedPassword)) {
-            new MentorDAO().createMentor(firstName, lastName, login, password, classroomId, email, address);
+        try {
+            if (password.equals(repeatedPassword)) {
+                String hashedPassword = new PasswordManager().generateStorngPasswordHash(password);
+                new MentorDAO().createMentor(firstName, lastName, login, hashedPassword, classroomId, email, address);
+            }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            redirectToLocation(exchange, "/admin/index");
         }
 
         redirectToLocation(exchange, "/admin/mentors");
