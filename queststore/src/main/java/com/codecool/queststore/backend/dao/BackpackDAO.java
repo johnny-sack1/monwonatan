@@ -70,23 +70,23 @@ public class BackpackDAO {
     }
 
     private boolean addBackpack(Backpack backpack) {
-        String addBackpackQuery = "INSERT INTO backpack (student_id, artifact_id, status) VALUES (?, ?, ?);";
+        String addBackpackQuery = "INSERT INTO backpack (student_login, artifact_id, status) VALUES (?, ?, ?);";
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
-        HashMap<Artifact, String> backpackContent = backpack.getBackpack();
-        Iterator it = backpackContent.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            try {
+        HashMap<Artifact, String> backpackContent = backpack.getStudentBackpack();
+        try {
+            for (Map.Entry<Artifact, String> entry : backpackContent.entrySet())
+            {
                 PreparedStatement backpackStatement = c.prepareStatement(addBackpackQuery);
                 backpackStatement.setString(1, backpack.getStudentLogin());
-                backpackStatement.setInt(2, ((Artifact) pair.getKey()).getArtifactId());
-                backpackStatement.setString(3, (String) pair.getValue());
-                addBackpackQuery = backpackStatement.toString();
-                SQLQueryHandler.getInstance().executeQuery(addBackpackQuery);
-            } catch (SQLException e) {
-                return false;
+                backpackStatement.setInt(2, entry.getKey().getArtifactId());
+                backpackStatement.setString(3, (String) entry.getValue());
+                SQLQueryHandler.getInstance().executeQuery(backpackStatement.toString());
             }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
         return true;
     }

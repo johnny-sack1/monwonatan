@@ -14,7 +14,7 @@ public class AdminIndex extends AbstractHandler implements HttpHandler {
         try {
             String login = getLoginFromExchange(exchange);
             Admin admin = new AdminDAO().loadAdmin(login);
-            sendTemplateResponseIndex(exchange, "adminindex", admin.getFirstName(), admin.getLastName());
+            sendTemplateResponseIndex(exchange, "adminindex", "Admin Home", "Admin's", admin.getFirstName(), admin.getLastName());
         } catch (SQLException e) {
             redirectToLocation(exchange, "logout");
         }
