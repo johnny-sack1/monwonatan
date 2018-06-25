@@ -95,4 +95,17 @@ public class StudentProfile extends AbstractHandler implements HttpHandler {
             redirectToLocation(exchange, "/student");
         }
     }
+
+    public Map<String, String> readStudentData(HttpExchange exchange) {
+        String formData = "";
+
+        try {
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            formData = br.readLine();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return parseStudentData(formData);
+    }
 }
