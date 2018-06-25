@@ -94,5 +94,9 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         }
     }
 
-
+    private String getArtifactName(HttpExchange exchange) {
+        Map inputs = readFormData(exchange);
+        String artifactName = (String) inputs.get("name");
+        return artifactName;
+    }
 }
