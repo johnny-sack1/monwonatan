@@ -65,10 +65,6 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
 
             List<Artifact> items = postMethod(student, artifactNumber);
             
-            Backpack backpack = student.getBackpack();
-            backpack.setStudentBackpack(studentBackpack);
-            BackpackDAO backpackDAO = new BackpackDAO();
-            backpackDAO.updateBackpack(backpack);
             model.with("title", "Student backpack");
             model.with("items", items);
             String response = template.render(model);
@@ -117,6 +113,14 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
 
             items.add(artifact);
         }
+        updateBackpack(student, studentBackpack);
         return items;
+    }
+
+    private void updateBackpack(Student student, HashMap<Artifact, String> studentBackpack) {
+        Backpack backpack = student.getBackpack();
+        backpack.setStudentBackpack(studentBackpack);
+        BackpackDAO backpackDAO = new BackpackDAO();
+        backpackDAO.updateBackpack(backpack);
     }
 }
