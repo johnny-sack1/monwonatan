@@ -54,7 +54,7 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         }
     }
 
-    public void sendTemplateResponseBackpack(HttpExchange exchange, String templateName, String sessionId, int artifactName) {
+    public void sendTemplateResponseBackpack(HttpExchange exchange, String templateName, String sessionId, int artifactNumber) {
 
         try {
 
@@ -63,25 +63,8 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
             JtwigModel model = JtwigModel.newModel();
 
-            HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
-            List<Artifact> items = new ArrayList<>();
-            int counter = -1;
+            List<Artifact> items = postMethod(student, artifactNumber);
             
-            for (Map.Entry<Artifact, String> entry : studentBackpack.entrySet())
-            {
-                counter++;
-
-                Artifact artifact = entry.getKey();
-                if (counter == artifactName) {
-                    artifact.setStatus("pending");
-                    studentBackpack.replace(artifact, "pending");
-                }
-                else {
-                    artifact.setStatus(entry.getValue());
-                }
-
-                items.add(artifact);
-            }
             Backpack backpack = student.getBackpack();
             backpack.setStudentBackpack(studentBackpack);
             BackpackDAO backpackDAO = new BackpackDAO();
@@ -109,6 +92,29 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         {
             Artifact artifact = entry.getKey();
             artifact.setStatus(entry.getValue());
+            items.add(artifact);
+        }
+        return items;
+    }
+
+    private List<Artifact> postMethod(Student student, int artifactNumber) {
+        HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
+        List<Artifact> items = new ArrayList<>();
+        int counter = -1;
+
+        for (Map.Entry<Artifact, String> entry : studentBackpack.entrySet())
+        {
+            counter++;
+
+            Artifact artifact = entry.getKey();
+            if (counter == artifactNumber) {
+                artifact.setStatus("pending");
+                studentBackpack.replace(artifact, "pending");
+            }
+            else {
+                artifact.setStatus(entry.getValue());
+            }
+
             items.add(artifact);
         }
         return items;
