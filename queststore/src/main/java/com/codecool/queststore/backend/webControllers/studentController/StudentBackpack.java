@@ -24,8 +24,7 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
                     getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")));
         }
         else if (exchange.getRequestMethod().equals("POST")) {
-            Map inputs = readFormData(exchange);
-            int artifactNumber = Integer.parseInt((String) inputs.get("name"));
+            int artifactNumber = getArtifactNumber(exchange);
             updateStudent(exchange,
                     getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")), artifactNumber);
             redirectToLocation(exchange, "/student");
@@ -134,5 +133,11 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         sortedMap.putAll(sortMapByStatus(studentBackpack, "pending"));
         sortedMap.putAll(sortMapByStatus(studentBackpack, "done"));
         return sortedMap;
+    }
+
+    private int getArtifactNumber(HttpExchange exchange) {
+        Map inputs = readFormData(exchange);
+        int artifactNumber = Integer.parseInt((String) inputs.get("name"));
+        return artifactNumber;
     }
 }
