@@ -26,8 +26,9 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         else if (exchange.getRequestMethod().equals("POST")) {
             Map inputs = readFormData(exchange);
             int artifactNumber = Integer.parseInt((String) inputs.get("name"));
-            sendTemplateResponseBackpack(exchange, "backpack",
+            updateStudent(exchange,
                     getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")), artifactNumber);
+            redirectToLocation(exchange, "/student");
         }
     }
 
@@ -51,21 +52,13 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         }
     }
 
-    public void sendTemplateResponseBackpack(HttpExchange exchange, String templateName, String sessionId, int artifactNumber) {
+    public void updateStudent(HttpExchange exchange, String sessionId, int artifactNumber) {
 
         try {
 
             Student student = loadStudentBySessionID(sessionId);
+            postMethod(student, artifactNumber);
 
-            JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
-            JtwigModel model = JtwigModel.newModel();
-
-            List<Artifact> items = postMethod(student, artifactNumber);
-
-            model.with("title", "Student backpack");
-            model.with("items", items);
-            String response = template.render(model);
-            sendResponse(exchange, response);
         }
         catch (SQLException e) {
             redirectToLocation(exchange, "login");
@@ -82,9 +75,7 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
         List<Artifact> items = new ArrayList<>();
 
-        Map<Artifact, String> sortedMap = sortMapByStatus(studentBackpack, "unused");
-        sortedMap.putAll(sortMapByStatus(studentBackpack, "pending"));
-        sortedMap.putAll(sortMapByStatus(studentBackpack, "done"));
+        Map<Artifact, String> sortedMap = sortMap(studentBackpack);
         for (Map.Entry<Artifact, String> entry : sortedMap.entrySet())
         {
             Artifact artifact = entry.getKey();
@@ -94,13 +85,11 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         return items;
     }
 
-    private List<Artifact> postMethod(Student student, int artifactNumber) {
+    private void postMethod(Student student, int artifactNumber) {
         HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
         List<Artifact> items = new ArrayList<>();
 
-        Map<Artifact, String> sortedMap = sortMapByStatus(studentBackpack, "unused");
-        sortedMap.putAll(sortMapByStatus(studentBackpack, "pending"));
-        sortedMap.putAll(sortMapByStatus(studentBackpack, "done"));
+        Map<Artifact, String> sortedMap = sortMap(studentBackpack);
         int counter = -1;
 
         for (Map.Entry<Artifact, String> entry : sortedMap.entrySet())
@@ -119,7 +108,6 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
             items.add(artifact);
         }
         updateBackpack(student, studentBackpack);
-        return items;
     }
 
     private void updateBackpack(Student student, HashMap<Artifact, String> studentBackpack) {
@@ -139,5 +127,12 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
             }
         }
         return sordedMap;
+    }
+
+    private Map<Artifact, String> sortMap(Map<Artifact, String> studentBackpack) {
+        Map<Artifact, String> sortedMap = sortMapByStatus(studentBackpack, "unused");
+        sortedMap.putAll(sortMapByStatus(studentBackpack, "pending"));
+        sortedMap.putAll(sortMapByStatus(studentBackpack, "done"));
+        return sortedMap;
     }
 }
