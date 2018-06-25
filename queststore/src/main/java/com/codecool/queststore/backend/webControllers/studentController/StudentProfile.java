@@ -108,4 +108,26 @@ public class StudentProfile extends AbstractHandler implements HttpHandler {
         }
         return parseStudentData(formData);
     }
+
+    public Map<String, String> parseStudentData(String formData) {
+        Map<String, String> inputs = new HashMap<>();
+        String key;
+        String value;
+        String[] pairs = formData.split("&");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            key = keyValue[0];
+            if (key.contains("password")) {
+                continue;
+            }
+            try {
+                value = URLDecoder.decode(keyValue[1], "UTF-8");
+                inputs.put(key, value);
+
+            } catch (UnsupportedEncodingException | IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
+        return inputs;
+    }
 }
