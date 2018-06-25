@@ -37,8 +37,7 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
     public void sendTemplateResponseBackpack(HttpExchange exchange, String templateName, String sessionId) {
 
         try {
-            String login = getSessionIdContainer().getUserLogin(sessionId);
-            Student student = new StudentDAO().loadStudent(login);
+            Student student = loadStudentBySessionID(sessionId);
 
             JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
             JtwigModel model = JtwigModel.newModel();
@@ -65,8 +64,8 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
     public void sendTemplateResponseBackpack(HttpExchange exchange, String templateName, String sessionId, int artifactName) {
 
         try {
-            String login = getSessionIdContainer().getUserLogin(sessionId);
-            Student student = new StudentDAO().loadStudent(login);
+
+            Student student = loadStudentBySessionID(sessionId);
 
             JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
             JtwigModel model = JtwigModel.newModel();
@@ -102,5 +101,11 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         catch (SQLException e) {
             redirectToLocation(exchange, "login");
         }
+    }
+
+    private Student loadStudentBySessionID(String sessionId) throws SQLException{
+        String login = getSessionIdContainer().getUserLogin(sessionId);
+        Student student = new StudentDAO().loadStudent(login);
+        return student;
     }
 }
