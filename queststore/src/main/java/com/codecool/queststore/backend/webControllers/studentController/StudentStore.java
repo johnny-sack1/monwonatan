@@ -72,4 +72,27 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         studentDAO.updateStudent(student);
     }
 
+    private void updateBackpack(HttpExchange exchange, String sessionId, String artifactName) {
+        try {
+            BackpackDAO backpackDAO = new BackpackDAO();
+            Student student = loadStudentBySessionID(sessionId);
+            ArtifactDAO artifactDAO = new ArtifactDAO();
+            Artifact artifact = artifactDAO.loadArtifact(artifactName);
+            int price = artifact.getPrice();
+
+            if (price < student.getCoolcoins()) {
+                student.substractCoins(price);
+                Backpack backpack = student.getBackpack();
+
+                backpack.addToBackpack(artifact, "unused");
+                backpackDAO.updateBackpack(backpack);
+            }
+            updateStudent(student);
+        }
+        catch (SQLException e) {
+            redirectToLocation(exchange, "login");
+        }
+    }
+
+
 }
