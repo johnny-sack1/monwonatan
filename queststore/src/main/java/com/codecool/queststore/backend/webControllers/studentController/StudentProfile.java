@@ -66,4 +66,33 @@ public class StudentProfile extends AbstractHandler implements HttpHandler {
         Student student = new StudentDAO().loadStudent(login);
         return student;
     }
+
+    private void updateStudent(Student student, HttpExchange exchange) {
+        Map inputs = readStudentData(exchange);
+        String firstName = (String) inputs.get("firstname");
+        String lastName = (String) inputs.get("lastname");
+        String password = (String) inputs.get("password");
+        String password2 = (String) inputs.get("password2");
+
+        if(password == null && password2 == null) {
+            student.setFirstName(firstName);
+            student.setLastName(lastName);
+
+            new StudentDAO().updateStudent(student);
+            redirectToLocation(exchange, "/student/profile");
+        } else if (password.equals(password2)) {
+            try {
+                student.setPassword(new PasswordManager().generateStorngPasswordHash(password));
+                student.setFirstName(firstName);
+                student.setLastName(lastName);
+
+                new StudentDAO().updateStudent(student);
+                redirectToLocation(exchange, "/student/profile");
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                redirectToLocation(exchange, "/student");
+            }
+        } else {
+            redirectToLocation(exchange, "/student");
+        }
+    }
 }
