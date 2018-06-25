@@ -1,5 +1,4 @@
-package com.codecool.queststore.backend.webControllers.adminController;
-
+package com.codecool.queststore.backend.webControllers.studentController;
 
 import com.codecool.queststore.backend.dao.StudentDAO;
 import com.codecool.queststore.backend.loginManager.PasswordManager;
