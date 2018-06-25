@@ -58,10 +58,10 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
     public void sendTemplateResponseStore(HttpExchange exchange, String templateName, String sessionId, String artifactName) {
 
         try {
-            String login = getSessionIdContainer().getUserLogin(sessionId);
+            
             StudentDAO studentDAO = new StudentDAO();
             BackpackDAO backpackDAO = new BackpackDAO();
-            Student student = studentDAO.loadStudent(login);
+            Student student = loadStudentBySessionID(sessionId);
             ArtifactDAO artifactDAO = new ArtifactDAO();
             Artifact artifact = artifactDAO.loadArtifact(artifactName);
             int price = artifact.getPrice();
@@ -90,5 +90,11 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         catch (SQLException e) {
             redirectToLocation(exchange, "login");
         }
+    }
+
+    private Student loadStudentBySessionID(String sessionId) throws SQLException{
+        String login = getSessionIdContainer().getUserLogin(sessionId);
+        Student student = new StudentDAO().loadStudent(login);
+        return student;
     }
 }
