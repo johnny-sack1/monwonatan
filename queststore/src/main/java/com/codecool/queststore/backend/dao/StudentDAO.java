@@ -1,14 +1,14 @@
 package com.codecool.queststore.backend.dao;
 
 import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.model.ExpLvl;
 import com.codecool.queststore.backend.model.Student;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class StudentDAO {
 
@@ -45,28 +45,40 @@ public class StudentDAO {
     }
 
     public Student loadStudent(String login) throws SQLException {
+
+        String firstName="";
+        String lastName="";
+        String password="";
+        int classroomID=0;
+        int coins_current=0;
+        int coins_total=0;
+
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
         String userQuery = "SELECT * FROM user_type WHERE login = ?";
         PreparedStatement userStatement = c.prepareStatement(userQuery);
         userStatement.setString(1, login);
         ResultSet userResultSet = SQLQueryHandler.getInstance().executeQuery(userStatement.toString());
-        userResultSet.next();
-        String firstName = userResultSet.getString("first_name");
-        String lastName = userResultSet.getString("last_name");
-        String password = userResultSet.getString("password");
-        int classroomID = userResultSet.getInt("classroom_id");
+        while (userResultSet.next()) {
+            firstName = userResultSet.getString("first_name");
+            lastName = userResultSet.getString("last_name");
+            password = userResultSet.getString("password");
+            classroomID = userResultSet.getInt("classroom_id");
+        }
 
         String studentQuery = "SELECT coins_current, coins_total FROM student_type " +
                 "WHERE login = ?";
         PreparedStatement studentStatement = c.prepareStatement(studentQuery);
         studentStatement.setString(1, login);
         ResultSet studentResultSet = SQLQueryHandler.getInstance().executeQuery(studentStatement.toString());
-        studentResultSet.next();
-        int coins_current = studentResultSet.getInt("coins_current");
-        int coins_total = studentResultSet.getInt("coins_total");
+        while (studentResultSet.next()) {
+            coins_current = studentResultSet.getInt("coins_current");
+            coins_total = studentResultSet.getInt("coins_total");
+        }
 
-        return new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
+        Student student = new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
+
+        return createAllStudentData(student, login);
     }
 
     public boolean updateStudent(Student student) {
@@ -86,7 +98,8 @@ public class StudentDAO {
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
                     "classroom_id = ?, type = ? WHERE login = ?";
-            String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?";
+
+            String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -103,7 +116,7 @@ public class StudentDAO {
             studentStatement.setInt(2, totalCoins);
             studentStatement.setString(3, login);
 
-            String query = userStatement.toString() + "; " + studentStatement.toString() + ";";
+            String query = userStatement.toString() + "; " + studentStatement.toString();
 
             SQLQueryHandler.getInstance().executeQuery(query);
             return true;
@@ -126,6 +139,40 @@ public class StudentDAO {
         }
         catch (SQLException e) {
             return null;
+        }
+    }
+
+    public Student createAllStudentData(Student student, String login) {
+        BackpackDAO backpackDAO = new BackpackDAO();
+        ExpLevelDAO expLevelDAO = new ExpLevelDAO();
+        student.setBackpack(backpackDAO.loadBackpack(login));
+        Map<String, Integer> expLevels = expLevelDAO.loadAllExpLevel();
+        StudentDAO.ValueComparator comparator = new StudentDAO.ValueComparator(expLevels);
+        Map<String, Integer> sortedExpLevels = new TreeMap<>(comparator);
+        sortedExpLevels.putAll(expLevels);
+
+        for (Map.Entry<String, Integer> entry : sortedExpLevels.entrySet()) {
+            if (student.getCoolcoins() >= entry.getValue()) {
+                ExpLvl expLvl = new ExpLvl(entry.getValue(), entry.getKey());
+                student.setExpLvl(expLvl);
+            }
+        }
+        return student;
+    }
+
+    class ValueComparator implements Comparator<String> {
+        Map<String, Integer> base;
+
+        public ValueComparator(Map<String, Integer> base) {
+            this.base = base;
+        }
+
+        public int compare(String a, String b) {
+            if (base.get(a) <= base.get(b)) {
+                return -1;
+            } else {
+                return 1;
+            }
         }
     }
 }

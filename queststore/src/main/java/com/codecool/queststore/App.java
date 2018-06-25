@@ -4,7 +4,11 @@ import com.codecool.queststore.backend.webControllers.InvalidPageHandler;
 import com.codecool.queststore.backend.webControllers.Static;
 import com.codecool.queststore.backend.webControllers.adminController.AdminController;
 import com.codecool.queststore.backend.webControllers.loginController.LoginController;
+<<<<<<< HEAD
 import com.codecool.queststore.backend.webControllers.loginController.Logout;
+=======
+import com.codecool.queststore.backend.webControllers.studentController.StudentController;
+>>>>>>> backendController
 import com.codecool.queststore.backend.webControllers.mentorController.MentorController;
 import com.sun.net.httpserver.HttpServer;
 
@@ -22,8 +26,10 @@ public class App {
             server.createContext("/mentor", new MentorController());
             server.createContext("/admin", new AdminController());
             server.createContext("/logout", new Logout());
-            server.createContext("/", new InvalidPageHandler());
+            server.createContext("/student", new StudentController());
 
+            server.createContext("/", new InvalidPageHandler());
+            
             server.setExecutor(null); // creates a default executor
 
             // start listening
