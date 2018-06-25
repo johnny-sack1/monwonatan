@@ -42,14 +42,7 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
             JtwigModel model = JtwigModel.newModel();
 
-            HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
-            List<Artifact> items = new ArrayList<>();
-            for (Map.Entry<Artifact, String> entry : studentBackpack.entrySet())
-            {
-                Artifact artifact = entry.getKey();
-                artifact.setStatus(entry.getValue());
-                items.add(artifact);
-            }
+            List<Artifact> items = getMethod(student);
 
             model.with("title", "Student backpack");
             model.with("items", items);
@@ -107,5 +100,17 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
         String login = getSessionIdContainer().getUserLogin(sessionId);
         Student student = new StudentDAO().loadStudent(login);
         return student;
+    }
+
+    private List<Artifact> getMethod(Student student) {
+        HashMap<Artifact, String> studentBackpack = student.getBackpack().getStudentBackpack();
+        List<Artifact> items = new ArrayList<>();
+        for (Map.Entry<Artifact, String> entry : studentBackpack.entrySet())
+        {
+            Artifact artifact = entry.getKey();
+            artifact.setStatus(entry.getValue());
+            items.add(artifact);
+        }
+        return items;
     }
 }
