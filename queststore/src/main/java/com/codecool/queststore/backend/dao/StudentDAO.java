@@ -98,6 +98,7 @@ public class StudentDAO {
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
                     "classroom_id = ?, type = ? WHERE login = ?";
+
             String studentTableQuery = "UPDATE student_type SET coins_current = ?, coins_total = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();

@@ -19,7 +19,7 @@ public class AdminDAO {
 
         try {
             String userTableQuery = "INSERT INTO user_type (first_name, last_name, login, password, classroom_id, type) " +
-                    "VALUES (?, ?, ?, ?, ?, ?) ";
+                    "VALUES (?, ?, ?, ?, ?, ?);";
             String adminTableQuery = "INSERT INTO admin_type (login, email) VALUES (?, ?);";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
@@ -60,8 +60,8 @@ public class AdminDAO {
 
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ?) WHERE login = ?";
-            String adminTableQuery = "UPDATE admin_type SET email = ? WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?;";
+            String adminTableQuery = "UPDATE admin_type SET email = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -109,12 +109,12 @@ public class AdminDAO {
 
         try {
             adminData.next();
-            String login =  adminData.getString(LOGIN_I).toLowerCase();
-            String first_name = adminData.getString(FIRST_NAME_I).toLowerCase();
-            String last_name = adminData.getString(LAST_NAME_I).toLowerCase();
-            String password = adminData.getString(PASSWORD_I).toLowerCase();
+            String login =  adminData.getString(LOGIN_I);
+            String first_name = adminData.getString(FIRST_NAME_I);
+            String last_name = adminData.getString(LAST_NAME_I);
+            String password = adminData.getString(PASSWORD_I);
             int classroom_id = adminData.getInt(CLASSROOM_I);
-            String email = adminData.getString(EMAIL_I).toLowerCase();
+            String email = adminData.getString(EMAIL_I);
             return new Admin(first_name, last_name, login, password, classroom_id, TYPE, email);
         } catch (SQLException ex) {
             return null;

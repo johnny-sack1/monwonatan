@@ -4,6 +4,7 @@ import com.codecool.queststore.backend.webControllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+
 public class AdminController extends AbstractHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
@@ -11,18 +12,16 @@ public class AdminController extends AbstractHandler implements HttpHandler {
         String cookieStr = exchange.getRequestHeaders().getFirst("Cookie");
         String sessionId = "";
         if (cookieStr == null) {
-            redirectToLocation(exchange, "login");
+            redirectToLocation(exchange, "/login");
         } else {
             sessionId = getSidFromCookieStr(cookieStr);
         }
 
         String permissions = getPermissions(sessionId);
-        System.out.println("Permissions : " + permissions);
 
         switch (permissions) {
             case "undefined":
-                System.out.println("redir to login!");
-                redirectToLocation(exchange, "login");
+                redirectToLocation(exchange, "/login");
                 break;
             case "student":
                 redirectToLocation(exchange, "student");
@@ -40,13 +39,13 @@ public class AdminController extends AbstractHandler implements HttpHandler {
     }
 
     private void adminRedirect(HttpExchange exchange) {
-        System.out.println(exchange.getRequestURI().toString());
         String[] uriParts = exchange.getRequestURI().toString().split("/");
 
         if (uriParts.length <= 2) {
             // "/admin"
-            new AdminIndex().handle(exchange);
+            redirectToLocation(exchange, "admin/index");
         } else {
+
             // "/admin/(action)"
             int ACTION_I = 2;
             String action = uriParts[ACTION_I];
@@ -56,7 +55,7 @@ public class AdminController extends AbstractHandler implements HttpHandler {
             } else if (action.equals("mentors")) {
                 new AdminEditMentors().handle(exchange);
             } else if (action.equals("classroom")) {
-                new AdminEditClassrooms().handle(exchange);
+                new AdminManageClassrooms().handle(exchange);
             } else if (action.equals("index")) {
                 new AdminIndex().handle(exchange);
             } else {

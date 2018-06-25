@@ -76,7 +76,7 @@ public class ArtifactDAO {
     public boolean updateArtifact(int id, boolean availableForGroups, String name, String description, int value) {
         try {
             Connection c = SQLQueryHandler.getInstance().getConnection();
-            String query = "UPDATE artifact SET available_for_groups = ?, name = ?, description = ?, value = ? " +
+            String query = "UPDATE artifact SET available_for_groups = ?, name = ?, description = ?, price = ? " +
                     "WHERE artifact_id = ?";
             PreparedStatement statement = c.prepareStatement(query);
 
@@ -90,6 +90,7 @@ public class ArtifactDAO {
             return true;
         }
         catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
