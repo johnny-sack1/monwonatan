@@ -26,10 +26,10 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
                     getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")));
         }
         else if (exchange.getRequestMethod().equals("POST")) {
-            Map inputs = readFormData(exchange);
-            String artifactName = (String) inputs.get("name");
-            sendTemplateResponseStore(exchange, "studentStore",
-                    getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")), artifactName);
+            String artifactName = getArtifactName(exchange);
+            buy(exchange, getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")),
+                    artifactName);
+            redirectToLocation(exchange, "/student");
         }
     }
 
@@ -55,41 +55,10 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         }
     }
 
-    public void sendTemplateResponseStore(HttpExchange exchange, String templateName, String sessionId, String artifactName) {
+    public void buy(HttpExchange exchange, String sessionId, String artifactName) {
 
-        try {
-            
-            StudentDAO studentDAO = new StudentDAO();
-            BackpackDAO backpackDAO = new BackpackDAO();
-            Student student = loadStudentBySessionID(sessionId);
-            ArtifactDAO artifactDAO = new ArtifactDAO();
-            Artifact artifact = artifactDAO.loadArtifact(artifactName);
-            int price = artifact.getPrice();
+        updateBackpack(exchange, sessionId, artifactName);
 
-            if (price < student.getCoolcoins()) {
-                student.substractCoins(price);
-                Backpack backpack = student.getBackpack();
-
-                backpack.addToBackpack(artifact, "unused");
-                backpackDAO.updateBackpack(backpack);
-            }
-
-            studentDAO.updateStudent(student);
-
-            JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
-            JtwigModel model = JtwigModel.newModel();
-
-            List<Artifact> artifactList = new ArtifactDAO().loadAllArtifacts();
-
-            model.with("title", "Student store");
-            model.with("items", artifactList);
-            model.with("coins", student.getCoolcoins());
-            String response = template.render(model);
-            sendResponse(exchange, response);
-        }
-        catch (SQLException e) {
-            redirectToLocation(exchange, "login");
-        }
     }
 
     private Student loadStudentBySessionID(String sessionId) throws SQLException{
@@ -97,4 +66,10 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         Student student = new StudentDAO().loadStudent(login);
         return student;
     }
+
+    private void updateStudent(Student student) {
+        StudentDAO studentDAO = new StudentDAO();
+        studentDAO.updateStudent(student);
+    }
+
 }
