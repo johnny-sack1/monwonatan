@@ -22,6 +22,7 @@
             <li><a href="/student/profile">Profile</a></li>
             <li><a href="/student/backapack" class="active">Backpack</a></li>
             <li><a href="/student/store">Store</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 </nav>
