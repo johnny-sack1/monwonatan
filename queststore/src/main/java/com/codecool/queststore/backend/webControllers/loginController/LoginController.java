@@ -40,9 +40,9 @@ public class LoginController extends AbstractHandler implements HttpHandler {
             String loginResult = new LoginProcessHandler().loginProcess(login, password);
             if (validLoginResult(loginResult)) {
                 getSessionIdContainer().add(sessionId, login);
-                redirectToLocation(exchange, loginResult);
+                redirectToLocation(exchange, "/" + loginResult);
             } else {
-                redirectToLocation(exchange, "login");
+                redirectToLocation(exchange, "/login");
             }
         }
     }
