@@ -72,7 +72,7 @@ public class ExpLevelDAO {
 
         try {
             Connection c = SQLQueryHandler.getInstance().getConnection();
-            String query = "SELECT (description, required_coins)" +
+            String query = "SELECT * " +
                     "FROM Experience_Level WHERE experience_level_id = ?;";
 
             PreparedStatement statement = c.prepareStatement(query);
@@ -87,7 +87,7 @@ public class ExpLevelDAO {
                 expLevelDescription = resultSet.getString("description");
                 expLevelRequiredCoins = resultSet.getInt("required_coins");
             }
-            return new ExpLvl(expLevelRequiredCoins, expLevelDescription);
+            return new ExpLvl(expLevelID ,expLevelRequiredCoins, expLevelDescription);
         }
         catch (SQLException e) {
             return null;

@@ -1,10 +1,12 @@
 package com.codecool.queststore.backend.model;
 
 public class ExpLvl {
+    private final int INDEX;
     private int coolcoinsNeeded;
     private String description;
 
-    public ExpLvl(int coolcoinsNeeded, String description) {
+    public ExpLvl(int index, int coolcoinsNeeded, String description) {
+        this.INDEX = index;
         this.coolcoinsNeeded = coolcoinsNeeded;
         this.description = description;
     }

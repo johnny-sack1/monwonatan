@@ -1,5 +1,7 @@
 package com.codecool.queststore.backend.model;
 
+import com.codecool.queststore.backend.dao.ExpLevelDAO;
+
 public class Student extends User {
 
     private int coolcoins;
@@ -13,6 +15,18 @@ public class Student extends User {
         this.coolcoins = coolcoins;
         this.totalCoins = totalCoins;
     }
+
+    public Student(String firstName, String lastName, String login, String password,
+                   int classRoomID, String userType, int coolcoins, int totalCoins, int expLvlId) {
+
+
+        super(firstName, lastName, login, password, classRoomID, userType);
+        this.coolcoins = coolcoins;
+        this.totalCoins = totalCoins;
+        this.expLvl = new ExpLevelDAO().loadExpLevel(expLvlId);
+    }
+
+
 
     public ExpLvl getExpLvl() {
         return expLvl;

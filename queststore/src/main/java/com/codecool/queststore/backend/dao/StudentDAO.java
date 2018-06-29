@@ -52,6 +52,7 @@ public class StudentDAO {
         int classroomID=0;
         int coins_current=0;
         int coins_total=0;
+        int exp_lvl = 0;
 
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -66,7 +67,7 @@ public class StudentDAO {
             classroomID = userResultSet.getInt("classroom_id");
         }
 
-        String studentQuery = "SELECT coins_current, coins_total FROM student_type " +
+        String studentQuery = "SELECT coins_current, coins_total, exp_lvl FROM student_type " +
                 "WHERE login = ?";
         PreparedStatement studentStatement = c.prepareStatement(studentQuery);
         studentStatement.setString(1, login);
@@ -74,11 +75,14 @@ public class StudentDAO {
         while (studentResultSet.next()) {
             coins_current = studentResultSet.getInt("coins_current");
             coins_total = studentResultSet.getInt("coins_total");
+            exp_lvl = studentResultSet.getInt("exp_lvl");
         }
 
-        Student student = new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total);
+        BackpackDAO backpackDAO = new BackpackDAO();
+        Student student = new Student(firstName, lastName, login, password, classroomID, TYPE, coins_current, coins_total, exp_lvl);
 
-        return createAllStudentData(student, login);
+        student.setBackpack(backpackDAO.loadBackpack(login));
+        return student;
     }
 
     public boolean updateStudent(Student student) {
@@ -139,40 +143,6 @@ public class StudentDAO {
         }
         catch (SQLException e) {
             return null;
-        }
-    }
-
-    public Student createAllStudentData(Student student, String login) {
-        BackpackDAO backpackDAO = new BackpackDAO();
-        ExpLevelDAO expLevelDAO = new ExpLevelDAO();
-        student.setBackpack(backpackDAO.loadBackpack(login));
-        Map<String, Integer> expLevels = expLevelDAO.loadAllExpLevel();
-        StudentDAO.ValueComparator comparator = new StudentDAO.ValueComparator(expLevels);
-        Map<String, Integer> sortedExpLevels = new TreeMap<>(comparator);
-        sortedExpLevels.putAll(expLevels);
-
-        for (Map.Entry<String, Integer> entry : sortedExpLevels.entrySet()) {
-            if (student.getCoolcoins() >= entry.getValue()) {
-                ExpLvl expLvl = new ExpLvl(entry.getValue(), entry.getKey());
-                student.setExpLvl(expLvl);
-            }
-        }
-        return student;
-    }
-
-    class ValueComparator implements Comparator<String> {
-        Map<String, Integer> base;
-
-        public ValueComparator(Map<String, Integer> base) {
-            this.base = base;
-        }
-
-        public int compare(String a, String b) {
-            if (base.get(a) <= base.get(b)) {
-                return -1;
-            } else {
-                return 1;
-            }
         }
     }
 }
