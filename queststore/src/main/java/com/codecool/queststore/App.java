@@ -4,11 +4,8 @@ import com.codecool.queststore.backend.webControllers.InvalidPageHandler;
 import com.codecool.queststore.backend.webControllers.Static;
 import com.codecool.queststore.backend.webControllers.adminController.AdminController;
 import com.codecool.queststore.backend.webControllers.loginController.LoginController;
-<<<<<<< HEAD
 import com.codecool.queststore.backend.webControllers.loginController.Logout;
-=======
 import com.codecool.queststore.backend.webControllers.studentController.StudentController;
->>>>>>> backendController
 import com.codecool.queststore.backend.webControllers.mentorController.MentorController;
 import com.sun.net.httpserver.HttpServer;
 
