@@ -14,11 +14,10 @@ public class MentorIndex extends AbstractHandler implements HttpHandler {
         try {
             String login = getLoginFromExchange(exchange);
             Mentor mentor = new MentorDAO().loadMentor(login);
-            sendTemplateResponseIndex(exchange, "mentorindex", mentor.getFirstName(), mentor.getLastName());
+            sendTemplateResponseIndex(exchange, "mentorindex", "Mentor Home", "Mentor's", mentor.getFirstName(), mentor.getLastName());
         }
         catch (SQLException e) {
             redirectToLocation(exchange, "logout");
         }
-
     }
 }

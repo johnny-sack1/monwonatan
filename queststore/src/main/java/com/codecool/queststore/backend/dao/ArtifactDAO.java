@@ -47,6 +47,22 @@ public class ArtifactDAO {
         return new Artifact(id, availableForGroups, name, description, value);
     }
 
+    public Artifact loadArtifact(String artifactName) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        String query = "SELECT * FROM artifact WHERE name = ?";
+        PreparedStatement statement = c.prepareStatement(query);
+        statement.setString(1, artifactName);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        resultSet.next();
+        boolean availableForGroups = resultSet.getBoolean("available_for_groups");
+        int id = resultSet.getInt("artifact_id");
+        String description = resultSet.getString("description");
+        int value = resultSet.getInt("price");
+
+        return new Artifact(id, availableForGroups, artifactName, description, value);
+    }
+
     public boolean updateArtifact(Artifact artifact) {
         int id = artifact.getArtifactId();
         boolean availableForGroups = artifact.isAvailableForGroups();

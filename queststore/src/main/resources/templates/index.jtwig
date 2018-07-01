@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Monwonatan">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/mainPage.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+<body onload="clock(); allFeaturesMenu();">
+<nav>
+    <div class="logo">
+        <img src="/static/images/l1.png" alt="">
+    </div>
+    <div class="nav-menu">
+        <ul>
+            <li><a href="/student" class="active">Home</a></li>
+            <li><a href="/student/profile">Profile</a></li>
+            <li><a href="/student/backpack">Backpack</a></li>
+            <li><a href="/student/store">Store</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<header id="header">
+    <div class="header-background"></div>
+    <div class="header-content">
+        <h1>Welcome on {{header}} page</h1>
+        <h2>{{firstname}} {{lastname}}!</h2>
+    </div>
+</header>
+<main>
+    <div class="vid">
+        <iframe class="yt" style="float: left" height="200px" src="https://www.youtube.com/embed/x7tLPhnA06w" frameborder="0" allowfullscreen></iframe>
+        <h4 class="vids-h4">Lorem ipsum dolor sit amet, consectetur</h4>
+        <p class="vids-p">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam ipsa ab quos, necessitatibus nisi reprehenderit, iure repellendus quis nihil at aut blanditiis, explicabo maxime iusto perspiciatis quidem fugit delectus optio cupiditate. Placeat sint adipisci porro, debitis ad saepe inventore aliquam veniam facere possimus sequi. Dolores consectetur, placeat vitae perspiciatis repellat ratione similique quae est, pariatur sed nisi, soluta beatae. Beatae incidunt esse imp inventore, et accusantium ratione sint. Dicta provident, eum excepturi sed odio fugit omnis consequuntur inventore aliquid debitis dignissimos amet voluptates. Adipisci, corporis, libero.</p>
+    </div>
+    <section id="section-a">
+        <ul>
+            <li>
+                <div class="card">
+                    <img src="https://static.pexels.com/photos/4158/apple-iphone-smartphone-desk.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
+                    <div class="card-content">
+                        <!-- TODO LINK -->
+                        <a href="https://en.wikipedia.org/wiki/Mobile_app">Web Development</a>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum culpa neque quo eum et quasi velit voluptatum cum maiores exercitationem.</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <img src="https://static.pexels.com/photos/34676/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
+                    <div class="card-content">
+                        <!-- TODO LINK -->
+                        <a href="https://en.wikipedia.org/wiki/Mobile_app">Java</a>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum culpa neque quo eum et quasi velit voluptatum cum maiores exercitationem.</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <img src="https://static.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
+                    <div class="card-content">
+                        <!-- TODO LINK -->
+                        <a href="https://en.wikipedia.org/wiki/Mobile_app">Tech news</a>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum culpa neque quo eum et quasi velit voluptatum cum maiores exercitationem.</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <div class="copyright">
+        <a href="https://www.facebook.com/CodecoolPoland/" class="fa fa-facebook"></a>
+        <a href="https://www.instagram.com/reggae.krk/?hl=pl" class="fa fa-instagram"></a>
+        Copyright &#169;
+        <script type="text/javascript">
+        var d = new Date()
+        document.write(d.getFullYear())
+        </script>
+        Monwonatan
+    </div>
+    <div id="clock" class="item clock">
+        <script type="text/javascript">
+          function clock() {
+          var date = new Date();
+
+          var day = date.getDate();
+          if (day < 10) day = "0" + day;
+          var month = date.getMonth() + 1;
+          if (month < 10) month = "0" + month;
+          var year = date.getFullYear();
+
+          var hour = date.getHours();
+          if (hour < 10) hour = "0" + hour;
+          var minute = date.getMinutes();
+          if (minute < 10) minute = "0" + minute;
+          var second = date.getSeconds();
+          if (second < 10) second = "0" + second;
+
+          document.getElementById('clock').innerHTML =
+            day + "/" + month + "/" + year + " | " + hour + ":" +
+            minute + ":" + second;
+
+            setTimeout('clock()', 1000);
+          }
+        </script>
+    </div>
+</footer>
+<script src="../js/on-scroll-navbar-behaviour.js"></script>
+</body>
+</html>
