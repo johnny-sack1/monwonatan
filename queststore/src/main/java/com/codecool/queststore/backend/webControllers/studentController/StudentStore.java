@@ -29,7 +29,7 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
             String artifactName = getArtifactName(exchange);
             buy(exchange, getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")),
                     artifactName);
-            redirectToLocation(exchange, "/student");
+            redirectToLocation(exchange, "/student/store");
         }
     }
 
