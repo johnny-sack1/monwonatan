@@ -61,3 +61,20 @@ CREATE TABLE Classroom (
     name VARCHAR(100),
     description TEXT NOT NULL
 );
+
+INSERT INTO classroom (name, description) VALUES ('2017.1', 'Module advanced');
+INSERT INTO artifact (available_for_groups, name, description, price) VALUES (default, 'artifact', 'description', 200);
+INSERT INTO quest (name, description, value) VALUES ('Stuff', 'Do some stuff', 200);
+INSERT INTO Experience_Level (description, required_coins) VALUES ('PHP programmer', 0);
+
+INSERT INTO user_type (first_name, last_name, login, password, classroom_id, type) VALUES ('Jan', 'Kowalski', 'admin',
+'1000:5b424037613932393232:7c5527f5d552085ab5ba1be337633649625070821585f031f71957963df8459217039609e17cec9b2508848e1244fd5770186b807ca7d8dd6cb474ccd3e045ff', 1, 'admin');
+INSERT INTO admin_type (login, email) VALUES ('admin', 'admin@codecool.com');
+
+INSERT INTO user_type (first_name, last_name, login, password, classroom_id, type) VALUES ('Marcin', 'Kowalski', 'mentor',
+'1000:5b424037613932393232:7c5527f5d552085ab5ba1be337633649625070821585f031f71957963df8459217039609e17cec9b2508848e1244fd5770186b807ca7d8dd6cb474ccd3e045ff', 1, 'mentor');
+INSERT INTO mentor_type (login, email, address) VALUES ('mentor', 'mentor@codecool.com', 'Ślusarska 9');
+
+INSERT INTO user_type (first_name, last_name, login, password, classroom_id, type) VALUES ('Filip', 'Brzozowski', 'student',
+'1000:5b424037613932393232:7c5527f5d552085ab5ba1be337633649625070821585f031f71957963df8459217039609e17cec9b2508848e1244fd5770186b807ca7d8dd6cb474ccd3e045ff', 1, 'student');
+INSERT INTO student_type (login, coins_current, coins_total) VALUES ('student', default, default);
