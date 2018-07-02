@@ -18,11 +18,12 @@
     </div>
     <div class="nav-menu">
         <ul>
-            <li><a href="/mentor" class="active">Home</a></li>
+            <li><a href="/mentor">Home</a></li>
             <li><a href="/mentor/profile">Profile</a></li>
-            <li><a href="/mentor/quest_manager">Quest Manager</a></li>
+            <li><a href="/mentor/quest_manager" class="active">Quest Manager</a></li>
             <li><a href="/mentor/student_edition">Student Edition</a></li>
             <li><a href="/mentor/store">Store</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 </nav>
@@ -55,6 +56,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <button id="submit-btn" class="btn buy" type="button" href="/mentor/quest_manager/add">
+            <a class="menu-option" href="/mentor/quest_manager/add">ADD NEW QUEST</a>
+        </button>
 </main>
 <footer>
     <div class="copyright">
@@ -94,5 +98,7 @@
             </script>
     </div>
 </footer>
+<script src="/static/js/quest-modification-handler.js"></script>
+<script src="/static/js/on-scroll-navbar-behaviour.js"></script>
 </body>
 </html>

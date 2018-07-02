@@ -1,6 +1,9 @@
 package com.codecool.queststore.backend.webControllers.mentorController;
 
 import com.codecool.queststore.backend.dao.QuestDAO;
+import com.codecool.queststore.backend.dao.QuestDAO;
+import com.codecool.queststore.backend.model.Classroom;
+import com.codecool.queststore.backend.model.Quest;
 import com.codecool.queststore.backend.model.Quest;
 import com.codecool.queststore.backend.webControllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -15,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,15 +27,53 @@ public class QuestManager extends AbstractHandler implements HttpHandler {
     public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
         if (method.equalsIgnoreCase("GET")) {
-            sendTemplateResponseWithTable(exchange, "questmanager");
+            String[] uriParts = exchange.getRequestURI().toString().split("/");
+
+            if (uriParts.length == 3) {
+                // "/mentor/quest"
+                sendTemplateResponseWithTable(exchange, "questmanager");
+            } else {
+                // "/mentor/quest/(action)"
+                int ACTION_I = 3;
+                String action = uriParts[ACTION_I];
+
+                if (action.equals("edit")) {
+                    updateQuest(exchange);
+                } else if (action.equals("add")) {
+                    createQuest(exchange);
+                } else {
+                    redirectToLocation(exchange, "/login");
+                }
+            }
         } else if (method.equalsIgnoreCase("POST")) {
-            try {
                 updateQuest(exchange);
-            }
-            catch (SQLException e) {
-                redirectToLocation(exchange, "/mentor/index");
-            }
         }
+    }
+
+    private void createQuest(HttpExchange exchange) {
+        String method = exchange.getRequestMethod();
+
+        if(method.equalsIgnoreCase("GET")) {
+            sendQuestCreationPage(exchange);
+        } else if (method.equalsIgnoreCase("POST")) {
+            submitQuestCreationPage(exchange);
+        } else {
+            redirectToLocation(exchange, "/mentor/index");
+        }
+    }
+
+    private void sendQuestCreationPage(HttpExchange exchange) {
+        sendTemplateResponse(exchange, "mentor-create-quest");
+    }
+
+    private void submitQuestCreationPage(HttpExchange exchange) {
+            Map<String, String> inputs = readFormData(exchange);
+            String name = inputs.get("name");
+            String description = inputs.get("description");
+            int value = Integer.valueOf(inputs.get("value"));
+            QuestDAO dao = new QuestDAO();
+            dao.createQuest(name, description, value);
+            redirectToLocation(exchange, "/mentor/quest_manager");
     }
 
     private void sendTemplateResponseWithTable(HttpExchange exchange, String templateName) {
@@ -43,7 +85,7 @@ public class QuestManager extends AbstractHandler implements HttpHandler {
         sendResponse(exchange, response);
     }
 
-    public void updateQuest(HttpExchange exchange) throws SQLException{
+    public void updateQuest(HttpExchange exchange) {
         Map inputs = readQuestData(exchange);
 
         String oldName = (String) inputs.get("submit");
@@ -51,13 +93,18 @@ public class QuestManager extends AbstractHandler implements HttpHandler {
         String description = (String) inputs.get("description");
         int value = Integer.parseInt((String) inputs.get("value"));
 
-        Quest quest = new QuestDAO().loadQuest(oldName);
-        quest.setName(newName);
-        quest.setDescription(description);
-        quest.setValue(value);
+        try {
+            Quest quest = new QuestDAO().loadQuest(oldName);
+            quest.setName(newName);
+            quest.setDescription(description);
+            quest.setValue(value);
 
-        new QuestDAO().updateQuest(quest);
-        redirectToLocation(exchange, "/mentor/quest_manager");
+            new QuestDAO().updateQuest(quest);
+            redirectToLocation(exchange, "/mentor/quest_manager");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Map<String, String> readQuestData(HttpExchange exchange) {

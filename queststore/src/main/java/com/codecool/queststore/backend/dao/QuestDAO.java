@@ -1,6 +1,7 @@
 package com.codecool.queststore.backend.dao;
 
 import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.model.Mentor;
 import com.codecool.queststore.backend.model.Quest;
 
 import java.sql.Connection;
@@ -103,5 +104,21 @@ public class QuestDAO {
         catch (SQLException e) {
             return null;
         }
+    }
+
+    public void deleteQuest(Quest quest) {
+        deleteQuest(quest.getId());
+    }
+
+    public void deleteQuest(int questID) {
+        String query = "DELETE FROM quest WHERE quest_id = ?;";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        try {
+            PreparedStatement removeQuest = c.prepareStatement(query);
+            removeQuest.setInt(1, questID);
+            query = removeQuest.toString();
+            SQLQueryHandler.getInstance().executeQuery(query);
+        } catch (SQLException e) {}
     }
 }

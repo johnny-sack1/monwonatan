@@ -23,6 +23,7 @@
             <li><a href="/mentor/quest_manager">Quest Manager</a></li>
             <li><a href="/mentor/student_edition">Student Edition</a></li>
             <li><a href="/mentor/store">Store</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 </nav>
