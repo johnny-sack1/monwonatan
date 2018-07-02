@@ -18,11 +18,11 @@
     </div>
     <div class="nav-menu">
         <ul>
-            <li><a href="/logout">Logout</a></li>
             <li><a href="/admin/index">Home</a></li>
             <li><a href="/admin/profile">Profile</a></li>
             <li><a href="/admin/mentors">Mentor edition</a></li>
             <li><a href="/admin/classroom" class="active">Classroom edition</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 </nav>
