@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Monwonatan">
+    <title>Student edition</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/student_edition.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+<body onload="clock(); allFeaturesMenu();">
+<nav>
+    <div class="logo">
+        <img src="../images/l1.png" alt="">
+    </div>
+    <div class="nav-menu">
+        <ul>
+            <li><a href="/mentor">Home</a></li>
+            <li><a href="/mentor/profile">Profile</a></li>
+            <li><a href="/mentor/quest_manager">Quest Manager</a></li>
+            <li><a href="/mentor/student_edition" class="active">Student Edition</a></li>
+            <li><a href="/mentor/store">Store</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<header id="header">
+    <div class="header-background"></div>
+    <div class="header-content">
+        <h1>Student edition</h1>
+    </div>
+</header>
+<main>
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Classroom</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <form method="POST">
+                <td><input type="checkbox" class="student-selection" value="{{student.getLogin()}}"></td>
+                <td><input type="text" name="firstname" value="{{student.getFirstName()}}"></td>
+                <td><input type="text" name="lastname" value="{{student.getLastName()}}"></td>
+                <td>
+                    <select class="form-control" name="classroom">
+                        {% for classroom in classrooms %}
+                        {% if (classroom.getID() == student.getClassRoomID()) %}
+                        <option value="{{classroom.getID()}}" selected>{{classroom.getName()}}</option>
+                        {% else %}
+                        <option value="{{classroom.getID()}}">{{classroom.getName()}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><button type="submit" name="submit" class="btn btn-primary" value="{{student.getLogin()}}">Change</button></td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="form-group" style="width:200px;">
+        <select class="form-control">
+            {% for quest in quests %}
+            <option name="quest" value="{{quest.getId()}}">{{quest.getName()}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button class="btn" id="quest_submit" type="button" onclick="#" disabled="disabled">Complete Quest</button>
+</main>
+
+<footer>
+    <div class="copyright">
+        <a href="https://www.facebook.com/CodecoolPoland/" class="fa fa-facebook"></a>
+        <a href="https://www.instagram.com/reggae.krk/?hl=pl" class="fa fa-instagram"></a>
+        Copyright &#169;
+        <script type="text/javascript">
+            var d = new Date()
+            document.write(d.getFullYear())
+            </script>
+        Monwonatan
+    </div>
+    <div id="clock" class="item clock">
+        <script type="text/javascript">
+              function clock() {
+              var date = new Date();
+
+              var day = date.getDate();
+              if (day < 10) day = "0" + day;
+              var month = date.getMonth() + 1;
+              if (month < 10) month = "0" + month;
+              var year = date.getFullYear();
+
+              var hour = date.getHours();
+              if (hour < 10) hour = "0" + hour;
+              var minute = date.getMinutes();
+              if (minute < 10) minute = "0" + minute;
+              var second = date.getSeconds();
+              if (second < 10) second = "0" + second;
+
+              document.getElementById('clock').innerHTML =
+                day + "/" + month + "/" + year + " | " + hour + ":" +
+                minute + ":" + second;
+
+                setTimeout('clock()', 1000);
+              }
+            </script>
+    </div>
+</footer>
+</body>
+<script src="../static/js/student-editor.js"></script>
+<script src="../static/js/quest-assign-handler.js"></script>
+<script src="../static/js/on-scroll-navbar-behaviour.js"></script>
+</html>

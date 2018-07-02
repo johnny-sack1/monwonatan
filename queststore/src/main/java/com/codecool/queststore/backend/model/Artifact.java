@@ -7,6 +7,7 @@ public class Artifact {
     private String name;
     private String description;
     private int price;
+    private String status;
 
     public Artifact(int artifactId, boolean availableForGroups, String name, String description, int price) {
         this.artifactId = artifactId;
@@ -58,5 +59,9 @@ public class Artifact {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
