@@ -27,7 +27,7 @@ public class StudentBackpack extends AbstractHandler implements HttpHandler {
             int artifactNumber = getArtifactNumber(exchange);
             updateStudent(exchange,
                     getSidFromCookieStr(exchange.getRequestHeaders().getFirst("Cookie")), artifactNumber);
-            redirectToLocation(exchange, "/student");
+            redirectToLocation(exchange, "/student/backpack");
         }
     }
 
