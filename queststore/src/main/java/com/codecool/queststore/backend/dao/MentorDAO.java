@@ -154,7 +154,7 @@ public class MentorDAO {
         deleteMentor(mentor.getLogin());
     }
 
-    public void deleteMentor(String mentorLogin) {
+    public boolean deleteMentor(String mentorLogin) {
         String query = "DELETE FROM user_type WHERE login = ?;";
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -163,6 +163,9 @@ public class MentorDAO {
             removeMentor.setString(1, mentorLogin);
             query = removeMentor.toString();
             SQLQueryHandler.getInstance().executeQuery(query);
-        } catch (SQLException e) {}
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 }
