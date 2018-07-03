@@ -1,12 +1,16 @@
 package com.codecool.queststore.backend.webControllers.mentorController;
 
+import com.sun.net.httpserver.HttpExchange;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class QuestManagerTest {
 
@@ -19,10 +23,17 @@ class QuestManagerTest {
 
     @Test
     void testUpdateQuest() {
+
+
     }
 
     @Test
     void testReadQuestData() {
+        HttpExchange mockedHttpExchange = mock(HttpExchange.class);
+        when(mockedHttpExchange.getRequestURI()).thenReturn(URI.create("http://localhost:8001//admin/classroom/add"));
+        when(mockedHttpExchange.getRequestMethod()).thenReturn("POST");
+        System.out.println(mockedHttpExchange.getRequestMethod());
+        System.out.println(mockedHttpExchange.getRequestURI());
     }
 
     @Test
