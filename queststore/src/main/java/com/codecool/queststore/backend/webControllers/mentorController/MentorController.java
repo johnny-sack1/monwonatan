@@ -1,5 +1,6 @@
 package com.codecool.queststore.backend.webControllers.mentorController;
 
+import com.codecool.queststore.backend.dao.QuestDAO;
 import com.codecool.queststore.backend.webControllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -50,7 +51,7 @@ public class MentorController extends AbstractHandler implements HttpHandler {
                     new MentorProfile().handle(exchange);
                     break;
                 case "quest_manager":
-                    new QuestManager().handle(exchange);
+                    new QuestManager(new QuestDAO()).handle(exchange);
                     break;
                 case "student_edition":
                     new StudentEdition().handle(exchange);
