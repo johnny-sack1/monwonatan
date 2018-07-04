@@ -25,6 +25,10 @@ public abstract class AbstractHandler {
         return sessionIdContainer;
     }
 
+    public void setSessionIdContainer(SessionIdContainer sessionIdContainer) {
+        this.sessionIdContainer = sessionIdContainer;
+    }
+
     public void redirectToLocation(HttpExchange exchange, String location) {
         Headers responseHeaders = exchange.getResponseHeaders();
         responseHeaders.add("Location", location);
