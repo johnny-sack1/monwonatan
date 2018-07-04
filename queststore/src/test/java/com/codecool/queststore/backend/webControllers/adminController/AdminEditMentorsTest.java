@@ -1,10 +1,8 @@
 package com.codecool.queststore.backend.webControllers.adminController;
 
 import com.sun.net.httpserver.HttpExchange;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -16,8 +14,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AdminEditMentorsTest {
-
-
     @Test
     void test_is_admin_able_to_add_new_mentor() {
 
@@ -43,6 +39,7 @@ class AdminEditMentorsTest {
     }
 
     @Test
+    @Disabled
     void test_is_admin_able_to_delete_mentor() {
         HttpExchange mockedHttpExchange = mock(HttpExchange.class);
         URI addMentorEndpoint = URI.create("/admin/classroom/delete/fbrzozowski");
@@ -52,5 +49,4 @@ class AdminEditMentorsTest {
 
         assertTrue((new AdminEditMentors()).submitMentorDeletionPage(mockedHttpExchange));
     }
-
 }
