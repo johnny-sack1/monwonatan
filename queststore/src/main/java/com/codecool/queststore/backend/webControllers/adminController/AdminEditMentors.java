@@ -61,7 +61,9 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         if (method.equalsIgnoreCase("GET")) {
             sendMentorDeletionPage(exchange);
         } else if (method.equalsIgnoreCase("POST")) {
-            submitMentorDeletionPage(exchange);
+            MentorDAO mentorDAO = new MentorDAO();
+            submitMentorDeletionPage(exchange, mentorDAO);
+            redirectToLocation(exchange, "/admin/mentors");
         } else {
             redirectToLocation(exchange, "/admin/index");
         }
@@ -73,7 +75,9 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         if (method.equalsIgnoreCase("GET")) {
             sendMentorCreationPage(exchange);
         } else if (method.equalsIgnoreCase("POST")) {
-            submitMentorCreationPage(exchange);
+            MentorDAO mentorDAO = new MentorDAO();
+            submitMentorCreationPage(exchange, mentorDAO);
+            redirectToLocation(exchange, "/admin/mentors");
         } else {
             redirectToLocation(exchange, "/admin/index");
         }
@@ -157,7 +161,7 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         }
     }
 
-    public boolean submitMentorCreationPage(HttpExchange exchange) {
+    public boolean submitMentorCreationPage(HttpExchange exchange, MentorDAO mentorDAO) {
         Map <String, String> inputs = readFormData(exchange);
         String firstName = inputs.get("firstname");
         String lastName = inputs.get("lastname");
@@ -171,21 +175,19 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         try {
             if (password.equals(repeatedPassword)) {
                 String hashedPassword = new PasswordManager().generateStorngPasswordHash(password);
-                new MentorDAO().createMentor(firstName, lastName, login, hashedPassword, classroomId, email, address);
+                mentorDAO.createMentor(firstName, lastName, login, hashedPassword, classroomId, email, address);
                 return true;
             }
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             redirectToLocation(exchange, "/admin/index");
             return false;
         }
-        redirectToLocation(exchange, "/admin/mentors");
         return false;
     }
 
-    public boolean submitMentorDeletionPage(HttpExchange exchange) {
+    public boolean submitMentorDeletionPage(HttpExchange exchange, MentorDAO mentorDAO) {
         String mentorLogin = getMentorLogin(exchange);
-        boolean deleted = new MentorDAO().deleteMentor(mentorLogin);
-        redirectToLocation(exchange, "/admin/mentors");
+        boolean deleted = mentorDAO.deleteMentor(mentorLogin);
         return deleted;
     }
 
