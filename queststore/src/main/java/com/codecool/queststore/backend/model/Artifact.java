@@ -16,14 +16,14 @@ public class Artifact {
         this.description = description;
         this.price = price;
     }
-
-    public Artifact(int artifactId, int availableForGroups, String name, String description, int price) {
-        this.artifactId = artifactId;
-        this.availableForGroups = availableForGroups == 1;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
+//
+//    public Artifact(int artifactId, int availableForGroups, String name, String description, int price) {
+//        this.artifactId = artifactId;
+//        this.availableForGroups = availableForGroups == 1;
+//        this.name = name;
+//        this.description = description;
+//        this.price = price;
+//    }
 
     public int getArtifactId() {
         return artifactId;
@@ -63,5 +63,14 @@ public class Artifact {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        String artifact = "artifact:";
+        artifact += "id:" + artifactId + "|group:" + availableForGroups + "|name:" + name + "|desc:" + description
+                + "|price:" + price + "|status:" + status;
+
+        return artifact;
     }
 }
