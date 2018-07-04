@@ -17,6 +17,21 @@ import java.util.List;
 import java.util.Map;
 
 public class StudentStore extends AbstractHandler implements HttpHandler {
+    private StudentDAO studentDAO = new StudentDAO();
+    private BackpackDAO backpackDAO = new BackpackDAO();
+    private ArtifactDAO artifactDAO = new ArtifactDAO();
+
+    public void setStudentDAO(StudentDAO studentDAO) {
+        this.studentDAO = studentDAO;
+    }
+
+    public void setArtifactDAO(ArtifactDAO artifactDAO) {
+        this.artifactDAO = artifactDAO;
+    }
+
+    public void setBackpackDAO(BackpackDAO backpackDAO) {
+        this.backpackDAO = backpackDAO;
+    }
 
     @Override
     public void handle(HttpExchange exchange) {
@@ -56,27 +71,8 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
     }
 
     public void buy(HttpExchange exchange, String sessionId, String artifactName) {
-
-        updateBackpack(exchange, sessionId, artifactName);
-
-    }
-
-    private Student loadStudentBySessionID(String sessionId) throws SQLException{
-        String login = getSessionIdContainer().getUserLogin(sessionId);
-        Student student = new StudentDAO().loadStudent(login);
-        return student;
-    }
-
-    private void updateStudent(Student student) {
-        StudentDAO studentDAO = new StudentDAO();
-        studentDAO.updateStudent(student);
-    }
-
-    private void updateBackpack(HttpExchange exchange, String sessionId, String artifactName) {
         try {
-            BackpackDAO backpackDAO = new BackpackDAO();
             Student student = loadStudentBySessionID(sessionId);
-            ArtifactDAO artifactDAO = new ArtifactDAO();
             Artifact artifact = artifactDAO.loadArtifact(artifactName);
             int price = artifact.getPrice();
 
@@ -92,9 +88,42 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
         catch (SQLException e) {
             redirectToLocation(exchange, "login");
         }
+
     }
 
-    private String getArtifactName(HttpExchange exchange) {
+    private Student loadStudentBySessionID(String sessionId) throws SQLException{
+        String login = getSessionIdContainer().getUserLogin(sessionId);
+        Student student = studentDAO.loadStudent(login);
+        return student;
+    }
+
+    private void updateStudent(Student student) {
+        studentDAO.updateStudent(student);
+    }
+
+//    private void updateBackpack(HttpExchange exchange, String sessionId, String artifactName) {
+//        try {
+//            BackpackDAO backpackDAO = new BackpackDAO();
+//            Student student = loadStudentBySessionID(sessionId);
+//            ArtifactDAO artifactDAO = new ArtifactDAO();
+//            Artifact artifact = artifactDAO.loadArtifact(artifactName);
+//            int price = artifact.getPrice();
+//
+//            if (price < student.getCoolcoins()) {
+//                student.substractCoins(price);
+//                Backpack backpack = student.getBackpack();
+//
+//                backpack.addToBackpack(artifact, "unused");
+//                backpackDAO.updateBackpack(backpack);
+//            }
+//            updateStudent(student);
+//        }
+//        catch (SQLException e) {
+//            redirectToLocation(exchange, "login");
+//        }
+//    }
+
+    public String getArtifactName(HttpExchange exchange) {
         Map inputs = readFormData(exchange);
         String artifactName = (String) inputs.get("name");
         return artifactName;
