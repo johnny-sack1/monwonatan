@@ -24,7 +24,11 @@ import java.util.Map;
 
 public class QuestManager extends AbstractHandler implements HttpHandler {
 
-    QuestDAO questDAO = new QuestDAO();
+    QuestDAO questDAO;
+
+    public QuestManager(QuestDAO questDAO) {
+        this.questDAO = questDAO;
+    }
 
     @Override
     public void handle(HttpExchange exchange) {
