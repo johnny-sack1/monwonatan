@@ -1,11 +1,15 @@
 package com.codecool.queststore.backend.dao;
 
 import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.databaseConnection.PostgreSQLJDBC;
 import com.codecool.queststore.backend.model.Artifact;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -20,6 +24,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+//import static org.powermock.api.mockito.PowerMockito.mock;
+
 
 
 @RunWith(PowerMockRunner.class)
@@ -28,9 +34,20 @@ class ArtifactDAOTest {
 
     ArtifactDAO artifactDAO;
 
+    @Mock
+    Connection mockedConnection;
+
+    @Spy
+    SQLQueryHandler mockedSQLQueryHandler;
+
     @BeforeEach
-    void setupDAO() {
+    void setupDAO() throws Exception{
         artifactDAO = new ArtifactDAO();
+        mockedConnection = PowerMockito.mock(Connection.class);
+        PostgreSQLJDBC connectionEstablisher = PowerMockito.mock(PostgreSQLJDBC.class);
+        PowerMockito.whenNew(PostgreSQLJDBC.class).withNoArguments().thenReturn(connectionEstablisher);
+        PowerMockito.doReturn(mockedConnection).when(connectionEstablisher).getConnection();
+        mockedSQLQueryHandler = PowerMockito.spy(SQLQueryHandler.getInstance());
     }
 
     @Test
@@ -38,15 +55,12 @@ class ArtifactDAOTest {
         Artifact testArtifact = new Artifact(1, true,
                 "skryptPHP", "nvm", 300);
         String expectedQuery = "SELECT * FROM artifact WHERE artifact_id = ?";
-        SQLQueryHandler mockedSQLQueryHandler = mock(SQLQueryHandler.class);
-        Connection mockedConnection = mock(Connection.class);
         ResultSet mockedResultSet = mock(ResultSet.class);
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+        mockStatic(SQLQueryHandler.class);
 
         //todo labels do zmiennych, argument value do zmiennej
-        mockStatic(SQLQueryHandler.class);
-        when(SQLQueryHandler.getInstance()).thenReturn(mockedSQLQueryHandler);
-        when(mockedSQLQueryHandler.getConnection()).thenReturn(mockedConnection);
+//        when(mockedSQLQueryHandler.getConnection()).thenReturn(mockedConnection);
         when(mockedSQLQueryHandler.executeQuery(anyString())).thenReturn(mockedResultSet);
         when(mockedResultSet.next()).thenReturn(true);
         when(mockedResultSet.getBoolean("available_for_groups")).thenReturn(true);
