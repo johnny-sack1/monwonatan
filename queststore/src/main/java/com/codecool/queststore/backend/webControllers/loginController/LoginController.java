@@ -1,5 +1,6 @@
 package com.codecool.queststore.backend.webControllers.loginController;
 
+import com.codecool.queststore.backend.dao.LoginDAO;
 import com.codecool.queststore.backend.loginManager.LoginProcessHandler;
 import com.codecool.queststore.backend.webControllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -37,7 +38,9 @@ public class LoginController extends AbstractHandler implements HttpHandler {
             Map inputs = readFormData(exchange);
             String login = (String) inputs.get("login");
             String password = (String) inputs.get("password");
-            String loginResult = new LoginProcessHandler().loginProcess(login, password);
+
+            LoginDAO loginDAO = new LoginDAO();
+            String loginResult = new LoginProcessHandler(loginDAO).loginProcess(login, password);
             if (validLoginResult(loginResult)) {
                 getSessionIdContainer().add(sessionId, login);
                 redirectToLocation(exchange, "/" + loginResult);
