@@ -48,12 +48,12 @@ class QuestManagerTest {
         when(mockedHttpExchange.getResponseHeaders()).thenReturn(new Headers());
 
         questManager.updateQuest(mockedHttpExchange);
-        
+
+        verify(mockedQuestDAO).updateQuest(argument.capture());
         returnedName = argument.getValue().getName();
         returnedDescription = argument.getValue().getDescription();
         returnedValue = argument.getValue().getValue();
 
-        verify(mockedQuestDAO).updateQuest(argument.capture());
         assertEquals("brzozo", returnedName);
         assertEquals("lol", returnedDescription);
         assertEquals(3, returnedValue);
