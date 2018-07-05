@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Monwonatan">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/student_profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+<body onload="clock(); allFeaturesMenu();">
+<nav>
+    <div class="logo">
+        <img src="/static/images/l1.png" alt="">
+    </div>
+    <div class="nav-menu">
+        <ul>
+            <li><a href="/admin/index">Home</a></li>
+            <li><a href="/admin/profile">Profile</a></li>
+            <li><a href="/admin/mentors">Mentor edition</a></li>
+            <li><a href="/admin/classroom" class="active">Classroom edition</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<header id="header">
+    <div class="header-background"></div>
+    <div class="header-content">
+        <h1>Classroom edition!</h1>
+    </div>
+</header>
+<main>
+    <form method="post">
+        <div class="form-group row">
+            <label for="ClassroomId" class="col-sm-2 col-form-label">Classroom ID:</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="id" type="text" id="ClassroomId" value="{{ id }}" disabled>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ClassroomName" class="col-sm-2 col-form-label">Classroom name:</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="name" type="text" id="ClassroomName" value="{{ name }}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="ClassroomDescription" class="col-sm-2 col-form-label">Classroom description:</label>
+            <div class="col-sm-10">
+                <input class="form-control" name="description" type="text" id="ClassroomDescription" value="{{ description }}">
+            </div>
+        </div>
+        <div class="for-group row">
+            <div class="col-sm-10">
+                <button id="submit-btn" type="submit" class="btn btn-primary" disabled="disabled">Change</button>
+            </div>
+        </div>
+    </form>
+</main>
+
+<footer>
+    <div class="copyright">
+        <a href="https://www.facebook.com/CodecoolPoland/" class="fa fa-facebook"></a>
+        <a href="https://www.instagram.com/reggae.krk/?hl=pl" class="fa fa-instagram"></a>
+        Copyright &#169;
+        <script type="text/javascript">
+            var d = new Date()
+            document.write(d.getFullYear())
+            </script>
+        Monwonatan
+    </div>
+    <div id="clock" class="item clock">
+        <script type="text/javascript">
+              function clock() {
+              var date = new Date();
+
+              var day = date.getDate();
+              if (day < 10) day = "0" + day;
+              var month = date.getMonth() + 1;
+              if (month < 10) month = "0" + month;
+              var year = date.getFullYear();
+
+              var hour = date.getHours();
+              if (hour < 10) hour = "0" + hour;
+              var minute = date.getMinutes();
+              if (minute < 10) minute = "0" + minute;
+              var second = date.getSeconds();
+              if (second < 10) second = "0" + second;
+
+              document.getElementById('clock').innerHTML =
+                day + "/" + month + "/" + year + " | " + hour + ":" +
+                minute + ":" + second;
+
+                setTimeout('clock()', 1000);
+              }
+        </script>
+    </div>
+</footer>
+<script src="/static/js/input-validator.js"></script>
+<script src="/static/js/on-scroll-navbar-behaviour.js"></script>
+</body>
+</html>

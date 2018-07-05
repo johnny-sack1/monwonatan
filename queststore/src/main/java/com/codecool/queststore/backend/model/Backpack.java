@@ -12,7 +12,7 @@ public class Backpack {
         this.studentBackpack = new HashMap<Artifact, String>();
     }
 
-    public HashMap<Artifact, String> getBackpack() {
+    public HashMap<Artifact, String> getStudentBackpack() {
         return studentBackpack;
     }
 
@@ -22,5 +22,20 @@ public class Backpack {
 
     public String getStudentLogin() {
         return studentLogin;
+    }
+
+    public void setStudentBackpack(HashMap<Artifact, String> studentBackpack) {
+        this.studentBackpack = studentBackpack;
+    }
+
+    @Override
+    public String toString() {
+        String backpack = studentLogin + ": ";
+
+        for (Artifact artifact : studentBackpack.keySet()) {
+            backpack += artifact.toString();
+        }
+
+        return backpack;
     }
 }

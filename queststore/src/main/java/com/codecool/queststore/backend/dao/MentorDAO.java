@@ -67,8 +67,8 @@ public class MentorDAO {
 
         try {
             String userTableQuery = "UPDATE user_type SET first_name = ?, last_name = ?, password = ?, " +
-                    "classroom_id = ?, type = ?) WHERE login = ?";
-            String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?";
+                    "classroom_id = ?, type = ? WHERE login = ?;";
+            String mentorTableQuery = "UPDATE mentor_type SET email = ?, address = ? WHERE login = ?;";
 
             Connection c = SQLQueryHandler.getInstance().getConnection();
 
@@ -96,7 +96,8 @@ public class MentorDAO {
     }
 
     public Mentor loadMentor(String login) throws SQLException {
-        String query = "SELECT * FROM mentor_type WHERE login ILIKE ?";
+        String query = "SELECT * FROM user_type LEFT JOIN mentor_type ON (user_type.login = mentor_type.login) " +
+                "WHERE mentor_type.login ILIKE ?";
         Connection c = SQLQueryHandler.getInstance().getConnection();
 
         PreparedStatement statement = c.prepareStatement(query);
@@ -108,17 +109,25 @@ public class MentorDAO {
     }
 
     public Mentor extractAndCreate(ResultSet resultSet) {
+        int LOGIN_I = 1;
+        int PASSWORD_I = 2;
+        int FIRST_NAME_I = 3;
+        int LAST_NAME_I = 4;
+        int CLASSROOM_ID_I = 5;
+        int EMAIL_I = 8;
+        int ADDRESS_I = 9;
 
         try {
-            String firstName = resultSet.getString(EColumnNumber.FIRST_NAME.index()).toLowerCase();
-            String lastName = resultSet.getString(EColumnNumber.LAST_NAME.index()).toLowerCase();
-            String login = resultSet.getString(EColumnNumber.LOGIN.index()).toLowerCase();
-            String password = resultSet.getString(EColumnNumber.PASSWORD.index()).toLowerCase();
-            int classId = Integer.parseInt(resultSet.getString(EColumnNumber.CLASSROOM.index()));
-            String userType = resultSet.getString(EColumnNumber.TYPE.index()).toLowerCase();
-            String email = resultSet.getString(EColumnNumber.EMAIL.index()).toLowerCase();
-            String address = resultSet.getString(EColumnNumber.ADDRESS.index()).toLowerCase();
-            return new Mentor(firstName, lastName, login, password, classId, userType, email, address);
+            resultSet.next();
+
+            String firstName = resultSet.getString(FIRST_NAME_I);
+            String lastName = resultSet.getString(LAST_NAME_I);
+            String login = resultSet.getString(LOGIN_I);
+            String password = resultSet.getString(PASSWORD_I);
+            int classId = Integer.parseInt(resultSet.getString(CLASSROOM_ID_I));
+            String email = resultSet.getString(EMAIL_I);
+            String address = resultSet.getString(ADDRESS_I);
+            return new Mentor(firstName, lastName, login, password, classId, TYPE, email, address);
         } catch (SQLException e) {
             return null;
         }
@@ -138,6 +147,25 @@ public class MentorDAO {
 
         } catch (SQLException e) {
             return null;
+        }
+    }
+
+    public void deleteMentor(Mentor mentor) {
+        deleteMentor(mentor.getLogin());
+    }
+
+    public boolean deleteMentor(String mentorLogin) {
+        String query = "DELETE FROM user_type WHERE login = ?;";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        try {
+            PreparedStatement removeMentor = c.prepareStatement(query);
+            removeMentor.setString(1, mentorLogin);
+            query = removeMentor.toString();
+            SQLQueryHandler.getInstance().executeQuery(query);
+            return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
 }

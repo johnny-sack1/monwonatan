@@ -1,6 +1,7 @@
 package com.codecool.queststore.backend.dao;
 
 import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
+import com.codecool.queststore.backend.model.Mentor;
 import com.codecool.queststore.backend.model.Quest;
 
 import java.sql.Connection;
@@ -39,6 +40,21 @@ public class QuestDAO {
         ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
         resultSet.next();
         String name = resultSet.getString("name");
+        String description = resultSet.getString("description");
+        int value = resultSet.getInt("value");
+
+        return new Quest(id, name, description, value);
+    }
+
+    public Quest loadQuest(String name) throws SQLException {
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        String query = "SELECT * FROM quest WHERE name = ?";
+        PreparedStatement statement = c.prepareStatement(query);
+        statement.setString(1, name);
+        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        resultSet.next();
+        int id = resultSet.getInt("quest_id");
         String description = resultSet.getString("description");
         int value = resultSet.getInt("value");
 
@@ -88,5 +104,21 @@ public class QuestDAO {
         catch (SQLException e) {
             return null;
         }
+    }
+
+    public void deleteQuest(Quest quest) {
+        deleteQuest(quest.getId());
+    }
+
+    public void deleteQuest(int questID) {
+        String query = "DELETE FROM quest WHERE quest_id = ?;";
+        Connection c = SQLQueryHandler.getInstance().getConnection();
+
+        try {
+            PreparedStatement removeQuest = c.prepareStatement(query);
+            removeQuest.setInt(1, questID);
+            query = removeQuest.toString();
+            SQLQueryHandler.getInstance().executeQuery(query);
+        } catch (SQLException e) {}
     }
 }
