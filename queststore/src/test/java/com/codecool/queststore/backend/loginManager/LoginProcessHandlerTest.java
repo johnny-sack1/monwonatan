@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mock;
 
 class LoginProcessHandlerTest {
 
@@ -23,7 +23,7 @@ class LoginProcessHandlerTest {
     }
 
     @Test
-    void test_is_user_able_to_log_in_with_correct_password() throws SQLException {
+    void testUserAbleToLoginWithCorrectPassword() throws SQLException {
 
         when(loginDAO.getPasswordBy("admin")).thenReturn(hashedPassword);
         when(loginDAO.getTypeBy("admin")).thenReturn("admin");
@@ -33,7 +33,7 @@ class LoginProcessHandlerTest {
     }
 
     @Test
-    void test_user_cant_log_in_when_enter_wrong_password() throws SQLException {
+    void testUserIsUnableToLoginWithWrongPassword() throws SQLException {
 
         when(loginDAO.getPasswordBy("admin")).thenReturn("wrong password");
         when(loginDAO.getTypeBy("admin")).thenReturn("admin");

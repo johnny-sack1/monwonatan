@@ -27,7 +27,7 @@ class AdminEditMentorsTest {
     }
 
     @Test
-    void test_is_admin_able_to_add_new_mentor() {
+    void testAdminIsAbleToAddNewMentor() {
 
         URI addMentorEndpoint = URI.create("admin/classroom/add");
 
@@ -49,7 +49,7 @@ class AdminEditMentorsTest {
     }
 
     @Test
-    void test_is_admin_able_to_delete_mentor() {
+    void testAdminIsAbleToDeleteMentor() {
         URI addMentorEndpoint = URI.create("/admin/classroom/delete/test");
 
         when(mockedHttpExchange.getRequestURI()).thenReturn(addMentorEndpoint);
@@ -61,7 +61,7 @@ class AdminEditMentorsTest {
     }
 
     @Test
-    void test_is_admin_able_to_add_new_mentor_when_passwords_do_not_match() {
+    void testAdminIsUnableToAddNewMentorWhenPasswordsDoNotMatch() {
 
         URI addMentorEndpoint = URI.create("admin/classroom/add");
 
