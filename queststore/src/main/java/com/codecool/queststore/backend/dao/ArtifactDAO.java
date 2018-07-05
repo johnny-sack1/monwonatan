@@ -12,9 +12,15 @@ import java.util.List;
 
 public class ArtifactDAO {
 
-    public boolean createArtifact(boolean availableForGroups, String name, String description, int price) {
+    Connection c;
+
+    public ArtifactDAO(Connection c) {
+        this.c = c;
+    }
+
+    public boolean createArtifact(boolean availableForGroups, String name,
+                                  String description, int price) {
         try {
-            Connection c = SQLQueryHandler.getInstance().getConnection();
             String query = "INSERT INTO artifact (available_for_groups, name, description, price) " +
                     "VALUES (?, ?, ?, ?);";
             PreparedStatement statement = c.prepareStatement(query);
@@ -32,7 +38,6 @@ public class ArtifactDAO {
     }
 
     public Artifact loadArtifact(int id) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
 
         String query = "SELECT * FROM artifact WHERE artifact_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
@@ -48,7 +53,6 @@ public class ArtifactDAO {
     }
 
     public Artifact loadArtifact(String artifactName) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
 
         String query = "SELECT * FROM artifact WHERE name = ?";
         PreparedStatement statement = c.prepareStatement(query);
@@ -73,9 +77,9 @@ public class ArtifactDAO {
         return updateArtifact(id, availableForGroups, name, description, price);
     }
 
-    public boolean updateArtifact(int id, boolean availableForGroups, String name, String description, int value) {
+    public boolean updateArtifact(int id, boolean availableForGroups, String name,
+                                  String description, int value) {
         try {
-            Connection c = SQLQueryHandler.getInstance().getConnection();
             String query = "UPDATE artifact SET available_for_groups = ?, name = ?, description = ?, price = ? " +
                     "WHERE artifact_id = ?";
             PreparedStatement statement = c.prepareStatement(query);
