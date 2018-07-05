@@ -22,24 +22,51 @@ import static org.mockito.Mockito.when;
 public class StudentStoreTest {
     StudentStore studentStore = new StudentStore();
 
+    /**
+     * Creates empty backpack for testing purpose;
+     * @return Backpack
+     * @param login of student who owns backpack
+     */
 
     private Backpack createEmptyBackpack(String login) {
         return new Backpack(login);
     }
 
+    /**
+     * Creates User (Student instance)  for testing purpose;
+     * set user ballance as 2000 coolcoins, and connect created student with empty backack.
+     * @return Student
+     */
+
     private Student createTestStudentWithSufficientBallance() {
         Student student = new Student("Phill", "Brzozo", "brzozo",
                 "philip", 0, "Php master", 2000, 2000);
+        Backpack emptyBackpack = new Backpack(student.getLogin());
+        student.setBackpack(emptyBackpack);
 
         return student;
     }
+
+    /**
+     * Creates User (Student instance)  for testing purpose;
+     * set user ballance as 0 coolcoins, and connect created student with empty backpack.
+     * @return Student
+     */
 
     private Student createTestStudentWithInsufficientBallance() {
         Student student = new Student("Phill", "Brzozo", "brzozo",
                 "philip", 0, "Php master", 0, 2000);
+        Backpack emptyBackpack = new Backpack(student.getLogin());
+        student.setBackpack(emptyBackpack);
 
         return student;
     }
+
+    /**
+     * Creates Artifact for testing purpose;
+     * sets price as 1000 coolcoins.
+     * @return Artifact
+     */
 
     private Artifact createTestArtifact() {
         Artifact artifact = new Artifact(1, true, "Test artifact",
@@ -48,12 +75,33 @@ public class StudentStoreTest {
         return artifact;
     }
 
+    /**
+     * Creates backpack with test artifact inside, for comparing purpose;
+     * @return Backpack
+     * @param login of student who owns backpack
+     */
+
+    private Backpack createBackpackWithTestArtifact(String login) {
+        Backpack backpack = new Backpack(login);
+        backpack.addToBackpack(createTestArtifact(), "unused");
+
+        return backpack;
+    }
+
+    /**
+     * Test if it's possible to buy Artifact when Student have sufficient ammount of coolcoins.
+     * It is using Test User from createTestStudentWithSufficientBallance() method,
+     * tries to buy Test artifact and compare if it's being add to his backpack.
+     * Backpack state after transaction attempt is being captured from BackpackDAO.
+     */
+
     @Test
-    void testSuccesfullTransaction() throws SQLException {
-        Backpack emptyBackpack = createEmptyBackpack("brzozo");
+    void testBuySufficientBallance() throws SQLException {
         Student testStudentBeforeBuy = createTestStudentWithSufficientBallance();
-        testStudentBeforeBuy.setBackpack(emptyBackpack);
+        String expectedOutput = createBackpackWithTestArtifact(testStudentBeforeBuy.getLogin()).toString();
         Artifact testArtifact = createTestArtifact();
+
+
         SessionIdContainer mockedSessionIdContainer = mock(SessionIdContainer.class);
         StudentDAO mockedStudentDAO = mock(StudentDAO.class);
         BackpackDAO mockedBackPackDAO = mock(BackpackDAO.class);
@@ -68,18 +116,30 @@ public class StudentStoreTest {
         when(mockedStudentDAO.loadStudent("brzozo")).thenReturn(testStudentBeforeBuy);
         when(mockedArtifactDAO.loadArtifact("testArtifact")).thenReturn(testArtifact);
 
+
         studentStore.buy(mockedHttpExchange, "1", "testArtifact");
         verify(mockedBackPackDAO).updateBackpack(argument.capture());
-        String expectedOutput = "brzozo: artifact:id:1|group:true|name:Test artifact|desc:Test desc|price:1000|status:null";
         assertEquals(argument.getValue().toString(), expectedOutput);
     }
 
+    /**
+     * Test if it's possible to buy Artifact when Student have insufficient ammount of coolcoins.
+     * It is using Test User from createTestStudentWithInsufficientBallance() method, and
+     * tries to buy Test artifact. Test checks if balance is the same as it was before transaction
+     * attempt, and also check if backpack is still empty.
+     * Backpack state after transaction attempt is being captured from BackpackDAO.
+     * .
+     */
+
     @Test
-    void testUnsucesfullTransaction() throws SQLException {
+    void testBuyInsufficientBallance() throws SQLException {
         Backpack emptyBackpack = createEmptyBackpack("brzozo");
+        String expectedBackpack = emptyBackpack.toString();
         Student testStudentBeforeBuy = createTestStudentWithInsufficientBallance();
         testStudentBeforeBuy.setBackpack(emptyBackpack);
         Artifact testArtifact = createTestArtifact();
+
+
         SessionIdContainer mockedSessionIdContainer = mock(SessionIdContainer.class);
         StudentDAO mockedStudentDAO = mock(StudentDAO.class);
         BackpackDAO mockedBackPackDAO = mock(BackpackDAO.class);
@@ -93,7 +153,7 @@ public class StudentStoreTest {
         when(mockedSessionIdContainer.getUserLogin("1")).thenReturn("brzozo");
         when(mockedStudentDAO.loadStudent("brzozo")).thenReturn(testStudentBeforeBuy);
         when(mockedArtifactDAO.loadArtifact("testArtifact")).thenReturn(testArtifact);
-        String expectedBackpack = emptyBackpack.toString();
+
 
         studentStore.buy(mockedHttpExchange, "1", "testArtifact");
         verify(mockedStudentDAO).updateStudent(argument.capture());
