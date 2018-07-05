@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 
-
+//Annotations for PowerMockito
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SQLQueryHandler.class)
 class ArtifactDAOTest {
@@ -33,12 +33,18 @@ class ArtifactDAOTest {
     @Mock
     Connection mockedConnection;
     SQLQueryHandler mockSQL;
+    PreparedStatement mockedPreparedStatement;
 
     @Spy
     SQLQueryHandler mockedSQLQueryHandler;
+    ResultSet mockedResultSet;
 
+    //Setting up:
+    //  mocks (Connection, PostgreSQLJDBC, SQLQueryHandler, PreparedStatement)
+    //  spies(SQLQueryHandler.getInstance(), ResultSet)
+    //  executable object (ArtifactDAO)
     @BeforeEach
-    void setupDAO() throws Exception{
+    void setup() throws Exception{
         mockedConnection = mock(Connection.class);
         PostgreSQLJDBC connectionEstablisher = PowerMockito.mock(PostgreSQLJDBC.class);
         mockSQL = mock(SQLQueryHandler.class);
@@ -47,15 +53,17 @@ class ArtifactDAOTest {
         PowerMockito.doReturn(mockedConnection).when(connectionEstablisher).getConnection();
         mockedSQLQueryHandler = PowerMockito.spy(SQLQueryHandler.getInstance());
         artifactDAO = new ArtifactDAO(mockedConnection, mockedSQLQueryHandler);
+        mockedResultSet = spy(ResultSet.class);
+        mockedPreparedStatement = mock(PreparedStatement.class);
     }
 
+    //Testing if ommiting connection with database, singleton instance, returned values for ResultSet & PreparedStatement
+    //execution of method loadArtifact is preserved.
     @Test
     void testIsLoadingArtifact() throws SQLException {
         Artifact testArtifact = new Artifact(1, true,
                 "skryptPHP", "nvm", 300);
         String expectedQuery = "SELECT * FROM artifact WHERE artifact_id = ?";
-        ResultSet mockedResultSet = spy(ResultSet.class);
-        PreparedStatement mockedPreparedStatement = mock(PreparedStatement.class);
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
 
         //todo labels do zmiennych, argument value do zmiennej
@@ -71,10 +79,10 @@ class ArtifactDAOTest {
         artifactDAO.loadArtifact(1);
         String expectedName = testArtifact.getName();
         String returnedName = mockedResultSet.getString("name");
-
         verify(mockedConnection).prepareStatement(argument.capture());
-        assertEquals(expectedQuery, argument.getValue());
-        assertEquals(expectedName, returnedName);
+        String queryValue = argument.getValue();
 
+        assertEquals(expectedQuery, queryValue);
+        assertEquals(expectedName, returnedName);
     }
 }

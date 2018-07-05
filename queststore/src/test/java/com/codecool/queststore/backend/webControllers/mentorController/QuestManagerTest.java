@@ -23,14 +23,17 @@ import static org.mockito.Mockito.when;
 class QuestManagerTest {
 
     String testResponseBodyString;
+    String returnedName;
+    String returnedDescription;
+    int returnedValue;
     Map<String, String> expectedData;
-
+    //Creating test data for test before each test method.
     @BeforeEach
     void initTestData() {
         this.testResponseBodyString = "submit=pawel&name=brzozo&description=lol&value=3";
         this.expectedData = createMapForParse();
     }
-
+    //Testing if method expected behaviour during UPDATE to database is preserved.
     @Test
     void testUpdateQuest() throws SQLException {
         InputStream expectedStream = new ByteArrayInputStream(testResponseBodyString.getBytes());
@@ -45,14 +48,19 @@ class QuestManagerTest {
         when(mockedHttpExchange.getResponseHeaders()).thenReturn(new Headers());
 
         questManager.updateQuest(mockedHttpExchange);
+        
+        returnedName = argument.getValue().getName();
+        returnedDescription = argument.getValue().getDescription();
+        returnedValue = argument.getValue().getValue();
 
         verify(mockedQuestDAO).updateQuest(argument.capture());
-        assertEquals("brzozo", argument.getValue().getName());
-        assertEquals("lol", argument.getValue().getDescription());
-        assertEquals(3, argument.getValue().getValue());
+        assertEquals("brzozo", returnedName);
+        assertEquals("lol", returnedDescription);
+        assertEquals(3, returnedValue);
 
     }
 
+    //Testing if readQuestData behaviour during execution is preserved.
     @Test
     void testReadQuestData() {
         QuestManager questManager = new QuestManager(new QuestDAO());
@@ -64,7 +72,7 @@ class QuestManagerTest {
         Map<String, String> questData = questManager.readQuestData(mockedHttpExchange);
         assertEquals(expectedData, questData);
     }
-
+    //Testing if parseQuestData behaviour during execution is preserved.
     @Test
     void testParseQuestData() {
         QuestManager questManager = new QuestManager(new QuestDAO());

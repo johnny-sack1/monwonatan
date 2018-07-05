@@ -25,7 +25,7 @@ import java.util.Map;
 public class QuestManager extends AbstractHandler implements HttpHandler {
 
     QuestDAO questDAO;
-
+    //Add Constructor with QuestDao as a parameter to make it possible to inject mocked object into.
     public QuestManager(QuestDAO questDAO) {
         this.questDAO = questDAO;
     }

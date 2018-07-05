@@ -14,9 +14,10 @@ public class ArtifactDAO {
 
     Connection c;
     SQLQueryHandler sqlQueryHandler;
-
-    public ArtifactDAO(Connection c, SQLQueryHandler sqlQueryHandler) {
-        this.c = c;
+    //Add Constructor with Connection & SQLQueryHandler as a parameters to inject mocked
+    //object while testing.
+    public ArtifactDAO(Connection connection, SQLQueryHandler sqlQueryHandler) {
+        this.c = connection;
         this.sqlQueryHandler = sqlQueryHandler;
     }
 
