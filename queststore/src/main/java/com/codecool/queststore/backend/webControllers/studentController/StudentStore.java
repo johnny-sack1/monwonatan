@@ -3,6 +3,7 @@ package com.codecool.queststore.backend.webControllers.studentController;
 import com.codecool.queststore.backend.dao.BackpackDAO;
 import com.codecool.queststore.backend.dao.StudentDAO;
 import com.codecool.queststore.backend.dao.ArtifactDAO;
+import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
 import com.codecool.queststore.backend.model.Artifact;
 import com.codecool.queststore.backend.model.Backpack;
 import com.codecool.queststore.backend.model.Student;
@@ -12,14 +13,18 @@ import com.sun.net.httpserver.HttpHandler;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class StudentStore extends AbstractHandler implements HttpHandler {
+    SQLQueryHandler sqlQueryHandler = SQLQueryHandler.getInstance();
+    Connection c = SQLQueryHandler.getInstance().getConnection();
+
     private StudentDAO studentDAO = new StudentDAO();
     private BackpackDAO backpackDAO = new BackpackDAO();
-    private ArtifactDAO artifactDAO = new ArtifactDAO();
+    private ArtifactDAO artifactDAO = new ArtifactDAO(c, sqlQueryHandler);
 
     public void setStudentDAO(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
@@ -57,7 +62,7 @@ public class StudentStore extends AbstractHandler implements HttpHandler {
             JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
             JtwigModel model = JtwigModel.newModel();
 
-            List<Artifact> artifactList = new ArtifactDAO().loadAllArtifacts();
+            List<Artifact> artifactList = new ArtifactDAO(c, sqlQueryHandler).loadAllArtifacts();
 
             model.with("title", "Student store");
             model.with("items", artifactList);

@@ -15,21 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class QuestManagerTest {
 
-    QuestManager questManager;
     String testResponseBodyString;
     Map<String, String> expectedData;
 
     @BeforeEach
-    void initQuestManager() {
+    void initTestData() {
         this.testResponseBodyString = "submit=pawel&name=brzozo&description=lol&value=3";
         this.expectedData = createMapForParse();
     }

@@ -1,6 +1,7 @@
 package com.codecool.queststore.backend.webControllers.mentorController;
 
 import com.codecool.queststore.backend.dao.ArtifactDAO;
+import com.codecool.queststore.backend.databaseConnection.SQLQueryHandler;
 import com.codecool.queststore.backend.model.Artifact;
 import com.codecool.queststore.backend.webControllers.AbstractHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -13,12 +14,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MentorStore extends AbstractHandler implements HttpHandler {
+    SQLQueryHandler sqlQueryHandler = SQLQueryHandler.getInstance();
+    Connection c = SQLQueryHandler.getInstance().getConnection();
+
     @Override
     public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
@@ -36,7 +41,7 @@ public class MentorStore extends AbstractHandler implements HttpHandler {
     }
 
     private void sendTemplateResponseWithTable(HttpExchange exchange, String templateName) {
-        List<Artifact> artifacts = new ArtifactDAO().loadAllArtifacts();
+        List<Artifact> artifacts = new ArtifactDAO(c, sqlQueryHandler).loadAllArtifacts();
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();
         model.with("artifacts", artifacts);
@@ -53,13 +58,13 @@ public class MentorStore extends AbstractHandler implements HttpHandler {
         int price = Integer.parseInt((String) inputs.get("price"));
         boolean isAvailableForGroups = Boolean.parseBoolean((String) inputs.get("groups"));
 
-        Artifact artifact = new ArtifactDAO().loadArtifact(id);
+        Artifact artifact = new ArtifactDAO(c, sqlQueryHandler).loadArtifact(id);
         artifact.setName(name);
         artifact.setDescription(desc);
         artifact.setPrice(price);
         artifact.setAvailableForGroups(isAvailableForGroups);
 
-        new ArtifactDAO().updateArtifact(artifact);
+        new ArtifactDAO(c, sqlQueryHandler).updateArtifact(artifact);
         redirectToLocation(exchange, "/mentor/store");
     }
 
