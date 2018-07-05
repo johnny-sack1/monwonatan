@@ -13,9 +13,11 @@ import java.util.List;
 public class ArtifactDAO {
 
     Connection c;
+    SQLQueryHandler sqlQueryHandler;
 
-    public ArtifactDAO(Connection c) {
+    public ArtifactDAO(Connection c, SQLQueryHandler sqlQueryHandler) {
         this.c = c;
+        this.sqlQueryHandler = sqlQueryHandler;
     }
 
     public boolean createArtifact(boolean availableForGroups, String name,
@@ -42,8 +44,8 @@ public class ArtifactDAO {
         String query = "SELECT * FROM artifact WHERE artifact_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
         statement.setInt(1, id);
-        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
-        resultSet.next();
+        ResultSet resultSet = sqlQueryHandler.executeQuery(statement.toString());
+//        resultSet.next();
         boolean availableForGroups = resultSet.getBoolean("available_for_groups");
         String name = resultSet.getString("name");
         String description = resultSet.getString("description");
@@ -57,7 +59,7 @@ public class ArtifactDAO {
         String query = "SELECT * FROM artifact WHERE name = ?";
         PreparedStatement statement = c.prepareStatement(query);
         statement.setString(1, artifactName);
-        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        ResultSet resultSet = sqlQueryHandler.executeQuery(statement.toString());
         resultSet.next();
         boolean availableForGroups = resultSet.getBoolean("available_for_groups");
         int id = resultSet.getInt("artifact_id");
@@ -103,7 +105,7 @@ public class ArtifactDAO {
         List<Artifact> allArtifacts = new ArrayList<>();
 
         String query = "SELECT artifact_id FROM artifact;";
-        ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
+        ResultSet ids = sqlQueryHandler.executeQuery(query);
         try {
             while (ids.next()) {
                 allArtifacts.add(loadArtifact(ids.getInt("artifact_id")));
