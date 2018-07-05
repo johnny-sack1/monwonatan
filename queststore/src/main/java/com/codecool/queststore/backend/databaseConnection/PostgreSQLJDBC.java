@@ -3,7 +3,7 @@ package com.codecool.queststore.backend.databaseConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-class PostgreSQLJDBC {
+public class PostgreSQLJDBC {
 
     private Connection connection;
 
@@ -21,7 +21,7 @@ class PostgreSQLJDBC {
         }
     }
 
-    Connection getConnection() {
+    public Connection getConnection() {
         return connection;
     }
 }

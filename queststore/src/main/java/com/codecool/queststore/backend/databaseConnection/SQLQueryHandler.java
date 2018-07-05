@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 public class SQLQueryHandler {
 
-    private static SQLQueryHandler ourInstance;
-    private com.codecool.queststore.backend.databaseConnection.PostgreSQLJDBC connectionEstablisher;
-    private Connection connection;
+    public static SQLQueryHandler ourInstance;
+    public com.codecool.queststore.backend.databaseConnection.PostgreSQLJDBC connectionEstablisher;
+    public Connection connection;
 
     public static SQLQueryHandler getInstance() {
         if (ourInstance == null) {

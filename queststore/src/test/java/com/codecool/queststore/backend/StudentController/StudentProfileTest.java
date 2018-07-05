@@ -12,30 +12,42 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StudentProfileTest {
     StudentProfile studentProfile;
 
+    /**
+     * Initialize StudentProfile object for testing purposes.
+     */
+
     @BeforeEach
     void initStudentProfile() {
         this.studentProfile = new StudentProfile();
     }
 
+    /**
+     * Test parseStudentData method from StudentProfile controller.
+     * It receives testing String (formData1) and compares map returned from parseStudentData()
+     * method with map (expectedData - with correctly parserd user data).
+     */
+
     @Test
     void testParseStudentData() {
-        String formData = "submit=Phill&value=Brzozo";
-        Map<String, String> expectedData = new HashMap<>();
+        String formData1 = "submit=Phill&value=Brzozo";
+        Map<String, String> expectedData1 = new HashMap<>();
+        expectedData1.put("submit", "Phill");
+        expectedData1.put("value", "Brzozo");
 
-        expectedData.put("submit", "Phill");
-        expectedData.put("value", "Brzozo");
+        Map<String, String> parsedData = studentProfile.parseStudentData(formData1);
 
-        Map<String, String> parsedData = studentProfile.parseStudentData(formData);
-
-        assertEquals(expectedData, parsedData);
-
+        assertEquals(expectedData1, parsedData);
     }
+
+    /**
+     * Test behavior of parseStudentData method when it receives form without any personal data.
+     * It doesn't generate any exception, instead it returns empty map.
+     */
 
     @Test
     void testParseStudentDataWithEmptyForm() {
         String formData = "submit=&value=";
         Map<String, String> expectedData = new HashMap<>();
-
         Map<String, String> parsedData = studentProfile.parseStudentData(formData);
 
         assertEquals(expectedData, parsedData);
