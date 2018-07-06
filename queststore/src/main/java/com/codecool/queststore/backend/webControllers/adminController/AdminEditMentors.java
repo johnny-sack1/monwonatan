@@ -46,7 +46,7 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
     private void editMentor(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
 
-        if(method.equalsIgnoreCase("GET")) {
+        if (method.equalsIgnoreCase("GET")) {
             sendMentorEditPage(exchange);
         } else if (method.equalsIgnoreCase("POST")) {
             submitMentorEditPage(exchange);
@@ -61,7 +61,9 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         if (method.equalsIgnoreCase("GET")) {
             sendMentorDeletionPage(exchange);
         } else if (method.equalsIgnoreCase("POST")) {
-            submitMentorDeletionPage(exchange);
+            MentorDAO mentorDAO = new MentorDAO();
+            submitMentorDeletionPage(exchange, mentorDAO);
+            redirectToLocation(exchange, "/admin/mentors");
         } else {
             redirectToLocation(exchange, "/admin/index");
         }
@@ -70,10 +72,12 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
     private void createMentor(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
 
-        if(method.equalsIgnoreCase("GET")) {
+        if (method.equalsIgnoreCase("GET")) {
             sendMentorCreationPage(exchange);
         } else if (method.equalsIgnoreCase("POST")) {
-            submitMentorCreationPage(exchange);
+            MentorDAO mentorDAO = new MentorDAO();
+            submitMentorCreationPage(exchange, mentorDAO);
+            redirectToLocation(exchange, "/admin/mentors");
         } else {
             redirectToLocation(exchange, "/admin/index");
         }
@@ -122,7 +126,7 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
 
     private void submitMentorEditPage(HttpExchange exchange) {
         try {
-            Map<String, String> inputs = readFormData(exchange);
+            Map <String, String> inputs = readFormData(exchange);
             String login = getMentorLogin(exchange);
             String firstName = inputs.get("firstname");
             String lastName = inputs.get("lastname");
@@ -152,13 +156,13 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
             } else {
                 redirectToLocation(exchange, "/admin/index");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             redirectToLocation(exchange, "/admin");
         }
     }
 
-    private void submitMentorCreationPage(HttpExchange exchange) {
-        Map<String, String> inputs = readFormData(exchange);
+    public boolean submitMentorCreationPage(HttpExchange exchange, MentorDAO mentorDAO) {
+        Map <String, String> inputs = readFormData(exchange);
         String firstName = inputs.get("firstname");
         String lastName = inputs.get("lastname");
         String email = inputs.get("email");
@@ -171,23 +175,24 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
         try {
             if (password.equals(repeatedPassword)) {
                 String hashedPassword = new PasswordManager().generateStorngPasswordHash(password);
-                new MentorDAO().createMentor(firstName, lastName, login, hashedPassword, classroomId, email, address);
+                mentorDAO.createMentor(firstName, lastName, login, hashedPassword, classroomId, email, address);
+                return true;
             }
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             redirectToLocation(exchange, "/admin/index");
+            return false;
         }
-
-        redirectToLocation(exchange, "/admin/mentors");
+        return false;
     }
 
-    private void submitMentorDeletionPage(HttpExchange exchange) {
+    public boolean submitMentorDeletionPage(HttpExchange exchange, MentorDAO mentorDAO) {
         String mentorLogin = getMentorLogin(exchange);
-        new MentorDAO().deleteMentor(mentorLogin);
-        redirectToLocation(exchange, "/admin/mentors");
+        boolean deleted = mentorDAO.deleteMentor(mentorLogin);
+        return deleted;
     }
 
     private void sendTemplateResponseClassrooms(HttpExchange exchange, String templateName) {
-        List<Classroom> classrooms = new ClassroomDAO().loadAllClassrooms();
+        List <Classroom> classrooms = new ClassroomDAO().loadAllClassrooms();
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();
         model.with("classrooms", classrooms);
@@ -196,7 +201,7 @@ public class AdminEditMentors extends AbstractHandler implements HttpHandler {
     }
 
     private void sendTemplateResponseAllMentors(HttpExchange exchange, String templateName) {
-        List<Mentor> mentors = new MentorDAO().loadAllMentors();
+        List <Mentor> mentors = new MentorDAO().loadAllMentors();
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();

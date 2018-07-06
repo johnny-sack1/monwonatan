@@ -23,6 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 public class QuestManager extends AbstractHandler implements HttpHandler {
+
+    QuestDAO questDAO;
+    //Add Constructor with QuestDao as a parameter to make it possible to inject mocked object into.
+    public QuestManager(QuestDAO questDAO) {
+        this.questDAO = questDAO;
+    }
+
     @Override
     public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
@@ -71,13 +78,12 @@ public class QuestManager extends AbstractHandler implements HttpHandler {
             String name = inputs.get("name");
             String description = inputs.get("description");
             int value = Integer.valueOf(inputs.get("value"));
-            QuestDAO dao = new QuestDAO();
-            dao.createQuest(name, description, value);
+            questDAO.createQuest(name, description, value);
             redirectToLocation(exchange, "/mentor/quest_manager");
     }
 
     private void sendTemplateResponseWithTable(HttpExchange exchange, String templateName) {
-        List<Quest> quests = new QuestDAO().loadAllQuests();
+        List<Quest> quests = questDAO.loadAllQuests();
         JtwigTemplate template = JtwigTemplate.classpathTemplate(String.format("templates/%s.jtwig", templateName));
         JtwigModel model = JtwigModel.newModel();
         model.with("quests", quests);
@@ -94,12 +100,12 @@ public class QuestManager extends AbstractHandler implements HttpHandler {
         int value = Integer.parseInt((String) inputs.get("value"));
 
         try {
-            Quest quest = new QuestDAO().loadQuest(oldName);
+            Quest quest = questDAO.loadQuest(oldName);
             quest.setName(newName);
             quest.setDescription(description);
             quest.setValue(value);
 
-            new QuestDAO().updateQuest(quest);
+            questDAO.updateQuest(quest);
             redirectToLocation(exchange, "/mentor/quest_manager");
         }
         catch (SQLException e) {

@@ -12,9 +12,18 @@ import java.util.List;
 
 public class ArtifactDAO {
 
-    public boolean createArtifact(boolean availableForGroups, String name, String description, int price) {
+    Connection c;
+    SQLQueryHandler sqlQueryHandler;
+    //Add Constructor with Connection & SQLQueryHandler as a parameters to inject mocked
+    //object while testing.
+    public ArtifactDAO(Connection connection, SQLQueryHandler sqlQueryHandler) {
+        this.c = connection;
+        this.sqlQueryHandler = sqlQueryHandler;
+    }
+
+    public boolean createArtifact(boolean availableForGroups, String name,
+                                  String description, int price) {
         try {
-            Connection c = SQLQueryHandler.getInstance().getConnection();
             String query = "INSERT INTO artifact (available_for_groups, name, description, price) " +
                     "VALUES (?, ?, ?, ?);";
             PreparedStatement statement = c.prepareStatement(query);
@@ -32,13 +41,12 @@ public class ArtifactDAO {
     }
 
     public Artifact loadArtifact(int id) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
 
         String query = "SELECT * FROM artifact WHERE artifact_id = ?";
         PreparedStatement statement = c.prepareStatement(query);
         statement.setInt(1, id);
-        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
-        resultSet.next();
+        ResultSet resultSet = sqlQueryHandler.executeQuery(statement.toString());
+//        resultSet.next();
         boolean availableForGroups = resultSet.getBoolean("available_for_groups");
         String name = resultSet.getString("name");
         String description = resultSet.getString("description");
@@ -48,12 +56,11 @@ public class ArtifactDAO {
     }
 
     public Artifact loadArtifact(String artifactName) throws SQLException {
-        Connection c = SQLQueryHandler.getInstance().getConnection();
 
         String query = "SELECT * FROM artifact WHERE name = ?";
         PreparedStatement statement = c.prepareStatement(query);
         statement.setString(1, artifactName);
-        ResultSet resultSet = SQLQueryHandler.getInstance().executeQuery(statement.toString());
+        ResultSet resultSet = sqlQueryHandler.executeQuery(statement.toString());
         resultSet.next();
         boolean availableForGroups = resultSet.getBoolean("available_for_groups");
         int id = resultSet.getInt("artifact_id");
@@ -73,9 +80,9 @@ public class ArtifactDAO {
         return updateArtifact(id, availableForGroups, name, description, price);
     }
 
-    public boolean updateArtifact(int id, boolean availableForGroups, String name, String description, int value) {
+    public boolean updateArtifact(int id, boolean availableForGroups, String name,
+                                  String description, int value) {
         try {
-            Connection c = SQLQueryHandler.getInstance().getConnection();
             String query = "UPDATE artifact SET available_for_groups = ?, name = ?, description = ?, price = ? " +
                     "WHERE artifact_id = ?";
             PreparedStatement statement = c.prepareStatement(query);
@@ -99,7 +106,7 @@ public class ArtifactDAO {
         List<Artifact> allArtifacts = new ArrayList<>();
 
         String query = "SELECT artifact_id FROM artifact;";
-        ResultSet ids = SQLQueryHandler.getInstance().executeQuery(query);
+        ResultSet ids = sqlQueryHandler.executeQuery(query);
         try {
             while (ids.next()) {
                 allArtifacts.add(loadArtifact(ids.getInt("artifact_id")));

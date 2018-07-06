@@ -80,7 +80,6 @@ public class StudentDAO {
 
         return createAllStudentData(student, login);
     }
-
     public boolean updateStudent(Student student) {
         String firstName = student.getFirstName();
         String lastName = student.getLastName();
